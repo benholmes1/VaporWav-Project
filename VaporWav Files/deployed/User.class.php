@@ -1,0 +1,65 @@
+<?php
+/*
+ * User Class
+ * This class is used for database related (connect, insert, and update) operations
+ */
+
+class User {
+    private $dbHost     = DB_HOST;
+    private $dbUsername = DB_USERNAME;
+    private $dbPassword = DB_PASSWORD;
+    private $dbName     = DB_NAME;
+    private $userTbl    = DB_USER_TBL;
+    private $userData;
+	
+    function __construct(){
+        if(!isset($this->db)){
+            // Connect to the database
+            $conn = new mysqli($this->dbHost, $this->dbUsername, $this->dbPassword, $this->dbName);
+            if($conn->connect_error){
+                die("Failed to connect with MySQL: " . $conn->connect_error);
+            }else{
+                $this->db = $conn;
+            }
+        }
+    }
+	
+    function checkUser($userData = array()){
+        if(!empty($userData)){
+            // Check whether user data already exists in the database
+            $checkQuery = "SELECT * FROM ".$this->userTbl." WHERE oauth_provider = '".$userData['oauth_provider']."' AND oauth_uid = '".$userData['oauth_uid']."'";
+            $checkResult = $this->db->query($checkQuery);
+            if($checkResult->num_rows > 0){
+                // Update user data if already exists
+                $query = "UPDATE ".$this->userTbl." SET first_name = '".$userData['first_name']."', last_name = '".$userData['last_name']."', email = '".$userData['email']."', gender = '".$userData['gender']."', locale = '".$userData['locale']."', picture = '".$userData['picture']."', link = '".$userData['link']."', modified = NOW() WHERE oauth_provider = '".$userData['oauth_provider']."' AND oauth_uid = '".$userData['oauth_uid']."'";
+                $update = $this->db->query($query);
+            }else{
+                // Insert user data in the database
+                $query = "INSERT INTO ".$this->userTbl." SET oauth_provider = '".$userData['oauth_provider']."', oauth_uid = '".$userData['oauth_uid']."', first_name = '".$userData['first_name']."', last_name = '".$userData['last_name']."', email = '".$userData['email']."', gender = '".$userData['gender']."', locale = '".$userData['locale']."', picture = '".$userData['picture']."', link = '".$userData['link']."', created = NOW(), modified = NOW()";
+                $insert = $this->db->query($query);
+            }
+ 
+            // Get user data from the database
+            $result = $this->db->query($checkQuery);
+            $userData = $result->fetch_assoc();
+        }
+        
+        // Return user data
+        return $userData;
+    }
+
+    function checkName($userData = array()) {
+      $checkQ = "SELECT * FROM usernames WHERE id = '".$userData['id']."'";  
+      $checkR = $this->db->query($checkQ);
+      if($checkR->num_rows <= 0) {
+        $nickname = current(explode('@', $userData['email']));
+	$nameQuery = "INSERT INTO usernames SET id = '".$userData['id']."', nickname = '".$nickname."'";
+	$insert = $this->db->query($nameQuery);
+      }
+      $res = $this->db->query($checkQ);
+      $nickname = $res->fetch_assoc();
+
+      return $nickname["nickname"];
+    }
+
+}

@@ -1,0 +1,5 @@
+      <form action="<?php $_PHP_SELF ?>" method="post">
+	Username: <input type="text" name="nname" /><br><br>
+	<input type="submit" />
+      </form>
+

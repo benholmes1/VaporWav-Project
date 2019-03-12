@@ -1,0 +1,199 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Description" : "Signed-URL demo providing access to a Private S3 Bucket",
+  "Metadata": {
+    "Author": "Michael Ludvig - https://aws.nz"
+  },
+  "Parameters": {
+    "VpcId": {
+      "Type": "AWS::EC2::VPC::Id",
+      "Description": "VPC Id of target VPC"
+    },
+    "SubnetId": {
+      "Type": "AWS::EC2::Subnet::Id",
+      "Description": "The subnet where this instance should be deployed"
+    },
+    "KeyName": {
+      "Type": "String",
+      "Description": "Name of an existing EC2 KeyPair for SSH access to the EC2 instance. May be empty to disable SSH access.",
+      "Default": ""
+    },
+    "ImageId": {
+      "Type": "AWS::EC2::Image::Id",
+      "Description": "Amazon Linux AMI ID"
+    }
+  },
+  "Conditions": {
+    "HaveKeyName": { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "KeyName" }, "" ] } ] }
+  },
+  "Resources" : {
+    "Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private"
+      }
+    },
+    "AccessPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "S3_Access_Policy",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:List*",
+                "s3:Get*",
+                "s3:PutObject*",
+                "s3:DeleteObject*"
+              ],
+              "Resource": [
+                { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "Bucket" } ] ] },
+                { "Fn::Join": [ "", [ "arn:aws:s3:::", { "Ref": "Bucket" },  "/*" ] ] }
+              ]
+            }
+          ]
+        },
+        "Roles": [ { "Ref": "InstanceRole" } ]
+      }
+    },
+    "InstanceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": { "Service": [ "ec2.amazonaws.com" ] },
+              "Action": [ "sts:AssumeRole" ]
+            }
+          ]
+        },
+        "Path": "/"
+      }
+    },
+    "InstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          {
+            "Ref": "InstanceRole"
+          }
+        ]
+      }
+    },
+    "InstanceSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Instance Security Group",
+        "VpcId": { "Ref": "VpcId" },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId": { "Ref": "ImageId" },
+        "InstanceType": "t2.micro",
+        "KeyName": { "Fn::If": [ "HaveKeyName", { "Ref": "KeyName" }, { "Ref": "AWS::NoValue" } ] },
+        "SubnetId": { "Ref": "SubnetId" },
+        "SecurityGroupIds": [ { "Ref": "InstanceSecurityGroup" } ],
+        "IamInstanceProfile": { "Ref": "InstanceProfile" },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#cloud-config\n",
+                "timezone: UTC\n",
+                "hostname: ", { "Ref": "AWS::StackName" }, "\n",
+                "preserve_hostname: true\n",
+                "runcmd:\n",
+                " - yum -y install epel-release\n",
+                " - yum-config-manager --enable epel\n",
+                " - /opt/aws/bin/cfn-init -v -r Instance --region ", { "Ref": "AWS::Region" }, " -s ", { "Ref": "AWS::StackId" }, "\n"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Init": {
+          "config": {
+            "packages": {
+              "yum": {
+                "php56": []
+              }
+            },
+            "files": {
+              "/var/www/html/demo.tar.gz": {
+                "source": "https://github.com/mludvig/aws-s3sign-demo/archive/master.tar.gz",
+                "mode": "0644",
+                "owner": "root",
+                "group": "root"
+              },
+              "/var/www/html/config.php": {
+                "content": { "Fn::Join": [ "", [
+                  "<?php\n",
+                  "$region = \"", { "Ref": "AWS::Region" }, "\";\n",
+                  "$bucket = \"", { "Ref": "Bucket" }, "\";\n"
+                ] ] },
+                "mode": "0644",
+                "owner": "root",
+                "group": "root"
+              },
+              "/var/www/html/aws.phar": {
+                "source": "https://github.com/aws/aws-sdk-php/releases/download/3.21.3/aws.phar",
+                "mode": "0644",
+                "owner": "root",
+                "group": "root"
+              }
+            },
+            "commands": {
+              "00-Unpack-Demo": {
+                "command": "tar -xf demo.tar.gz --strip-components=1",
+                "cwd": "/var/www/html"
+              }
+            },
+            "services": {
+              "sysvinit": {
+                "httpd": {
+                  "enabled": "true",
+                  "ensureRunning": "true"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "InstanceElasticIP": {
+      "Type" : "AWS::EC2::EIP",
+      "Properties" : {
+        "InstanceId" : { "Ref" : "Instance" }
+      }
+    }
+  },
+  "Outputs" : {
+    "ElasticIP": {
+      "Description": "Elastic IP address",
+      "Value": { "Ref": "InstanceElasticIP" }
+    },
+    "URL": {
+      "Description": "Test URL",
+      "Value": { "Fn::Join": [ "", [
+        "http://", { "Ref": "InstanceElasticIP" }, "/index.php"
+      ] ] }
+    }
+  }
+}
