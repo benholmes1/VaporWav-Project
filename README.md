@@ -20,3 +20,6 @@ Steps using putty (recommended):
    - Enter a name for the session in the text field under Saved Sessions
    - Click save to save the session
 8. Finally, click open and enter ec2-user under login as: (if you see a warning screen just click yes)
+9. If you click open and all you see is a blank terminal, your ip address needs to be added to the security group.
+   - Use this link to check your ip: http://checkip.amazonaws.com
+   - Contact Ben or add it yourself through the AWS EC2 console
