@@ -50,29 +50,7 @@ if($gClient->getAccessToken()){
 	
 	// Render user profile data
     if(!empty($userData)){
-        $outputh  = '<header>';
-        $outputh .= '<div class="padThis">';
-        $outputh .= '<h1>VaporWav</h1>';
-        $outputh .= '<p class="underHeader">Show us what you have been working on.</p>';
-        $outputh .= '</div>';
- 	$outputh .= '<nav>';
-	$outputh .= '<!list of the seperate parts of this page>';
-	$outputh .= '<ul>';
- 	$outputh .= '<li><a href = "index.php">Home</a>';
-	$outputh .= '<a href = "uploadPage.php">Upload</a></li>';
- 	$outputh .= '</ul>';
-	$outputh .= '<ul class="leftHead">';
-	$outputh .= '<li><a href = "account.php">My Account</a>';
-	$outputh .= '<a href = "logout.php">Logout</a></li>';
-	$outputh .= '</ul>';
-	$outputh .= '</nav>';
-        $outputh .= '</header>';
-
-	$output  = '<p style="font-family:Streamster;font-size:350%" class="count">Coming Soon</p>';
-	$output .= '<hr class="center">';
-	$output .= '<p id="demo" class="count"></p>';
-	$output .= '<script src="countdown.js"></script>';	
-
+        header('Location: home.php');
     }else{
         $output = '<h3 style="color:red">Some problem occurred, please try again.</h3>';
     }
