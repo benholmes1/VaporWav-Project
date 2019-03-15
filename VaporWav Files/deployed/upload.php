@@ -1,6 +1,18 @@
 <?php
-  session_start();
-  
+  session_start(); 
+
+  if(!($_SESSION['login'])){
+    header('Location: index.php');
+  }
+ 
+  /*if(isset($_POST['avatar'])) {
+    if($_POST['avatar'] == 1) {
+      $avatar = True;
+      //echo "<script type='text/javascript'>alert('Here');</script>";
+      unset($_POST['avatar']);
+    }
+  }*/
+
   require './vendor/autoload.php';
  
   include 'dbconfig.php';	
@@ -50,16 +62,28 @@
     if(!in_array($file_ext, $extensions)) {
       $ext_error = true;
     }
+//echo "<script type='text/javascript'>alert('Here');</script>";
 
     if($ext_error == false) {
 
-      if(isset($_POST["desc"])) {
-        echo "<script type='text/javascript'>alert('Here');</script>";
+      if($avatar == True) {
+        $description = $_SESSION['userData']['email'] . '\'s avatar.';
+        $descriptionTag = 'Description=' . $description;
+      }
+      elseif(isset($_POST["desc"])) {
+        //echo "<script type='text/javascript'>alert('Here');</script>";
 	$description = $_POST['desc'];
         $descriptionTag = 'Description=' . $_POST['desc'];
       }
+      else {
+      
+      }
 	
-      $keyName = $_SESSION['userData']['email'] . '/' . basename($_FILES["imgFile"]['name']);
+      if($avatar == True) {
+        $keyName = $_SESSION['userData']['email'] . '/avatar/' . basename($_FILES["imgFile"]['name']); 
+      }  else {
+        $keyName = $_SESSION['userData']['email'] . '/' . basename($_FILES["imgFile"]['name']);
+      }
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
  
       //$name = $file['name'];
@@ -88,13 +112,15 @@
       
       $query = "INSERT INTO `images`(`id`, `keyname`, `etag`, `caption`, `created`) VALUES ('".$_SESSION['userData']['id']."', '".$_FILES["imgFile"]['name']."', '".$eTag."', '".$description."', NOW())";
       $queryRes = $conn->query($query);
-   }
+      $res = "Success";
+    }
     else {
       $res = "Please upload an image file.";
-      echo "<script type='text/javascript'>alert('$res');</script>";
-   }
+      //echo "<script type='text/javascript'>alert('$res');</script>";
+      //header('Location: uploadPage.php?res');
+    }
   }
 
-  header('Location: uploadPage.php?res');
+  header('Location: uploadPage.php?res='.$res);
 
 ?>

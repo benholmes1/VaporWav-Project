@@ -34,7 +34,7 @@
     <nav>
       <!list of the seperate parts of this page>
       <ul>
-        <li><a href = "index.php">Home</a></li>
+        <li><a href = "home.php">Home</a></li>
       </ul>
       <ul class="leftHead">
         <li><a href = "account.php">My Account</a>

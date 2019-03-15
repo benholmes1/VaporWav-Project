@@ -2,15 +2,13 @@
   session_start();
   if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
-  } /*else {
-    if(isset($_GET['fail']) && $_GET['fail'] == 1)
-    {
-      $uniqueErr = "Username Taken";
-      echo "<script type='text/javascript'>alert('$uniqueErr');</script>";
-     
-    }
   }
-*/
+
+  if(isset($_GET['res'])) {
+    $res = $_GET['res'];
+    echo "<script type='text/javascript'>alert('$res');</script>";
+    unset($_GET['res']);
+  }
 ?>
 <html>
 
@@ -33,7 +31,7 @@
     <nav>
       <!list of the seperate parts of this page>
       <ul>
-        <li><a href = "index.php">Home</a></li>
+        <li><a href = "home.php">Home</a></li>
       </ul>
       <ul class="leftHead">
         <li><a href = "account.php">My Account</a>
