@@ -110,7 +110,7 @@
         die('Error:' . $e->getMessage());
       }
       
-      $query = "INSERT INTO `images`(`id`, `keyname`, `etag`, `caption`, `created`) VALUES ('".$_SESSION['userData']['id']."', '".$_FILES["imgFile"]['name']."', '".$eTag."', '".$description."', NOW())";
+      $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`) VALUES ('".$_SESSION['userData']['id']."', '".$eTag."', '".$_FILES["imgFile"]['name']."', '".$_POST['title']."', '".$description."', NOW())";
       $queryRes = $conn->query($query);
       $res = "Success";
     }
