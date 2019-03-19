@@ -1,0 +1,50 @@
+select * From users;
+
+CREATE TABLE `usernames` (
+ `id` int(11) NOT NULL,
+ `nickname` varchar(50) NOT NULL,
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (`id`) REFERENCES users(`id`)
+);
+
+ALTER TABLE usernames ADD UNIQUE (nickname);
+
+select * from usernames;
+
+CREATE TABLE `images` (
+ `id` int(11) NOT NULL,
+ `etag` varchar(50) NOT NULL,
+ `keyname` varchar(50) NOT NULL,
+ `title` varchar(50) NOT NULL,
+ `caption` tinytext,
+ `created` datetime NOT NULL,
+ `likes` int(11),
+ CONSTRAINT img_key PRIMARY KEY (`id`, `etag`),
+ FOREIGN KEY (`id`) REFERENCES users(`id`)
+);
+
+CREATE TABLE `comments` (
+ `id` int(11) NOT NULL,
+ `etag` varchar(50) NOT NULL,
+ `uid` int(11) NOT NULL,
+ `comment` tinytext,
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (`id`) REFERENCES users(`id`)
+);
+
+select * from images;
+
+SET SQL_SAFE_UPDATES = 0;
+delete from images;
+SET SQL_SAFE_UPDATES = 1;
+
+drop table images;
+
+CREATE TABLE `avatars` (
+ `id` int(11) NOT NULL,
+ `keyname` varchar(50) NOT NULL,
+ `etag` varchar(50) NOT NULL,
+ `created` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ FOREIGN KEY (`id`) REFERENCES users(`id`)
+);
