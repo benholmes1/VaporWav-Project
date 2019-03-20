@@ -1,11 +1,15 @@
 <?php
-# By Michael Ludvig - https://aws.nz
+session_start();
+if($_SESSION['login'] != TRUE) {
+    header('Location: index.php');
+}
 
 $expire = "1 hour";
 
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
 include 'config.php';
+require_once 'Image.class.php';
 ?>
 <html lang="en">
 <head>
@@ -37,8 +41,13 @@ include 'config.php';
 
 
 <main class="container2">
+<h2>Your Gallery</h2>
+<br>
     <section class="cards">
 <?php
+
+$email = $_SESSION['userData']['email'];
+
 $s3 = new Aws\S3\S3Client([
     'version' => '2006-03-01',
     'region'  => $region,
@@ -46,12 +55,13 @@ $s3 = new Aws\S3\S3Client([
 
 $bucket_url = "https://s3-{$region}.amazonaws.com/{$bucket}";
 
-$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket));
+$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $email));
+
+//$images = array();
 
 foreach ($iterator as $object) {
     $key = $object['Key'];
     $id = $object['ETag'];
-     
     $cmd = $s3->getCommand('GetObject', [
         'Bucket' => $bucket,
         'Key'    => $key,
@@ -62,24 +72,30 @@ foreach ($iterator as $object) {
 
     $request = $s3->createPresignedRequest($cmd, "+{$expire}");
     $signed_url = (string) $request->getUri();
+    //$images[] = new ImageObject($signed_url, $id);
+    /*$imgObj->setUrl($signed_url);
+    $imgObj->setId($id);*/
+    $imgObj = new ImageObject($signed_url, $id);
 
     //echo("<tr><td>$key</td><td><a href=\"{$bucket_url}/{$key}\">Direct</a></td><td><a href=\"{$signed_url}\">Expires in $expire</a></td></tr>");
     
     //this is the new one, not sure if it works
     //ideally you use this in a for loop that grabs each signed url and prints it out this through this echos
-    echo("<article class='card'><a href=\"{$signed_url}\"><figure><img src=\"{$signed_url}\"></figure></a></article>");
+   //echo("<article class='card'><a href=""><figure><img src=\"{$signed_url}\"></figure></a></article>");
+    // echo "<script type='text/javascript'>alert('$signed_url');</script>";
+
+    echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$id.'><figure><img src="'.$signed_url.'"</figure></a></article>';
 }
+
+
+/*foreach ($images as $object) {
+  $url = $object->getUrl();
+  $message = "wrong answer";
+  echo "<script type='text/javascript'>alert('$message');</script>";
+  echo("<article class='card'><a href=\"testDisplay.php\"><figure><img src=\"{$url}\"></figure></a></article>");
+}*/
 ?>
     </section>
-    </main>
-<p>
-<ul>
-<li>If you don't see any objects in the table above either your IAM Policy is incorrect or you have no files in <b><a href="https://console.aws.amazon.com/s3/home?region=<?=$region?>&amp;bucket=<?=$bucket?>&amp;prefix=" target="_blank"><?=$bucket?></a></b> bucket.</li>
-<li>The unsigned URLs may return an error depending on the ACL of the file.</li>
-<li>The signed URLs expire in <b><?=$expire ?></b>. Reload the page to refresh the URLs.</li>
-</ul>
-</p>
-<p>Source code is available here: <a href="https://github.com/mludvig/aws-s3sign-demo">https://github.com/mludvig/aws-s3sign-demo</a>.</p>
-<address>By <a href="https://aws.nz/">Michael Ludvig</a></address>
+</main>
 </body>
 </html>
