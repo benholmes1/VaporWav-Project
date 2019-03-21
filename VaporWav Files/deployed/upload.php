@@ -36,6 +36,17 @@
     die("Failed to connect with MySQL: " . $conn->connect_error);
   }
  
+  /*if(!(isset($_POST['title']))) {
+    $alrt = "Please fill out title field";
+    echo "<script type='text/javascript'>alert('$alrt');</script>";
+    header('Location: uploadPage.php');
+    exit();
+  }*/
+  if("" == trim($_POST['title'])){
+    $alrt = "Please fill out title field";
+    echo "<script type='text/javascript'>alert('$alrt');</script>";
+    header('Location: uploadPage.php');
+  }      
   // Connect to AWS
   try {
   $s3 = S3Client::factory(
@@ -85,7 +96,8 @@
         $keyName = $_SESSION['userData']['email'] . '/' . basename($_FILES["imgFile"]['name']);
       }
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
- 
+  
+       
       //$name = $file['name'];
 
       // Add it to S3
@@ -96,9 +108,7 @@
           array(
 	    'Bucket'=>$bucketName,
 	    'Key' =>  $keyName,
-	    'SourceFile' => $file,
-	    'Tagging' => $descriptionTag,
-	    'Metadata' => ['Description' => $description]
+	    'SourceFile' => $file
           )
         );
 

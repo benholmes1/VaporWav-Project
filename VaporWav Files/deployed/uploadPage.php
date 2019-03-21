@@ -4,11 +4,11 @@
     header('Location: index.php');
   }
 
-  if(isset($_GET['res'])) {
+  /*if(isset($_GET['res'])) {
     $res = $_GET['res'];
     echo "<script type='text/javascript'>alert('$res');</script>";
     unset($_GET['res']);
-  }
+  }*/
 ?>
 <html>
 
@@ -50,7 +50,7 @@
           <input id="imgFile" name="imgFile" type="file" required>
 	  <input id="upload" type="submit" value="Upload" style="float:right">
         </form>
-        <textarea placeholder="Title . . ." style="width:100%;resize:none" id="title" name="title" form="uploadForm"></textarea>
+        <textarea placeholder="Title . . ." style="width:100%;resize:none" id="title" name="title" form="uploadForm" required></textarea>
 	<textarea placeholder="Description . . ." style="width:100%;height:5em;box-sizing:border-box;resize:none" id="desc" name="desc" form="uploadForm"></textarea>
       </div>
       </div>
