@@ -27,10 +27,12 @@
     'Bucket' => $bucket,
     'Key'    => $key,
     'IfMatch' => $id
-  ]);
+  ]);//
  
   $request = $s3->createPresignedRequest($cmd, "+{$expire}");
   $signed_url = (string) $request->getUri();
+
+  $query = "'SELECT * FROM `images` WHERE `etag` = '\"".id."\"'";
 
 ?>
 
