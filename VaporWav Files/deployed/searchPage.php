@@ -58,16 +58,12 @@ $s3 = new Aws\S3\S3Client([
 ]);
 
 $bucket_url = "https://s3-{$region}.amazonaws.com/{$bucket}";
-if (count($_GET) ==0) {
-	$noR = 1;
-} else {
-	$noR = 0;
-}
 
 $sEmail = $_GET['searchQ'];
 $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $sEmail));
 
 //$images = array();
+$Cnt = 0;
 
 foreach ($iterator as $object) {
     $key = $object['Key'];
@@ -88,15 +84,17 @@ foreach ($iterator as $object) {
     //$imgObj = new ImageObject($signed_url, $id);
 
     //echo("<tr><td>$key</td><td><a href=\"{$bucket_url}/{$key}\">Direct</a></td><td><a href=\"{$signed_url}\">Expires in $expire</a></td></tr>");
-    
+    $Cnt += 1;
     //this is the new one, not sure if it works
     //ideally you use this in a for loop that grabs each signed url and prints it out this through this echos
    //echo("<article class='card'><a href=""><figure><img src=\"{$signed_url}\"></figure></a></article>");
-    // echo "<script type='text/javascript'>alert('$signed_url');</script>";
+    // echo "<script type='text/javascript'>alert('$pleaseHelp');</script>";
 	 echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$id.'><figure><img src="'.$signed_url.'"</figure></a></article>';
 
 }
-
+if($Cnt == 0) {
+	echo '<p>No results found.</p>';
+}
 
 /*foreach ($images as $object) {
   $url = $object->getUrl();
