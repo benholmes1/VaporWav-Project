@@ -1,8 +1,19 @@
 <?php
-
+  include 'dbconfig.php';
   session_start();
   if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
+  }
+
+  $dbHost     = DB_HOST;
+  $dbUsername = DB_USERNAME;
+  $dbPassword = DB_PASSWORD;
+  $dbName     = DB_NAME;
+   
+  // Connect to the database
+  $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+  if($conn->connect_error){
+    die("Failed to connect with MySQL: " . $conn->connect_error);
   }
 
   $expire = "1 hour";
@@ -33,7 +44,8 @@
   $signed_url = (string) $request->getUri();
 
   $query = "'SELECT * FROM `images` WHERE `etag` = '\"".id."\"'";
-
+  $queryRes = $conn->query($query);
+  $imageinfo = $queryRes->fetch_assoc();
 ?>
 
 <!doctype html>
