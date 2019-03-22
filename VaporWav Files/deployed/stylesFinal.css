@@ -8,8 +8,11 @@ header, footer {
  margin: 0em 4em 0.25em 4em;
 }
 header {
-    background-image: url("images/bgimage2.png");
+    background-image: url(images/bgimage2.png);
     background-position: center center;
+    width:100%;
+    margin-left:0px;
+    filter: drop-shadow(5px 5px 5px black);
 }
 
 footer {
@@ -59,14 +62,14 @@ header nav li {
 }
 
 nav a {
-    color:lightblue;
+    color: white;
     margin-left: 0.5em;
 }
 
 a:hover {
     font-family: Tinos;
-    color: white;
     background-color: #F50057;
+    transition:0.25s;
 }
 
 html {
@@ -90,7 +93,8 @@ article {
 }
 section {
     margin: 1em 1em 1em 1em;
-    border: solid 1pt #C5CAE9;
+   /* border: solid 1pt #C5CAE9;*/
+    border: solid 1pt black;
 }
 
 time {
@@ -99,11 +103,12 @@ time {
 
 figcaption {
     font-style: italic;
-    font-weight: bold;
+    font-family: Tinos;
     margin: 0;
     padding: 5px;
     font-size: 120%;
-    color:gray;
+    color:black;
+    background-image: url(images/vpwaveGrad.jpg);
 }
 
 figure {
@@ -122,6 +127,19 @@ hr {
 
 main {
     width: 100%;
+}
+#imageSolo {
+    padding:100px;
+    width: auto;
+    filter: drop-shadow(5px 5px 5px black);
+
+}
+
+#imageSolo h2 {
+    background-color: #4B0082;
+    font-family: Tinos;
+    font-size:110%;
+
 }
 
 .padThis {
