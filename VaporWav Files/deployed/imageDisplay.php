@@ -1,8 +1,19 @@
 <?php
-
+  include 'dbconfig.php';
   session_start();
   if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
+  }
+
+  $dbHost     = DB_HOST;
+  $dbUsername = DB_USERNAME;
+  $dbPassword = DB_PASSWORD;
+  $dbName     = DB_NAME;
+   
+  // Connect to the database
+  $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+  if($conn->connect_error){
+    die("Failed to connect with MySQL: " . $conn->connect_error);
   }
 
   $expire = "1 hour";
@@ -30,10 +41,25 @@
   ]);//
  
   $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-  $signed_url = (string) $request->getUri();
+  $signed_url = (string) $request->getUri();   
+  
+  //get IDs
+  $query = "SELECT * FROM images WHERE etag = '".$id."'";
+  $queryRes = $conn->query($query);
+  $imageinfo = $queryRes->fetch_assoc();
+  
+  //get user nickname
+  $mail = current(explode('/',$key));
+  //echo "<script type='text/javascript'>alert('$mail');</script>";
 
-  $query = "'SELECT * FROM `images` WHERE `etag` = '\"".id."\"'";
+  $query0 = "SELECT nickname FROM users u INNER JOIN usernames n on u.id = n.id where email = '".$mail."'";
+  $queryRes0 = $conn->query($query0);
+  $userinfo = $queryRes0->fetch_assoc();
 
+  //get created time and date
+  $query1 = "SELECT created FROM images WHERE etag = '".$id."'";
+  $queryRes1 = $conn->query($query1);
+  $uploadDate = $queryRes1->fetch_assoc();
 ?>
 
 <!doctype html>
@@ -50,6 +76,10 @@
     <div class="padThis">
     <h1>VaporWav</h1>
     <p class="underHeader">Show us what you have been working on.</p>
+    <form action="searchPage.php" method="get">
+	<input type="text" name="searchQ" placeholder="Search...">
+	<button type="submit">Submit</button>
+    </form>
     </div>
     <nav>
     <!list of the seperate parts of this page>
@@ -63,17 +93,17 @@
     </ul>
     </nav>
     </header>
-    <main>
+    <main id="imageSolo">
     <article>
     <section>
-    <h2>Recent Upload</h2>
+    <h2><?php echo $imageinfo['title'] ?></h2>
     <div class="bordThis">
     <figure>
-    <a href="<?php echo $signed_url ?>"><img src="<?php echo $signed_url ?>" alt = "rickmortyvp" title= "rickmortyvp"/></a>
-        <figcaption>My take on a favorite show of mine in my favorite asthetic</figcaption>
+    <img src="<?php echo $signed_url ?>">
+        <figcaption><?php echo $imageinfo['caption'] ?></figcaption>
     </figure>
-     <p>Been working on this for a while, want to see what other people think of it</p>
-    <p>Username, Date</p>
+    <p>Created by: <?php echo $userinfo['nickname'] ?></p>
+    <p>Uploaded on: <?php echo $uploadDate['created'] ?></p>
     </div>
     </section>
  
