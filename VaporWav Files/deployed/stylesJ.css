@@ -10,6 +10,10 @@ header, footer {
 header {
     background-image: url("images/bgimage2.png");
     background-position: center center;
+    width:100%;
+    margin-left:0px;
+    filter: drop-shadow(5px 5px 5px black);
+
 }
 
 footer {
@@ -59,7 +63,7 @@ header nav li {
 }
 
 nav a {
-    color:lightblue;
+    color: white;
     margin-left: 0.5em;
 }
 
@@ -230,6 +234,10 @@ a:active {
     transition:0.75s;
 }
 
+.container2 h2 {
+  
+}
+
 .card:hover {
     /*
     box-shadow: 2.5px 2.5px lightgray; */
@@ -245,6 +253,8 @@ a:active {
   background-image:url("images/gradientBG.png");
   background-size: cover;
   padding: 30px;
+  filter: drop-shadow(5px 5px 5px black);
+
 }
 
 .cards {
@@ -265,6 +275,9 @@ a:active {
 .card a {
 	color: black;
 	text-decoration: none;
+}
+.container2 {
+	font-size:120%;
 }
 /*
 .card-content p {
