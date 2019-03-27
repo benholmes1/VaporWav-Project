@@ -97,9 +97,39 @@
       }
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
   
-       
-      //$name = $file['name'];
+      /*$fileCheck = md5_file($_FILES['imgFile']['tmp_name']); 
+      $tagQuery = "SELECT id, etag from images";
+      $tagRes = $conn->query($tagQuery);
+      while($row = $tagRes->fetch_array(MYSQLI_ASSOC)) {
+        if($fileCheck == $row["etag"]) {
+          $exists = "Sorry, this file has already been uploaded.";
+	  if($_SESSION['userData']['id'] == $row["id"]) {
+	    $exists .= "You can edit this file by clicking on the image in your gallery.";
+	  }
+	  header("Location:home.php?err=".$exists);
+	  exit();
+	}
+      }
+      $tagRes->free();*/
+  
+      $keyQuery = "SELECT keyname from images";
+      $keyRes = $conn->query($keyQuery);
 
+      $checkKey = True;
+      while($checkKey) {
+        $nKey = md5(uniqid(rand(), true));
+        while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
+          if($nKey == $row["keyname"]) {
+	    $checkKey = True;
+          } else {
+            $checkKey = False;
+          }
+        }
+     }
+
+     //$keyName = $_SESSION['userData']['email'] . '/' . $nkey . );
+     $keyNoPrefix = $nKey . '_' . basename($_FILES["imgFile"]['name']);
+     $keyName = $_SESSION['userData']['email'] . '/' . $keyNoPrefix;
       // Add it to S3
       try {
         // Uploaded:
@@ -119,18 +149,25 @@
       } catch (Exception $e) {
         die('Error:' . $e->getMessage());
       }
-      
-      $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`) VALUES ('".$_SESSION['userData']['id']."', '".$eTag."', '".$_FILES["imgFile"]['name']."', '".$_POST['title']."', '".$description."', NOW())";
+
+      //$fileCheck = md5_file($file);
+      //echo "<script type='text/javascript'>alert('$fileCheck');</script>"; 
+ 
+      $tag = str_replace('"', '', $eTag);
+ 
+      $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE())";
       $queryRes = $conn->query($query);
-      $res = "Success";
+      $message = "Success!";
+      //echo '<script type="text/javascript">alert("Success");</script>';
     }
     else {
-      $res = "Please upload an image file.";
-      //echo "<script type='text/javascript'>alert('$res');</script>";
+      $message = "Please upload an image file.";
+      //echo '<script type="text/javascript">alert("Please upload an image file.");</script>';           
       //header('Location: uploadPage.php?res');
     }
   }
 
-  header('Location: uploadPage.php?res='.$res);
+  //$_SESSION['upResult'] = $res;
+  header("Location: uploadPage.php?msg=$message");
 
 ?>

@@ -42,21 +42,22 @@
  
   $request = $s3->createPresignedRequest($cmd, "+{$expire}");
   $signed_url = (string) $request->getUri();   
-  
+ 
+  $keyname = substr($key, strpos($key, "/") + 1);
+ 
   //get IDs
-  $query = "SELECT * FROM images WHERE etag = '".$id."'";
+  $query = "SELECT * FROM images WHERE keyname = '".$keyname."'";
   $queryRes = $conn->query($query);
   $imageinfo = $queryRes->fetch_assoc();
   
   //get user nickname
   $mail = current(explode('/',$key));
-  //echo "<script type='text/javascript'>alert('$mail');</script>";
+  //echo "<script type='text/javascript'>alert('$keyname');</script>";
 
   $query0 = "SELECT nickname FROM users u INNER JOIN usernames n on u.id = n.id where email = '".$mail."'";
   $queryRes0 = $conn->query($query0);
   $userinfo = $queryRes0->fetch_assoc();
 
-  //get created time and date
   $query1 = "SELECT created FROM images WHERE etag = '".$id."'";
   $queryRes1 = $conn->query($query1);
   $uploadDate = $queryRes1->fetch_assoc();
