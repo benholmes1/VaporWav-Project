@@ -9,7 +9,6 @@ $expire = "1 hour";
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
 include 'config.php';
-require_once 'Image.class.php';
 ?>
 <html lang="en">
 <head>
@@ -78,6 +77,7 @@ foreach ($iterator as $object) {
 
     $request = $s3->createPresignedRequest($cmd, "+{$expire}");
     $signed_url = (string) $request->getUri();
+    $etag = str_replace('"','',$id);
     //$images[] = new ImageObject($signed_url, $id);
     /*$imgObj->setUrl($signed_url);
     $imgObj->setId($id);*/
@@ -89,7 +89,7 @@ foreach ($iterator as $object) {
     //ideally you use this in a for loop that grabs each signed url and prints it out this through this echos
    //echo("<article class='card'><a href=""><figure><img src=\"{$signed_url}\"></figure></a></article>");
     // echo "<script type='text/javascript'>alert('$pleaseHelp');</script>";
-	 echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$id.'><figure><img src="'.$signed_url.'"</figure></a></article>';
+	 echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$etag.'"><figure><img src="'.$signed_url.'"</figure></a></article>';
 
 }
 if($Cnt == 0) {

@@ -17,8 +17,6 @@ $expire = "1 hour";
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
 include 'config.php';
-require_once 'Image.class.php';
-
 
 ?>
 <html lang="en">
