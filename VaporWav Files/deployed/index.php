@@ -1,20 +1,28 @@
 <?php
+
+//This is the index page of the site
+//If the user is logged in it will redirect to their home page
+//Otherwise, it will display the login button and log them in
+
 // Include configuration file
-require_once 'dbc.php';
+require_once 'google_config.php';
 
 // Include User library file
 require_once 'User.class.php';
 
+//Authenticate the user with the Google Client and redirect to this page
 if(isset($_GET['code'])){
 	$gClient->authenticate($_GET['code']);
 	$_SESSION['token'] = $gClient->getAccessToken();
 	header('Location: ' . filter_var(GOOGLE_REDIRECT_URL, FILTER_SANITIZE_URL));
 }
 
+//Set the access token
 if(isset($_SESSION['token'])){
 	$gClient->setAccessToken($_SESSION['token']);
 }
 
+//If the access token is set
 if($gClient->getAccessToken()){
 	// Get user profile data from google
 	$gpUserProfile = $google_oauthV2->userinfo->get();
@@ -54,10 +62,11 @@ if($gClient->getAccessToken()){
     }else{
         $output = '<h3 style="color:red">Some problem occurred, please try again.</h3>';
     }
-}else{
+}else{ //If the user is not logged in
 	// Get login url
 	$authUrl = $gClient->createAuthUrl();
 
+        //This header is rendered when the user is not logged in
         $outputh  = '<header>';
         $outputh .= '<div class="padThis">';
         $outputh .= '<h1>VaporWav</h1>';

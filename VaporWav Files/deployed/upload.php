@@ -1,22 +1,22 @@
 <?php
+
+  //This is the upload action that uploads an image to S3 and updates database
+
   session_start(); 
 
+  //Check if user is logged in
   if(!($_SESSION['login'])){
     header('Location: index.php');
+    exit();
   }
- 
-  /*if(isset($_POST['avatar'])) {
-    if($_POST['avatar'] == 1) {
-      $avatar = True;
-      //echo "<script type='text/javascript'>alert('Here');</script>";
-      unset($_POST['avatar']);
-    }
-  }*/
 
+  //This is needed to use AWS SDK for PHP
   require './vendor/autoload.php';
  
+  //Include the database credentials
   include 'dbconfig.php';	
 
+  //S3Client for use in upload
   use Aws\S3\S3Client;
   use Aws\S3\Exception\S3Exception;
  
@@ -25,6 +25,7 @@
   $IAM_KEY = ACCESS_KEY;
   $IAM_SECRET = SECRET_KEY;
   
+  //DB info
   $dbHost     = DB_HOST;
   $dbUsername = DB_USERNAME;
   $dbPassword = DB_PASSWORD;
@@ -36,17 +37,6 @@
     die("Failed to connect with MySQL: " . $conn->connect_error);
   }
  
-  /*if(!(isset($_POST['title']))) {
-    $alrt = "Please fill out title field";
-    echo "<script type='text/javascript'>alert('$alrt');</script>";
-    header('Location: uploadPage.php');
-    exit();
-  }*/
-  if("" == trim($_POST['title'])){
-    $alrt = "Please fill out title field";
-    echo "<script type='text/javascript'>alert('$alrt');</script>";
-    header('Location: uploadPage.php');
-  }      
   // Connect to AWS
   try {
   $s3 = S3Client::factory(
@@ -63,58 +53,36 @@
     die("Error: " . $e->getMessage());
   }
 
+  //If the file was chosen
   if(isset($_FILES['imgFile'])) {
+
+    //Check the extension of the file to see if it is an image
     $ext_error = false;
     $extensions = array('jpg', 'jpeg', 'png');
     $file_ext = explode('.', $_FILES['imgFile']['name']);
     $file_ext = end($file_ext);
     $file_ext = strtolower($file_ext);
 
+    //If the image is not an image set the error to true
     if(!in_array($file_ext, $extensions)) {
       $ext_error = true;
     }
-//echo "<script type='text/javascript'>alert('Here');</script>";
 
+    //If the file is an image proceed with upload
     if($ext_error == false) {
 
-      if($avatar == True) {
-        $description = $_SESSION['userData']['email'] . '\'s avatar.';
-        $descriptionTag = 'Description=' . $description;
-      }
-      elseif(isset($_POST["desc"])) {
-        //echo "<script type='text/javascript'>alert('Here');</script>";
+      if(isset($_POST["desc"])) {
 	$description = $_POST['desc'];
         $descriptionTag = 'Description=' . $_POST['desc'];
       }
-      else {
-      
-      }
-	
-      if($avatar == True) {
-        $keyName = $_SESSION['userData']['email'] . '/avatar/' . basename($_FILES["imgFile"]['name']); 
-      }  else {
-        $keyName = $_SESSION['userData']['email'] . '/' . basename($_FILES["imgFile"]['name']);
-      }
+
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
-  
-      /*$fileCheck = md5_file($_FILES['imgFile']['tmp_name']); 
-      $tagQuery = "SELECT id, etag from images";
-      $tagRes = $conn->query($tagQuery);
-      while($row = $tagRes->fetch_array(MYSQLI_ASSOC)) {
-        if($fileCheck == $row["etag"]) {
-          $exists = "Sorry, this file has already been uploaded.";
-	  if($_SESSION['userData']['id'] == $row["id"]) {
-	    $exists .= "You can edit this file by clicking on the image in your gallery.";
-	  }
-	  header("Location:home.php?err=".$exists);
-	  exit();
-	}
-      }
-      $tagRes->free();*/
-  
+    
+      //Select all the keynames from the database
       $keyQuery = "SELECT keyname from images";
       $keyRes = $conn->query($keyQuery);
 
+      //This checks to make sure the keyname is unique
       $checkKey = True;
       while($checkKey) {
         $nKey = md5(uniqid(rand(), true));
@@ -127,9 +95,10 @@
         }
      }
 
-     //$keyName = $_SESSION['userData']['email'] . '/' . $nkey . );
+     //Create the keyname without the prefix and with the prefix
      $keyNoPrefix = $nKey . '_' . basename($_FILES["imgFile"]['name']);
      $keyName = $_SESSION['userData']['email'] . '/' . $keyNoPrefix;
+
       // Add it to S3
       try {
         // Uploaded:
@@ -149,25 +118,20 @@
       } catch (Exception $e) {
         die('Error:' . $e->getMessage());
       }
-
-      //$fileCheck = md5_file($file);
-      //echo "<script type='text/javascript'>alert('$fileCheck');</script>"; 
  
       $tag = str_replace('"', '', $eTag);
  
+      //Insert image information into the database
       $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE())";
       $queryRes = $conn->query($query);
       $message = "Success!";
-      //echo '<script type="text/javascript">alert("Success");</script>';
     }
     else {
       $message = "Please upload an image file.";
-      //echo '<script type="text/javascript">alert("Please upload an image file.");</script>';           
-      //header('Location: uploadPage.php?res');
     }
   }
 
-  //$_SESSION['upResult'] = $res;
+  //Redirect back to the upload page
   header("Location: uploadPage.php?msg=$message");
 
 ?>

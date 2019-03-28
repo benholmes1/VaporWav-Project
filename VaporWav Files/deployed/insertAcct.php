@@ -2,6 +2,12 @@
   session_start();
 //  if(isset($_POST['nname'])){
 
+  //Check if user is logged in
+  if(!($_SESSION['login'])) {
+    header('Location: index.php');
+    exit();
+  }
+
     include 'dbconfig.php';
 
     $dbHost     = DB_HOST;

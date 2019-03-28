@@ -11,7 +11,8 @@ class User {
     private $dbName     = DB_NAME;
     private $userTbl    = DB_USER_TBL;
     private $userData;
-	
+
+    //This function connects to the database	
     function __construct(){
         if(!isset($this->db)){
             // Connect to the database
@@ -24,6 +25,8 @@ class User {
         }
     }
 	
+    //This function adds user to database if not already in it
+    //Then it populates the user's session data
     function checkUser($userData = array()){
         if(!empty($userData)){
             // Check whether user data already exists in the database
@@ -48,6 +51,7 @@ class User {
         return $userData;
     }
 
+    //This function will set a user's nickname if not already set
     function checkName($userData = array()) {
       $checkQ = "SELECT * FROM usernames WHERE id = '".$userData['id']."'";  
       $checkR = $this->db->query($checkQ);

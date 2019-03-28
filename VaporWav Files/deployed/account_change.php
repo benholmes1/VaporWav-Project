@@ -1,16 +1,13 @@
 <?php
+
+//This page displays a form for the user to change their nickname
+
   include_once 'header_script.php';
+  //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
-  } /*else {
-    if(isset($_GET['fail']) && $_GET['fail'] == 1)
-    {
-      $uniqueErr = "Username Taken";
-      echo "<script type='text/javascript'>alert('$uniqueErr');</script>";
-     
-    }
+    exit();
   }
-*/
 ?>
   <div class="container">
     <div class="wrapacct">
@@ -26,6 +23,7 @@
     </div>
   </div>
   <script>
+   //Javascript function to restrict entry in nickname field
    $("#nname").alphanum({
      allowSpace: false,
      allowNewline: false,
