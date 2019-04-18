@@ -69,6 +69,9 @@
   $query1 = "SELECT created FROM images WHERE etag = '".$id."'";
   $queryRes1 = $conn->query($query1);
   $uploadDate = $queryRes1->fetch_assoc();
+
+  $date = strtotime($uploadDate['created']);
+  $formatDate = date("m/d/y", $date);
 ?>
 
     <main id="imageSolo">
@@ -81,7 +84,7 @@
         <figcaption><?php echo $imageinfo['caption'] ?></figcaption>
     </figure>
     <p>Created by: <?php echo $userinfo['nickname'] ?></p>
-    <p>Uploaded on: <?php echo $uploadDate['created'] ?></p>
+    <p>Uploaded on: <?php echo $formatDate ?></p>
     </div>
     </section>
  
