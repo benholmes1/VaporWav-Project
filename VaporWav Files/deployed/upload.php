@@ -112,7 +112,7 @@
         );
 
         $eTag = $result['ETag'];
-	$vID = $result['VersionId'];
+	      $vID = $result['VersionId'];
       } catch (S3Exception $e) {
         die('Error:' . $e->getMessage());
       } catch (Exception $e) {
