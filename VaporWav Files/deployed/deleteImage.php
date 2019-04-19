@@ -41,15 +41,15 @@
   // Connect to AWS
   try {
     $s3 = S3Client::factory(
-    array(
-      'credentials' => array(
-	'key' => $IAM_KEY,
-	'secret' => $IAM_SECRET
-      ),
-      'version' => 'latest',
-      'region'  => 'us-west-1'
-    )
-  );
+      array(
+        'credentials' => array(
+          'key' => $IAM_KEY,
+          'secret' => $IAM_SECRET
+        ),
+        'version' => 'latest',
+        'region'  => 'us-west-1'
+      )
+    );
   } catch (Exception $e) {
     die("Error: " . $e->getMessage());
   }
@@ -70,7 +70,18 @@
   } catch (Exception $e) {
     die('Error:' . $e->getMessage());
   }
-  $message = "Success";
+
+  $keyname = explode('/', $key);
+  $keyname = end($keyname);
+
+  $delQuery = "DELETE FROM `images` where `keyname` = '".$keyname."'";
+  $result = $conn->query($delQuery);
+  if($result) {
+    $message = "Success";
+  }
+  else {
+    $message = "Something went wrong.";
+  }
 
   //Redirect back to the upload page
   header("Location: home.php?msg=$message");
