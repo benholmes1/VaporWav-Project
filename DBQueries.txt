@@ -43,3 +43,10 @@ CREATE TABLE `comments` (
  FOREIGN KEY (`image_id`) REFERENCES images(`keyname`),
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 );
+
+CREATE TABLE `galleries` (
+ `user_id` int(11) NOT NULL,
+ `galleries` varchar(50) NOT NULL,
+ CONSTRAINT gallery_key PRIMARY KEY (`user_id`),
+ FOREIGN KEY (`user_id`) REFERENCES users(`id`)
+);
