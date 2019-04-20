@@ -51,8 +51,10 @@ if($gClient->getAccessToken()){
 	//$nickname = current(explode('@', $_SESSION['userData']['email']));
 
 	$nickname = $user->checkName($userData);
-
 	$_SESSION['nickname'] = $nickname;
+
+	$galleries = $user->getGalleries($userData);
+	$_SESSION['galleries'] = $galleries;
 
 	$_SESSION['login'] = true;
 	

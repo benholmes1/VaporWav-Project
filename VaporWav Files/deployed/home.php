@@ -42,6 +42,15 @@ include 'config.php';
     <ul>
       <li><a href = "home.php">Home</a>
       <a href = "uploadPage.php">Upload</a></li>
+      <li>
+      <div class="dropdown">
+        <a href="home.php" class="dropL">Galleries</a>
+        <div class="dropdown-content">
+          <a href="home.php">Your Gallery</a>
+          <a href="#">Create New Gallery</a>
+        </div>
+      </div>
+      </li>
     </ul>
     <ul class="leftHead">
       <li><a href = "account.php">My Account</a>

@@ -82,17 +82,22 @@
       $keyQuery = "SELECT keyname from images";
       $keyRes = $conn->query($keyQuery);
 
-      //This checks to make sure the keyname is unique
-      $checkKey = True;
-      while($checkKey) {
+      if($keyRes->num_rows === 0){
         $nKey = md5(uniqid(rand(), true));
-        while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
-          if($nKey == $row["keyname"]) {
-	    $checkKey = True;
-          } else {
-            $checkKey = False;
+      }
+      else {
+        //This checks to make sure the keyname is unique
+        $checkKey = True;
+        while($checkKey) {
+          $nKey = md5(uniqid(rand(), true));
+          while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
+            if($nKey == $row["keyname"]) {
+	      $checkKey = True;
+            } else {
+              $checkKey = False;
+            }
           }
-        }
+       }
      }
 
      //Create the keyname without the prefix and with the prefix
@@ -112,7 +117,7 @@
         );
 
         $eTag = $result['ETag'];
-	      $vID = $result['VersionId'];
+	$vID = $result['VersionId'];
       } catch (S3Exception $e) {
         die('Error:' . $e->getMessage());
       } catch (Exception $e) {

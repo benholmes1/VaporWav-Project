@@ -19,7 +19,16 @@
   <!list of the seperate parts of this page>
   <ul>
     <li><a href = "index.php">Home</a>
-	<a href = "uploadPage.php">Upload</a></li>
+    <a href = "uploadPage.php">Upload</a></li>
+    <li>
+    <div class="dropdown">
+      <a href="home.php" class="dropL">Galleries</a>
+      <div class="dropdown-content">
+        <a href="home.php">Your Gallery</a>
+        <a href="#">Create New Gallery</a>
+      </div>
+    </div>
+    </li>
   </ul>
   <ul class="leftHead">
     <li><a href = "account.php">My Account</a>

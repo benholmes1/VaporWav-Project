@@ -66,4 +66,16 @@ class User {
       return $nickname["nickname"];
     }
 
+    function getGalleries($userData = array()) {
+        $galQuery = "SELECT galleries FROM galleries WHERE id = '".$userData['id']."'";
+        $galRes = $this->db->query($galQuery);
+        $galArray = [];
+        if($galRes->num_rows > 0) {
+            while($row = $galRes->fetch_assoc()) {
+                $galArray[] = $row['galleries'];
+            }
+        }
+        return $galArray;
+    }
+
 }
