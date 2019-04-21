@@ -47,6 +47,6 @@ CREATE TABLE `comments` (
 CREATE TABLE `galleries` (
  `user_id` int(11) NOT NULL,
  `galleries` varchar(50) NOT NULL,
- CONSTRAINT gallery_key PRIMARY KEY (`user_id`),
+ CONSTRAINT gallery_key PRIMARY KEY (`user_id`, `galleries`),
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 );
