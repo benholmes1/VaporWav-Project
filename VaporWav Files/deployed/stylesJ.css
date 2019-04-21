@@ -60,6 +60,32 @@ header nav {
 }
 header nav li {
     padding: 4px;
+    display: inline-block;
+}
+
+header nav li .dropdown {
+    padding-left: none;
+    display: inline-block;
+}
+
+header nav li .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+header nav li .dropdown-content a {
+  color: black;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+header nav li .dropdown:hover .dropdown-content {
+    display: block;
 }
 
 nav a {
