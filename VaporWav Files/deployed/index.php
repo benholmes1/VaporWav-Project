@@ -53,7 +53,7 @@ if($gClient->getAccessToken()){
 	$nickname = $user->checkName($userData);
 	$_SESSION['nickname'] = $nickname;
 
-	$galleries = $user->getGalleries($userData);
+	$galleries = $user->getGalleries($_SESSION['userData']['id']);
 	$_SESSION['galleries'] = $galleries;
 
 	$_SESSION['login'] = true;

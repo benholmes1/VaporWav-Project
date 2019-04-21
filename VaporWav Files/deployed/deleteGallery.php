@@ -10,6 +10,8 @@
     exit();
   }
 
+  require_once 'User.class.php';
+
   //This is needed to use AWS SDK for PHP
   require './vendor/autoload.php';
  
@@ -54,38 +56,50 @@
     die("Error: " . $e->getMessage());
   }
 
-  if(isset($_GET['key'])) {
-    $key = $_GET['key'];
+  if(isset($_GET['prefix'])) {
+    $prefix = $_GET['prefix'];
+  }
+  if(isset($_GET['gal'])) {
+      $gal = $_GET['gal'];
   }
 
-  try {
-    $result = $s3->DeleteObject(
-      array(
-        'Bucket'=>$bucketName,
-        'Key' =>  $key,
-      )
-    );
-  } catch (S3Exception $e) {
-    die('Error:' . $e->getMessage());
-  } catch (Exception $e) {
-    die('Error:' . $e->getMessage());
+  $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix, 'Delimiter' => $del));
+  $objects = [];
+  foreach($iterator as $o) {
+      $objects[] = array("Key" => $o['Key']);
   }
 
-  $keyname = explode('/', $key);
-  $keyname = end($keyname);
+  if(!empty($objects)) {
+    try {
+        $result = $s3->DeleteObjects(
+        array(
+            'Bucket'=>$bucketName,
+            'Delete' =>  [
+                'Objects' => $objects,
+            ],
+        )
+        );
+    } catch (S3Exception $e) {
+        die('Error:' . $e->getMessage());
+    } catch (Exception $e) {
+        die('Error:' . $e->getMessage());
+    }
+  }
 
-  if(!isset($_GET['gal'])) {
-    $delQuery = "DELETE FROM `images` where `keyname` = '".$keyname."'";
-    $result = $conn->query($delQuery);
-    if($result) {
-      $message = "Success";
-    }
-    else {
-      $message = "Something went wrong.";
-    }
-  } else {
+  $id = $_SESSION['userData']['id'];
+
+  $delQuery = "DELETE FROM `galleries` where `user_id` = '".$id."' and `galleries` = '".$gal."'";
+  $result = $conn->query($delQuery);
+  if($result) {
     $message = "Success";
   }
+  else {
+    $message = "Something went wrong.";
+  }
+
+  $user = new User();
+  $galleries = $user->getGalleries($_SESSION['userData']['id']);
+  $_SESSION['galleries'] = $galleries;
 
   //Redirect back to the upload page
   header("Location: home.php?msg=$message");

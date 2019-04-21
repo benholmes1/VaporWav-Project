@@ -9,21 +9,9 @@
     header('Location: index.php');
     exit();
   }
-
-  //This is needed to use AWS SDK for PHP
-  require './vendor/autoload.php';
  
   //Include the database credentials
   include 'dbconfig.php';	
-
-  //S3Client for use in upload
-  use Aws\S3\S3Client;
-  use Aws\S3\Exception\S3Exception;
- 
-  // AWS Info
-  $bucketName = BUCKET_NAME;
-  $IAM_KEY = ACCESS_KEY;
-  $IAM_SECRET = SECRET_KEY;
   
   //DB info
   $dbHost     = DB_HOST;
@@ -36,47 +24,36 @@
   if($conn->connect_error){
     die("Failed to connect with MySQL: " . $conn->connect_error);
   }
- 
-  // Connect to AWS
-  try {
-  $s3 = S3Client::factory(
-    array(
-      'credentials' => array(
-	'key' => $IAM_KEY,
-	'secret' => $IAM_SECRET
-      ),
-      'version' => 'latest',
-      'region'  => 'us-west-1'
-    )
-  );
-  } catch (Exception $e) {
-    die("Error: " . $e->getMessage());
+
+  if(isset($_POST['name'])) {
+    $galName = $_POST['name'];
   }
 
-     //Create the keyname without the prefix and with the prefix
-     $keyNoPrefix = $nKey . '_' . basename($_FILES["imgFile"]['name']);
-     $keyName = $_SESSION['userData']['email'] . '/' . $keyNoPrefix;
-
-      // Add it to S3
-      try {
-        $result = $s3->putObject(
-          array(
-	    'Bucket'=>$bucketName,
-	    'Key' =>  $keyName,
-	    'SourceFile' => $file
-          )
-        );
-      } catch (S3Exception $e) {
-        die('Error:' . $e->getMessage());
-      } catch (Exception $e) {
-        die('Error:' . $e->getMessage());
+  $galCheck = "SELECT galleries FROM galleries WHERE user_id = '".$_SESSION['userData']['id']."'";
+  $galRes = $conn->query($galCheck);
+  $check = FALSE;
+  if($galRes->num_rows > 0) {
+    while($row = $galRes->fetch_assoc()) {
+      if($row['galleries'] === $galName) {
+        $check = TRUE;
       }
+    }
+  }
 
-      $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE())";
-      $queryRes = $conn->query($query);
-      $message = "Success!";
+  if($check == TRUE) {
+    $message = "Sorry, you have already created a gallery with this name.";
+  } else {
+    $galQ = "INSERT INTO `galleries`(`user_id`, `galleries`) VALUES ('".$_SESSION['userData']['id']."', '".$galName."')";
+    $result = $conn->query($galQ);
+    if($result) {
+      $_SESSION['galleries'][] = $galName;
+      $message = "Success";
+    } else {
+      $message = "Something went wrong.";
+    }
+  }
 
   //Redirect back to the upload page
-  header("Location: uploadPage.php?msg=$message");
+  header("Location: galleries.php?msg=$message");
 
 ?>

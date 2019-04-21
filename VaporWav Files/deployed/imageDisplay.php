@@ -57,7 +57,8 @@
   $request = $s3->createPresignedRequest($cmd, "+{$expire}");
   $signed_url = (string) $request->getUri();   
  
-  $keyname = substr($key, strpos($key, "/") + 1);
+  $keyname = explode('/', $key);
+  $keyname = end($keyname);
  
   //get IDs
   $query = "SELECT * FROM images WHERE keyname = '".$keyname."'";
@@ -72,12 +73,9 @@
   $queryRes0 = $conn->query($query0);
   $userinfo = $queryRes0->fetch_assoc();
 
-  $query1 = "SELECT created FROM images WHERE etag = '".$id."'";
-  $queryRes1 = $conn->query($query1);
-  $uploadDate = $queryRes1->fetch_assoc();
-
-  $date = strtotime($uploadDate['created']);
+  $date = strtotime($imageinfo['created']);
   $formatDate = date("m/d/y", $date);
+
 ?>
 
     <main id="imageSolo">
@@ -95,10 +93,24 @@
         $dropOut  = '<div class="same-row" style="float:right">';
         $dropOut .= '<button onclick="myFunction()" class="dropbtn">Options</button>';
         $dropOut .= '<div id="imgDropdown" class="dropdown-content">';
-        $dropOut .= '  <a id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
-        $dropOut .= '  <a href="#">Add To Gallery</a>';
-        $dropOut .= '</div>';
-        $dropOut .= '</div>';
+        $keyLen = explode('/', $key);
+        if(count($keyLen) <= 2) {
+          $dropOut .= '  <a id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
+          $dropOut .= '  <a href="#" class="acc">Add To Gallery</a>';
+          $dropOut .= '    <div class="panel">';
+          echo $dropOut;
+          foreach($_SESSION['galleries'] as $gal) { 
+            echo '<a href="addToGallery.php?gal='.$gal.'&key='.$key.'">'.$gal.'</a>'; 
+          }
+          $dropOut  = '    </div>';
+          $dropOut .= '</div>';
+          $dropOut .= '</div>';
+        } else {
+          echo $dropOut;
+          $dropOut  = '  <a id="delete" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
+          $dropOut .= '    </div>';
+          $dropOut .= '</div>';
+        }
         echo $dropOut;
       }
     ?>
@@ -111,7 +123,7 @@
     }
 
     // Close the dropdown menu if the user clicks outside of it
-    window.onclick = function(event) {
+    /*window.onclick = function(event) {
       if (!event.target.matches('.dropbtn')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
@@ -122,7 +134,12 @@
           }
         }
       }
-    }
+    }*/
+
+    $('a.acc').click(function(e)
+    {
+      e.preventDefault();
+    });
 
     $('#delete').on('click',function(e) {
       var answer=confirm('Are you sure you want to delete this image?');
@@ -133,6 +150,21 @@
         e.preventDefault();      
       }
     });
+
+    var acc = document.getElementsByClassName("acc");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+          panel.style.display = "none";
+        } else {
+          panel.style.display = "block";
+        }
+      });
+    }
     </script>
     
 </body>

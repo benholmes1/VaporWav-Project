@@ -64,13 +64,27 @@ include 'config.php';
   </header>
 
 <main class="container2">
-<h2>Your Gallery</h2>
-<br>
-    <section class="cards">
 <?php
+if(isset($_GET['gal']))
+{
+  echo '<h2>'.$_GET['gal'].'</h2>';
+} else {
+  echo '<h2>Your Gallery</h2>';
+}
 
 //User's email address
 $email = $_SESSION['userData']['email'];
+$prefix = $email . "/";
+$del = '/';
+if(isset($_GET['gal']))
+{
+  $prefix .= $_GET['gal'];
+  $del = '';
+  echo '<a style="float:right;color:white;font-size:16px" href="deleteGallery.php?prefix='.$prefix.'&gal='.$_GET['gal'].'">Delete Gallery</a>';
+}
+
+echo '<br>';
+echo '<section class="cards">';
 
 //Start a new AWS S3Client, specify region
 $s3 = new Aws\S3\S3Client([
@@ -79,7 +93,7 @@ $s3 = new Aws\S3\S3Client([
 ]);
 
 //Get iterator for user's folder in S3 to get all images
-$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $email));
+$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix, 'Delimiter' => $del));
 
 //Iterate over each image to display them
 foreach ($iterator as $object) {
