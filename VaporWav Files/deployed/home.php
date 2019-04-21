@@ -44,10 +44,14 @@ include 'config.php';
       <a href = "uploadPage.php">Upload</a></li>
       <li>
       <div class="dropdown">
-        <a href="home.php" class="dropL">Galleries</a>
+        <a href="galleries.php" class="dropL">Galleries</a>
         <div class="dropdown-content">
           <a href="home.php">Your Gallery</a>
-          <a href="#">Create New Gallery</a>
+          <?php
+            foreach($_SESSION['galleries'] as $gal) {
+              echo '<a href="home.php?gal='.$gal.'">'.$gal.'</a>';
+            }
+          ?>
         </div>
       </div>
       </li>

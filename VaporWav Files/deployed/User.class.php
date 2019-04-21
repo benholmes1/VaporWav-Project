@@ -67,7 +67,7 @@ class User {
     }
 
     function getGalleries($userData = array()) {
-        $galQuery = "SELECT galleries FROM galleries WHERE id = '".$userData['id']."'";
+        $galQuery = "SELECT galleries FROM galleries WHERE user_id = '".$userData['id']."'";
         $galRes = $this->db->query($galQuery);
         $galArray = [];
         if($galRes->num_rows > 0) {
