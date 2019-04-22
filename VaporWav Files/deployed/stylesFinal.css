@@ -69,11 +69,11 @@ header nav li .dropdown {
 
 header nav li .dropdown-content {
   display: none;
-  position: absolute;
+  position: relative;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+  z-index: 1000;
 }
 
 header nav li .dropdown-content a {
@@ -153,6 +153,7 @@ hr {
 
 main {
     width: 100%;
+    position: relative;
 }
 #imageSolo {
     padding:100px;
