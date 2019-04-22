@@ -78,4 +78,20 @@ class User {
         return $galArray;
     }
 
+    function getPrivacy($userID) {
+        $privateSetting = 0;
+        $priQuery = "SELECT private FROM users where id = '".$userID."'";
+        $priRes = $this->db->query($priQuery);
+        $private = $priRes->fetch_assoc();
+        if(is_null($private['private']))
+        {
+            $insertPri = "UPDATE users SET private = '1' WHERE id = '".$userID."'";
+            $inRes = $this->db->query($insertPri);
+            $privateSetting = 1;
+        } else {
+            $privateSetting = $private['private'];
+        }
+        return $privateSetting;
+    }
+
 }
