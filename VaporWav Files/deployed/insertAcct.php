@@ -35,6 +35,7 @@
       //header('Location: account_change.php?fail=1');
       echo "Username Taken";
    } 
+
   //}
 //  }
 ?>

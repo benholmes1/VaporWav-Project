@@ -2,7 +2,15 @@ $(document).ready(function(){
   $("#submit").click(function(){
     var username = $("#nname").val();
 
-    var dataString = 'nname1=' + username;
+    var privacy = $(".privacy:checked").val();
+    var privacySetting = 0;
+    if(privacy == 'pub'){
+      privacySetting = 0;
+    } else {
+      privacySetting = 1;
+    }
+
+    var dataString = 'nname1=' + username + 'privacy=' + privacySetting;
 
     if(username == '')
     {

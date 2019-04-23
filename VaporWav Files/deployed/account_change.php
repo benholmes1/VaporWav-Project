@@ -16,7 +16,15 @@
         <div class="acctform">
 	  <label>Nickname: </label>
 	  <input id="nname" type="text" placeholder="Enter nickname" required>
-	  <br>
+    <br>
+    <p style="text-align:left">Privacy setting:</p>
+    <div>
+      <input type="radio" id="public" name="privacy" value="pub" checked>
+      <label for="public">Public</label>
+      <input type="radio" id="private" name="privacy" value="pri">
+      <label for="private">Private</label>
+    </div>
+    <br>
 	  <input id="submit" type="button" value="Submit">
 	</div>
       </div>
