@@ -56,6 +56,9 @@ if($gClient->getAccessToken()){
 	$galleries = $user->getGalleries($_SESSION['userData']['id']);
 	$_SESSION['galleries'] = $galleries;
 
+	$private = $user->getPrivacy($_SESSION['userData']['id']);
+	$_SESSION['private'] = $private;
+
 	$_SESSION['login'] = true;
 	
 	// Render user profile data

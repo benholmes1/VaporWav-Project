@@ -6,6 +6,12 @@ include_once 'header.php';
 
 if($_SESSION['login'])
 {
+  if($_SESSION['private'] === '1')
+  {
+    $privacy = "Private";
+  } else {
+    $privacy = "Public";
+  }
   //Html to render if the user is logged in
   $output  = '<h2 style="font-family:Alien Encounters;size:150%">Account Details</h2>';
   $output .= '<div class="ac-data">';
@@ -14,6 +20,7 @@ if($_SESSION['login'])
   $output .= '<p style="font-family:Tinos"><b>Username:</b> '.$_SESSION['nickname'].'</p>';
   $output .= '<p style="font-family:Tinos"><b>Name:</b> '.$_SESSION['userData']['first_name'].' '.$_SESSION['userData']['last_name'].'</p>';
   $output .= '<p style="font-family:Tinos"><b>Email:</b> '.$_SESSION['userData']['email'].'</p>';
+  $output .= '<p style="font-family:Tinos"><b>Privacy Status:</b> '.$privacy.'</p>';
   $output .= '<p><a href = "account_change.php">Edit</a></p>';
   $output .= '</div>';
   $output .= '</div>';

@@ -2,7 +2,7 @@
 
 //This page will display the user's galleries
 
-include_once 'header.php';
+include_once 'header_script.php';
 
 if($_SESSION['login'] != TRUE) {
   header('Location: index.php');
@@ -23,7 +23,7 @@ if($_SESSION['login'] != TRUE) {
             <div class="modal-body">
               <form action="create_gallery.php" method="post" id="galForm">
                   <label for="name" style="color:white">Enter the name of your gallery:</label>
-                  <input type="text" name="name" required>
+                  <input type="text" id="name" name="name" required>
                   <button type="submit" class="subBtn">Submit</button>
               </form>
             </div>
@@ -66,6 +66,13 @@ if($_SESSION['login'] != TRUE) {
             modal.style.display = "none";
         }
     }
+
+    $("#name").alphanum({
+     allowSpace: true,
+     allowNewline: false,
+     allowOtherCharSets: false,
+     allowNumeric: false
+   });
 </script>
 </body>
 </html>
