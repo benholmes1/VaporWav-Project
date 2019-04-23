@@ -6,7 +6,6 @@ include_once 'header.php';
 
 if($_SESSION['login'])
 {
-  echo $_SESSION['test'];
   if($_SESSION['private'] === '1')
   {
     $privacy = "Private";

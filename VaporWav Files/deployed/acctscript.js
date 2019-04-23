@@ -2,9 +2,12 @@ $(document).ready(function(){
   $("#submit").click(function(){
     var username = $("#nname").val();
 
-    $("input[type='radio'][name='privacy']").click(function() {
-      var privacySetting = $(this).val();
-    });
+    var privacySetting = $('input[name="privacy"]:checked').val();
+
+    var formData = {
+      //'nname1' : username,
+      'privacy' : privacySetting
+    };
 
     var dataString = 'nname1=' + username + '&privacy=' + privacySetting;
 
@@ -17,16 +20,15 @@ $(document).ready(function(){
       $.ajax({
         type: "POST",
         url: "insertAcct.php",
-        data: {'nname1' : username, 'privacy' : privacySetting},
+        data: {
+          data1 : 'value'
+        },
         cache: false,
-        success: function(result){
-	  if(result.includes("Success"))
-	  {
-	    window.location.href="account.php";
-          } else {
-	    alert(result);
-	  }
-	}
+        dataType: 'json',
+        encode: true
+      })
+      .done(function(data){
+        console.log(data);
       });
     }
     return false;

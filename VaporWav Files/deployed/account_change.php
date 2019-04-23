@@ -2,7 +2,7 @@
 
 //This page displays a form for the user to change their nickname
 
-  include_once 'header_script.php';
+  include_once 'header.php';
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
@@ -13,20 +13,20 @@
     <div class="wrapacct">
       <h2>Edit Account Settings</h2>
       <div id="form">
-        <div class="acctform">
-	  <label>Nickname: </label>
-	  <input id="nname" type="text" placeholder="Enter nickname" required>
-    <br>
-    <p style="text-align:left">Privacy setting:</p>
-    <div id="privacyDiv">
-      <input type="radio" id="public" name="privacy" value="pub" checked>
-      <label for="public">Public</label>
-      <input type="radio" id="private" name="privacy" value="pri">
-      <label for="private">Private</label>
-    </div>
-    <br>
-	  <input id="submit" type="button" value="Submit">
-	</div>
+        <form action="insertAcct.php" method="post" id="acctForm" class="acctform">
+          <label>Nickname: </label>
+          <input id="nname" name="nname1" type="text" placeholder="Enter nickname" required>
+          <br>
+          <p style="text-align:left">Privacy setting:</p>
+          <div id="privacyDiv">
+            <input type="radio" id="public" name="privacy" value="pub" checked>
+            <label for="public">Public</label>
+            <input type="radio" id="private" name="privacy" value="pri">
+            <label for="private">Private</label>
+          </div>
+          <br>
+	        <button type="submit">Submit</button>
+	      </form>
       </div>
     </div>
   </div>

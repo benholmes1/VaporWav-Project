@@ -38,10 +38,6 @@
       $check = 0;
    }
 
-   $pr = $_POST['privacy'];
-
-   $_SESSION['test'] = $_POST['privacy'];
-
    if($_POST['privacy'] == "pub") {
      $privacySetting = "0";
    } else {
@@ -65,6 +61,8 @@
    } else {
      echo "Something went wrong";
    }
+
+   header('Location: account.php');
 
   //}
 //  }
