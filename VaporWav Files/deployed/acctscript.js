@@ -2,17 +2,13 @@ $(document).ready(function(){
   $("#submit").click(function(){
     var username = $("#nname").val();
 
-    var privacy = $(".privacy:checked").val();
-    var privacySetting = 0;
-    if(privacy == 'pub'){
-      privacySetting = 0;
-    } else {
-      privacySetting = 1;
-    }
+    $("input[type='radio'][name='privacy']").click(function() {
+      var privacySetting = $(this).val();
+    });
 
-    var dataString = 'nname1=' + username + 'privacy=' + privacySetting;
+    var dataString = 'nname1=' + username + '&privacy=' + privacySetting;
 
-    if(username == '')
+    if(username == '' || privacySetting == '')
     {
       alert("Please fill out fields.");
     }
@@ -21,7 +17,7 @@ $(document).ready(function(){
       $.ajax({
         type: "POST",
         url: "insertAcct.php",
-        data: dataString,
+        data: {'nname1' : username, 'privacy' : privacySetting},
         cache: false,
         success: function(result){
 	  if(result.includes("Success"))
