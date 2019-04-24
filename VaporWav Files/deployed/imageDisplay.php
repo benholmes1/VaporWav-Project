@@ -11,11 +11,6 @@
     exit();
   }
 
-  if(!(isset($_GET['key'])) && !(isset($_GET['id']))){
-    header('Location: home.php');
-    exit();
-  }
-
   $key = $_GET['key'];
  
   if($key === '') {

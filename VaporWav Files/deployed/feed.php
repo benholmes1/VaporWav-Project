@@ -64,7 +64,8 @@ if($conn->connect_error){
   </header>
 
 <main class="container2">
-  <h2>Explore</h2>
+  <h2>Your Feed</h2>
+  <p>Trending</p>
 <?php
 echo '<br>';
 echo '<section class="cards">';
@@ -72,6 +73,7 @@ echo '<section class="cards">';
 $topQuery = "SELECT email, keyname, likes FROM images i
             INNER JOIN users u ON i.id = u.id
             WHERE private = '0'
+            AND i.created BETWEEN date_sub(now(), INTERVAL 1 WEEK) AND now()
             ORDER BY likes desc";
 $topResult = $conn->query($topQuery);
 
@@ -82,13 +84,19 @@ $s3 = new Aws\S3\S3Client([
 ]);
 
 $numRows = $topResult->num_rows;
+if($numRows >= 6) {
+    $n = 6;
+} else {
+    $n = $numRows;
+}
 
 if($numRows == 0) {
     echo '<p>No Results</p>';
 } else {
     //Iterate over each image to display them
-    while($image = $topResult->fetch_assoc()) {
+    for($i = 0; $i < $n; $i++) {
         //Get the images key (filename)
+        $image = $topResult->fetch_assoc();
         $key = $image['email'] . '/' . $image['keyname'];
         //This command gets the image from S3 as presigned url
         $cmd = $s3->getCommand('GetObject', [
@@ -110,6 +118,7 @@ if($numRows == 0) {
 }
 ?>
     </section>
+    <a href="explore.php">See More</a>
 </main>
 </body>
 </html>
