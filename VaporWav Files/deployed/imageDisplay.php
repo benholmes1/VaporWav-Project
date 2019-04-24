@@ -17,9 +17,8 @@
   }
 
   $key = $_GET['key'];
-  $id = $_GET['id'];
  
-  if(($key === '') || ($id === '')){
+  if($key === '') {
     header('Location: home.php');
     exit();
   }
@@ -51,7 +50,6 @@
   $cmd = $s3->getCommand('GetObject', [
     'Bucket' => $bucket,
     'Key'    => $key,
-    'IfMatch' => $id
   ]);//
  
   $request = $s3->createPresignedRequest($cmd, "+{$expire}");
@@ -89,7 +87,7 @@
     </figure>
     <p class="same-row">Created by: <?php echo $userinfo['nickname'] ?></p>
     <?php
-      if($_SESSION['userData']['id'] === $imageinfo['id']) {
+      if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
         $dropOut  = '<div class="same-row" style="float:right">';
         $dropOut .= '<button onclick="myFunction()" class="dropbtn">Options</button>';
         $dropOut .= '<div id="imgDropdown" class="dropdown-content">';
