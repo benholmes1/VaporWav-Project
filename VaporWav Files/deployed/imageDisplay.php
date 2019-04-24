@@ -79,13 +79,20 @@
     <main id="imageSolo">
     <article>
     <section>
+    <!--image title-->  
     <h2><?php echo $imageinfo['title'] ?></h2>
+    
     <div class="bordThis">
+    
     <figure>
+    <!--image-->
     <img src="<?php echo $signed_url ?>">
+        <!--image caption-->
         <figcaption><?php echo $imageinfo['caption'] ?></figcaption>
     </figure>
+    <!--iimage author-->
     <p class="same-row">Created by: <?php echo $userinfo['nickname'] ?></p>
+    <!--uploader options---------------------------------------------------------->
     <?php
       if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
         $dropOut  = '<div class="same-row" style="float:right">';
@@ -112,9 +119,12 @@
         echo $dropOut;
       }
     ?>
+    <!-------------------------------------------------------------------------->
+    <!--image upload date-->
     <p>Uploaded on: <?php echo $formatDate ?></p>
     </div>
     </section>
+
     <script>
     function myFunction() {
       document.getElementById("imgDropdown").classList.toggle("show");
