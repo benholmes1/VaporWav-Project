@@ -14,11 +14,13 @@
     die("Failed to connect with MySQL: " . $conn->connect_error);
   }
   //get ids
-  if(isset($_POST['key'])) {
+  
+  if(isset($_POST['key'])) {    //keyname
     $keyname = $_POST['key'];
   }
   
   // Check entry within table
+  //keyname and userid
   $queryLikeI = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."' and userid='".$_SESSION['userData']['id']."'";
   $queryLikeIRes = $conn->query($queryLikeI);
   if($queryLikeIRes) {
@@ -36,7 +38,7 @@
     }
   }
 
-  // Count post total likes and unlikes
+  // Count post total likes
   $queryLike = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."'";
   $queryResL = $conn->query($queryLike);
   $likesinfo = $queryResL->fetch_assoc();
