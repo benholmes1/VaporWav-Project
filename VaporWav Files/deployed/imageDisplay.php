@@ -4,10 +4,15 @@
 
   include 'dbconfig.php';
   include_once 'header_script.php';
-
+  
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
+    exit();
+  }
+
+  if(!(isset($_GET['key'])) && !(isset($_GET['id']))){
+    header('Location: home.php');
     exit();
   }
 
@@ -53,40 +58,52 @@
   $keyname = explode('/', $key);
   $keyname = end($keyname);
  
-  //get IDs
-  $query = "SELECT * FROM images WHERE keyname = '".$keyname."'";
-  $queryRes = $conn->query($query);
-  $imageinfo = $queryRes->fetch_assoc();
+  
   
   //get user nickname
   $mail = current(explode('/',$key));
   //echo "<script type='text/javascript'>alert('$keyname');</script>";
 
-  $query0 = "SELECT nickname FROM users u INNER JOIN usernames n on u.id = n.id where email = '".$mail."'";
-  $queryRes0 = $conn->query($query0);
-  $userinfo = $queryRes0->fetch_assoc();
+  $queryUser = "SELECT nickname FROM users u INNER JOIN usernames n on u.id = n.id where email = '".$mail."'";
+  $queryResU = $conn->query($queryUser);
+  $userinfo = $queryResU->fetch_assoc();
+
+  //get IDs
+  $queryImage = "SELECT * FROM images WHERE keyname = '".$keyname."'";
+  $queryResI = $conn->query($queryImage);
+  $imageinfo = $queryResI->fetch_assoc();
+
+  // Count post total likes and unlikes
+  $queryLike = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."'";
+  $queryResL = $conn->query($queryLike);
+  $likesinfo = $queryResL->fetch_assoc();
+  $likescount = $likesinfo['likescount'];
 
   $date = strtotime($imageinfo['created']);
   $formatDate = date("m/d/y", $date);
 
-?>
 
+?>
+    
     <main id="imageSolo">
     <article>
     <section>
+
     <!--image title-->  
     <h2><?php echo $imageinfo['title'] ?></h2>
     
     <div class="bordThis">
     
-    <figure>
     <!--image-->
+    <figure>
     <img src="<?php echo $signed_url ?>">
         <!--image caption-->
         <figcaption><?php echo $imageinfo['caption'] ?></figcaption>
     </figure>
-    <!--iimage author-->
+    
+    <!--image author-->
     <p class="same-row">Created by: <?php echo $userinfo['nickname'] ?></p>
+    
     <!--uploader options---------------------------------------------------------->
     <?php
       if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
@@ -115,8 +132,25 @@
       }
     ?>
     <!-------------------------------------------------------------------------->
+    
     <!--image upload date-->
     <p>Uploaded on: <?php echo $formatDate ?></p>
+    
+    
+    <!--like button-->
+    <div class="post-action">
+
+        <input 
+              type="button" 
+              value="Like" 
+              id="like_<?php echo $keyname; ?>" 
+              class="like" 
+               
+        />
+        &nbsp;(<span id="likes_<?php echo $keyname; ?>"><?php echo $likescount; ?></span>)&nbsp;
+
+    </div>
+
     </div>
     </section>
 
