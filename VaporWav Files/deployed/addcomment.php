@@ -14,12 +14,16 @@ if($conn->connect_error){
   die("Failed to connect with MySQL: " . $conn->connect_error);
 }
 
-//$commentID = isset($_POST['comment_id']) ? $_POST['comment_id'] : "";
-//get ids
+
+// get from jquery
 if(isset($_POST['key'])) {   //keyname
     $keyname = $_POST['key'];
 }
-$comment = isset($_POST['comment']) ? $_POST['comment'] : "";
+if(isset($_POST['comment'])){ //comment
+    $comment = $_POST['comment'];
+}  
+
+
 $date = date('Y-m-d H:i:s');
 
 $commentquery = "INSERT INTO comments(image_id,`user_id`,comment,createddate) VALUES ('".$keyname."','".$_SESSION['userData']['id']."','".$comment."','".$date."')";
