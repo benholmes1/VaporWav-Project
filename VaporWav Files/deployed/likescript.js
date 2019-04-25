@@ -5,20 +5,27 @@ $(document).ready(function(){
         var id = this.id;   // Getting Button id
         var split_id = id.split("_");
 
-        var text = split_id[0];
-        var keyname = split_id[1];  // keyname
+        var type = split_id[0];
+        var keyname = id.split(/_(.+)/)[1];
+        
+        var data = {
+            key: keyname,
+        };
 
         // AJAX Request
         $.ajax({
             url: 'like.php',
             type: 'post',
-            data: {userid:userid,keyname:keyname},
+            data: data,
             dataType: 'json',
             success: function(data){
                 var likes = data['likes'];
 
-                $("#likes_"+postid).text(likes);        // setting likes
+                $("#likes_"+keyname).text(likes);        // setting likes
             
+            },
+            error: function() {
+                alert('Error');
             }
         });
 

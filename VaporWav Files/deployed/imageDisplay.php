@@ -143,7 +143,7 @@
         <input 
               type="button" 
               value="Like" 
-              id="<?php echo $keyname; ?>" 
+              id="like_<?php echo $keyname; ?>" 
               class="like" 
                
         />
