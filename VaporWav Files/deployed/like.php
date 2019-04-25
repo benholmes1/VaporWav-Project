@@ -44,6 +44,14 @@
   $likesinfo = $queryResL->fetch_assoc();
   $likescount = $likesinfo['likescount'];
 
+  $insertLikes = "UPDATE images SET likes = '".$likescount."' WHERE keyname = '".$keyname."'";
+  $insertLikeRes = $conn->query($insertLikes);
+  if($insertResult) {
+    $test = "Success";
+  } else {
+    $test = "Fail";
+  }
+
   $arrayreturn = array("likes"=>$likescount, "test"=>$test, "key"=>$keyname, "id"=>$_SESSION['userData']['id']);
 
   echo json_encode($arrayreturn);

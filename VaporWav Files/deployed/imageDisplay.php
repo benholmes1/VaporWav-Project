@@ -147,7 +147,7 @@
               class="like" 
                
         />
-        &nbsp;(<span id="likes_<?php echo $keyname; ?>"><?php echo $likescount; ?></span>)&nbsp;
+        &nbsp;(<span id="likecount"><?php echo $likescount; ?></span>)&nbsp;
 
     </div>
 

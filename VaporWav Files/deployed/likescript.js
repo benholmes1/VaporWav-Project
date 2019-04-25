@@ -21,7 +21,7 @@ $(document).ready(function(){
             success: function(data){
                 var likes = data['likes'];
 
-                $("#likes_"+keyname).text(likes);        // setting likes
+                $("#likescount").html(likes);        // setting likes
             
             },
             error: function() {
