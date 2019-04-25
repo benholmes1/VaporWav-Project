@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="stylesFinal.css">
   <script src="acctscript.js"></script>
   <script src="likescript.js" type="text/javascript"></script>
+  <script src="commentscript.js" type="text/javascript"></script>
 </head>
 
 <body>

@@ -22,15 +22,19 @@ if(isset($_POST['key'])) {   //keyname
 if(isset($_POST['comment'])){ //comment
     $comment = $_POST['comment'];
 }  
+if(isset($_POST['fullKey'])) {
+    $fullKey = $_POST['fullKey'];
+}
 
-
-$date = date('Y-m-d H:i:s');
-
-$commentquery = "INSERT INTO comments(image_id,`user_id`,comment,createddate) VALUES ('".$keyname."','".$_SESSION['userData']['id']."','".$comment."','".$date."')";
+$commentquery = "INSERT INTO comments(`image_id`,`user_id`,`comment`,`created`) VALUES ('".$keyname."','".$_SESSION['userData']['id']."','".$comment."',CURDATE())";
 $commentqueryRes = $conn->query($commentquery);
 
-if ($commentqueryRes) {
-    $commentqueryRes = mysqli_error($conn);
+if($commentqueryRes) {
+    $message = "Success";
+} else {
+    $message = "Fail";
 }
-echo $commentqueryRes;
+
+header("Location: imageDisplay.php?key=".$fullKey."#commentSection");
+
 ?>

@@ -11,7 +11,7 @@
     exit();
   }
 
-  if(!(isset($_GET['key'])) && !(isset($_GET['id']))){
+  if(!(isset($_GET['key']))){
     header('Location: home.php');
     exit();
   }
@@ -82,6 +82,8 @@
   $date = strtotime($imageinfo['created']);
   $formatDate = date("m/d/y", $date);
 
+  $getComments = "SELECT * FROM comments INNER JOIN usernames ON comments.user_id = usernames.id WHERE image_id = '".$keyname."'";
+  $getCommentsRes = $conn->query($getComments);
 
 ?>
     
@@ -138,7 +140,7 @@
     
     
     <!--like button-->
-    <div class="post-action">
+    <div class="post-action" style="float:right">
 
         <input 
               type="button" 
@@ -152,6 +154,32 @@
     </div>
 
     </div>
+    <textarea placeholder="Comment . . ." style="width:100%;box-sizing:border-box;resize:none" id="comment" name="comment" form="commentForm" required></textarea>
+    <form action="addcomment.php" id="commentForm" method="post">
+      <input id="uploadComment" type="submit" value="Publish">
+      <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
+      <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
+    </form>
+
+    <div id="commentSection">
+
+    <?php
+
+      while($comments = $getCommentsRes->fetch_assoc()) {
+        $commentDate = date("m/d/y", $comments['created']);
+        $commentOut  = '<p>'.$comments['nickname'].'</p>';
+        $commentOut .= '<p>'.$comments['comment'].'</p>';
+        $commentOut .= '<hr width:100%>';
+        echo $commentOut;
+      }
+
+      $comment = $getCommentsRes->fetch_assoc();
+      echo '<p>'.$comment['nickname'].'</p>';
+
+    ?>
+
+    </div>
+
     </section>
 
     <script>
@@ -203,143 +231,6 @@
       });
     }
     </script>
-
-    <!--------------------------------------------------------Comments-------------------------------------------------------->
-    <div class="comment-form-container">
-        <form id="frm-comment">
-             <!--<div class="input-row">-->
-             <!--    <input type="hidden" name="comment_id" id="commentId"-->
-             <!--        placeholder="Name" /> -->
-             <!--        <input  class="input-field"-->
-            <!--                 type="text" -->
-            <!--                 name="name" -->
-             <!--                id="name" -->
-             <!--                placeholder="Name" -->
-             <!--        />-->
-             <!--</div>-->
-     
-             <!--comment content-->
-            <div class="input-row"> 
-                <textarea class="input-field" type="text" name="comment"
-                    id="comment" placeholder="Add a Comment">  </textarea>
-            </div>
-
-            <!--submit button-->
-            <div>
-                <input type="button" class="btn-submit" id="submitButton" value="Publish" />
-                    <!--<div id="comment-message">Comments Added Successfully!</div>-->
-            </div>
-
-        </form>
-    </div>
-    <div id="output"></div><!--im p sure this displays the comments-->
-    
-    
-    <script>
-      /*
-            function postReply(commentId) {
-                $('#commentId').val(commentId);
-                $("#name").focus();
-            }*/
-            var keyname = <?php echo $keyname; ?>;
-            //JQuery script####################################################
-            $("#submitButton").click(function () {
-            	   //$("#comment-message").css('display', 'none');
-                var str = $("#frm-comment").serialize(); //comment content
-                alert(keyname);
-                var data = {key:keyname,comment:str};
-                $.ajax({
-                    url: "addcomment.php",
-                    type: 'post',
-                    data: data,
-                    dataType: 'json',
-                    success: function (data)
-                    {
-                        var result = eval('(' + data + ')');
-                        if (data)
-                        {
-                        //	$("#comment-message").css('display', 'inline-block');
-                        //    $("#name").val("");
-                            $("#comment").val("");
-                          //  $("#commentId").val("");
-                     	   listComment();
-                        } 
-                        else
-                        {
-                            alert("Failed to add comments !");
-                            return false;
-                        }
-                    }
-                });
-            });
-            //###############################################################
-            $(document).ready(function () {
-            	   listComment();
-            });
-
-            function listComment() {
-                $.post("listcomment.php",
-                        function (data) {
-                               var data = JSON.parse(data);
-                            
-                            var comments = "";
-                            var replies = "";
-                            var item = "";
-                            var parent = -1;
-                            var results = new Array();
-
-                            var list = $("<ul class='outer-comment'>");
-                            var item = $("<li>").html(comments);
-
-                            for (var i = 0; (i < data.length); i++)
-                            {
-                                var commentId = data[i]['comment_id'];
-                                parent = data[i]['parent_comment_id'];
-                                
-                                //if (parent == "0")
-                                //{
-                                    comments = "<div class='comment-row'>"+
-                                    "<div class='comment-info'><span class='commet-row-label'>from</span> <span class='posted-by'>" + data[i]['comment_sender_name'] + " </span> <span class='commet-row-label'>at</span> <span class='posted-at'>" + data[i]['date'] + "</span></div>" + 
-                                    "<div class='comment-text'>" + data[i]['comment'] + "</div>"+
-                                   // "<div><a class='btn-reply' onClick='postReply(" + commentId + ")'>Reply</a></div>"+
-                                    "</div>";
-
-                                    var item = $("<li>").html(comments);
-                                    list.append(item);
-                                    /*
-                                    var reply_list = $('<ul>');
-                                    item.append(reply_list);
-                                    listReplies(commentId, data, reply_list);
-                                    */
-
-                                //}
-                            }
-                            $("#output").html(list);
-                        });
-            }
-/*
-            function listReplies(commentId, data, list) {
-                for (var i = 0; (i < data.length); i++)
-                {
-                    if (commentId == data[i].parent_comment_id)
-                    {
-                        var comments = "<div class='comment-row'>"+
-                        " <div class='comment-info'><span class='commet-row-label'>from</span> <span class='posted-by'>" + data[i]['comment_sender_name'] + " </span> <span class='commet-row-label'>at</span> <span class='posted-at'>" + data[i]['date'] + "</span></div>" + 
-                        "<div class='comment-text'>" + data[i]['comment'] + "</div>"+
-                        "<div><a class='btn-reply' onClick='postReply(" + data[i]['comment_id'] + ")'>Reply</a></div>"+
-                        "</div>";
-                        var item = $("<li>").html(comments);
-                        var reply_list = $('<ul>');
-                        list.append(item);
-                        item.append(reply_list);
-                        listReplies(data[i].comment_id, data, reply_list);
-                    }
-                }
-            }*/
-        </script>
-<!----------------------------------------------------------------------------------------------------------------------------->
-
-
 
 </body>
 </html>
