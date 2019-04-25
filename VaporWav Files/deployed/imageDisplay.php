@@ -218,13 +218,15 @@
              <!--        />-->
              <!--</div>-->
      
-            <div class="input-row">
+             <!--comment content-->
+            <div class="input-row"> 
                 <textarea class="input-field" type="text" name="comment"
                     id="comment" placeholder="Add a Comment">  </textarea>
             </div>
+
+            <!--submit button-->
             <div>
-                <input type="button" class="btn-submit" id="submitButton"
-                    value="Publish" />
+                <input type="button" class="btn-submit" id="submitButton" value="Publish" />
                     <!--<div id="comment-message">Comments Added Successfully!</div>-->
             </div>
 
@@ -239,24 +241,27 @@
                 $('#commentId').val(commentId);
                 $("#name").focus();
             }*/
-
+            var keyname = <?php echo $keyname; ?>;
+            //JQuery script####################################################
             $("#submitButton").click(function () {
             	   //$("#comment-message").css('display', 'none');
-                var str = $("#frm-comment").serialize();
-
+                var str = $("#frm-comment").serialize(); //comment content
+                alert(keyname);
+                var data = {key:keyname,comment:str};
                 $.ajax({
                     url: "addcomment.php",
-                    data: str,
                     type: 'post',
-                    success: function (response)
+                    data: data,
+                    dataType: 'json',
+                    success: function (data)
                     {
-                        var result = eval('(' + response + ')');
-                        if (response)
+                        var result = eval('(' + data + ')');
+                        if (data)
                         {
-                        	$("#comment-message").css('display', 'inline-block');
-                            $("#name").val("");
+                        //	$("#comment-message").css('display', 'inline-block');
+                        //    $("#name").val("");
                             $("#comment").val("");
-                            $("#commentId").val("");
+                          //  $("#commentId").val("");
                      	   listComment();
                         } 
                         else
@@ -267,7 +272,7 @@
                     }
                 });
             });
-            
+            //###############################################################
             $(document).ready(function () {
             	   listComment();
             });
