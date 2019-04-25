@@ -82,8 +82,6 @@
   $date = strtotime($imageinfo['created']);
   $formatDate = date("m/d/y", $date);
 
-  $likes = int($imageinfo['likes']);
-  $imageID = $imageinfo['keyname'];
 
 ?>
     
@@ -145,7 +143,7 @@
         <input 
               type="button" 
               value="Like" 
-              id="like_<?php echo $keyname; ?>" 
+              id="<?php echo $keyname; ?>" 
               class="like" 
                
         />

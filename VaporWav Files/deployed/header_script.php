@@ -12,6 +12,7 @@
   <script src="jquery.alphanum-master/jquery.alphanum.js"></script>
   <link rel="stylesheet" href="stylesFinal.css">
   <script src="acctscript.js"></script>
+  <script src="likescript.js" type="text/javascript"></script>
 </head>
 
 <body>
