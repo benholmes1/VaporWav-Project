@@ -9,6 +9,18 @@ $expire = "1 hour";
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
 include 'config.php';
+include 'dbconfig.php';
+$dbHost     = DB_HOST;
+$dbUsername = DB_USERNAME;
+$dbPassword = DB_PASSWORD;
+$dbName     = DB_NAME;
+   
+// Connect to the database
+$conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
+if($conn->connect_error){
+    die("Failed to connect with MySQL: " . $conn->connect_error);
+}
+
 ?>
 <html lang="en">
 <head>
@@ -23,7 +35,7 @@ include 'config.php';
     <div class="padThis">
       <h1>VaporWav</h1>
       <p class="underHeader">Show us what you have been working on.</p>
-      <form action="searchPage.php" method="get">
+      <form action="searchUser.php" method="get">
 	<input type="text" name="searchQ" placeholder="Search...">
 	<button type="submit">Submit</button>
       </form>
@@ -44,7 +56,7 @@ include 'config.php';
 
 
 <main class="container2">
-<h2>Your Result(s)</h2>
+<h2>Your Result(s)</h2
 <br>
     <section class="cards">
 <?php
@@ -60,6 +72,33 @@ $bucket_url = "https://s3-{$region}.amazonaws.com/{$bucket}";
 
 $sEmail = $_GET['searchQ'];
 $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $sEmail));
+
+//Friend feature
+
+if ($sEmail!="" && $email != $sEmail)
+{ 
+	$qry1 = "SELECT id FROM users WHERE email = '" .$sEmail."'";
+	$friendR = $conn->query($qry1);
+	$friendID = $friendR->fetch_assoc();
+	//echo"<script type='text/javascript'>alert('$friendID["id"]');</script>";
+
+	$friends = $conn->query("SELECT * FROM friends WHERE user = '"  .$_SESSION['userData']['id']. "' AND friend ='" . $friendID["id"] ."'");
+	//echo"<script type='text/javascript'>alert($friends);</script>";
+
+	if ($friends->num_row == 0)
+	{
+	  $query0 = "SELECT id from users WHERE email ='" .$sEmail. "'";
+	  if($result = $conn->query($query0))
+	  {
+	    $row = $result->fetch_assoc();
+	  }
+	$add='<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$row['id'].'></input> <button type="submit">Add Friend</button></form>';
+	}
+}
+else
+{
+
+}
 
 //$images = array();
 $Cnt = 0;
@@ -103,6 +142,8 @@ if($Cnt == 0) {
   echo("<article class='card'><a href=\"testDisplay.php\"><figure><img src=\"{$url}\"></figure></a></article>");
 }*/
 ?>
+<br>
+<?php echo $add; ?>
     </section>
 </main>
 </body>
