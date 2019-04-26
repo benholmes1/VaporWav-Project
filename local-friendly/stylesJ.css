@@ -1,0 +1,369 @@
+html, body, header, footer, main, nav, article, section, figure, figcaption, h1, h2, h3, ul, li,
+body, div, p, img
+{ margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; border: 0; }
+
+header, footer {
+ color: white;
+ background-color: rebeccapurple;
+ margin: 0em 4em 0.25em 4em;
+}
+header {
+    background-image: url("images/bgimage2.png");
+    background-position: center center;
+    width:100%;
+    margin-left:0px;
+    filter: drop-shadow(5px 5px 5px black);
+
+}
+
+footer {
+    padding: 3px;
+}
+footer nav {
+    margin-top: .5em;
+    margin-left: .7em;
+}
+footer nav a{
+    margin: 0 .5em 0em .5em;
+}
+
+footer nav ul {
+    list-style: none;
+}
+header nav ul {
+    list-style: none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+footer p {
+    font-style:italic;
+}
+
+h1 {
+    font-size: 220%;
+    margin-bottom: 10px;
+    font-family: Alien Encounters I;
+}
+
+h3,h2 {
+    background-color: mediumpurple;
+    padding : 10px;
+    font-size: large;
+    color: white;
+    font-family: "Open Sans";
+    margin: 0em 0em 0em 0em;
+}
+
+header nav {
+    /*background-color: purple;*/
+}
+header nav li {
+    padding: 4px;
+    display: inline-block;
+}
+
+header nav li .dropdown {
+    padding-left: none;
+    display: inline-block;
+}
+
+header nav li .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+header nav li .dropdown-content a {
+  color: black;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+header nav li .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+nav a {
+    color: white;
+    margin-left: 0.5em;
+}
+
+a:hover {
+    font-family: Tinos;
+    color: white;
+    background-color: #F50057;
+}
+
+html {
+    background-color: rebeccapurple;
+    background-image: url(images/sxxm11g749vx.jpg);
+    background-position: center;
+}
+
+p {
+    font-family: serif;
+    margin: 1em 1em 1em 1em; 
+}
+p img {
+    vertical-align: top;
+}
+
+
+time {
+    color: #FF80AB;
+}
+
+figcaption {
+    font-style: italic;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px;
+    font-size: 120%;
+    color:gray;
+}
+
+figure {
+    background-color: #C5CAE9;
+}
+
+figure img {
+    width: 100%;
+}
+
+hr {
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 1em;
+}
+
+main {
+    width: 100%;
+}
+
+.padThis {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+#friends, #requests {
+   background-color: white;
+   display: block;
+}
+#container3 {
+   margin-right:3em;
+}
+#friends p {
+   margin-right:3em;
+}
+.underHeader {
+    font-family: Alien Encounters S;
+    font-size: 100%;
+    margin: 0;
+}
+
+.related {
+    margin: 0;
+}
+.leftHead {
+    float:right;
+}
+
+
+.container{
+	padding: 20px;
+}
+.wrapper{
+	width: 340px;
+	margin: auto;
+	padding: 10px;
+    background-color: #663399;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+    text-align: center;
+}
+.wrapper h2{
+	font-family: Alien Encounters;
+	font-size: 150%;
+}
+.wrapper img{
+	max-width: 100%;
+}
+.ac-data{
+    text-align: left;
+}
+
+.wrapacct{
+	width: 50%;
+	margin: auto;
+	padding: 10px;
+    background-color: #663399;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+    text-align: center;
+}
+
+.wrapacct h2{
+	font-family: Alien Encounters;
+	font-size: 150%;
+}
+
+.center {
+  width: 340px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.acctform {
+  font-family: Tinos;
+  padding: 10px;
+  text-align: left;
+  background-color: mediumpurple;
+}
+
+.acctform textarea {
+  font-family: Tinos;
+}
+
+a:link {
+  font-family: Tinos;
+  text-decoration: none;
+}
+
+a:visited {
+ font-family: Tinos;
+ text-decoration: none;
+}
+
+a:active {
+ font-family: Tinos;
+ text-decoration: underline;
+}
+
+.acct {
+    background-color: mediumpurple;
+    padding: 10px;
+    font-family: Tinos;
+    margin: 0em 0em 0em 0em;
+}
+
+.count {
+  font-family: Tinos;
+  font-size: 200%;
+  color: white;
+  text-align: center;
+}
+-------------------------------------------------------------
+.container2 figure {
+     margin: 0;
+    padding: 0;
+}
+.container2 figure img {
+    max-width:100%;
+}
+.card figure img:hover {
+    filter:saturate(150%);
+    transition:0.75s;
+}
+
+.container2 h2 {
+  
+}
+
+.card:hover {
+    /*
+    box-shadow: 2.5px 2.5px lightgray; */
+    transition: 0.25s;
+    filter:saturate(130%);
+    filter:drop-shadow(5px 5px 2px black);
+}
+
+
+.container2 { /* use for around the cards in a div */
+  max-width: 1250px;
+  margin: 1em auto;
+  background-image:url("images/gradientBG.png");
+  background-size: cover;
+  padding: 30px;
+  filter: drop-shadow(5px 5px 5px black);
+
+}
+
+.cards {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    flex: 0 1 auto;
+  }
+
+.card {
+	background: white;
+	margin-bottom: 2em;	
+    padding: 0;
+    width:24%;
+}
+
+.card a {
+	color: black;
+	text-decoration: none;
+}
+.container2 {
+	font-size:120%;
+}
+/*
+.card-content p {
+	padding: 0.5em 1.4em 0 1.4em;
+	font-size: 90%;    
+}
+*/
+@media only screen and (max-width: 768px ) {
+    .card {
+        width:50%;
+    }
+}
+
+
+@media only screen and (max-width: 480px) {
+    .card {
+        width:100%;
+    }
+}
+--------------------------------------------------------------
+@font-face {
+font-family: Alien Encounters;
+src: url("css/fonts/alien_encounters/Alien-Encounters-Regular.ttf");
+}
+
+@font-face {
+font-family: Alien Encounters I;
+src: url("css/fonts/alien_encounters/Alien-Encounters-Bold-Italic.ttf");
+}
+
+@font-face {
+font-family: Alien Encounters S;
+src: url("css/fonts/alien_encounters/Alien-Encounters-Solid-Regular.ttf");
+}
+
+@font-face {
+font-family: Alien Encounters B;
+src: url("css/fonts/alien_encounters/Alien-Encounters-Bold.ttf");
+}
+
+@font-face {
+font-family: Tinos;
+src: url("css/fonts/Tinos/Tinos-Regular.ttf");
+}
+
+@font-face {
+font-family: Streamster;
+src: url("css/fonts/streamster/Streamster.ttf");
+}
+
+@font-face {
+font-family: Otsutome;
+src: url("css/fonts/Othutome_font_ver2/OtsutomeFont_Ver2.ttf");
+}
