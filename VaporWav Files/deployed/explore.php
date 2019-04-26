@@ -44,7 +44,7 @@ if($conn->connect_error){
     <div class="padThis">
       <h1>VaporWav</h1>
       <p class="underHeader">Show us what you have been working on.</p>
-      <form action="searchPage.php" method="get">
+      <form action="searchUser.php" method="get">
 	<input type="text" name="searchQ" placeholder="Search...">
 	<button type="submit">Submit</button>
       </form>
