@@ -56,7 +56,7 @@ if($conn->connect_error){
 
 
 <main class="container2">
-<h2>Your Result(s)</h2
+<h2>Your Result(s)</h2>
 <br>
     <section class="cards">
 <?php
@@ -71,7 +71,10 @@ $s3 = new Aws\S3\S3Client([
 $bucket_url = "https://s3-{$region}.amazonaws.com/{$bucket}";
 
 $sEmail = $_GET['searchQ'];
-$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $sEmail));
+$sEmail = $sEmail . "/";
+$del = '/';
+
+$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $sEmail, 'Delimiter' => $del));
 
 //Friend feature
 
