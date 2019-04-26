@@ -18,6 +18,7 @@ date_default_timezone_set("UTC");
 require './vendor/autoload.php';
 include 'config.php';
 include 'dbconfig.php';
+include 'chromephp/ChromePhp.php';
 
 $dbHost     = DB_HOST;
 $dbUsername = DB_USERNAME;
@@ -128,24 +129,6 @@ if($numRows == 0) {
   $friendQuery = "SELECT u.email from users u inner join friends f on u.id = f.friend where f.user = '".$_SESSION['userData']['id']."'"; 
   $friendRes = $conn->query($friendQuery);
   while($friendRow = $friendRes->fetch_assoc()) {
-
-
-    $cmd = $s3->getCommand('GetObject', [
-      'Bucket' => $bucket,
-      'Key'    => $key,
-      'Prefix' => $friendRow['email'],
-    ]);
-
-    //Create the presigned url, specify expire time declared earlier
-    $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-    //Get the actual url
-    $signed_url = (string) $request->getUri();
-    
-    //Clean up the etag
-    $etag = str_replace('"', '', $id); 
-
-    //Display each image as a link to the image display page 
-    echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&exp=true"><figure><img src="'.$signed_url.'"</figure></a></article>';
   }
 
 ?>
