@@ -22,6 +22,7 @@
     <a href = "uploadPage.php">Upload</a>
     <a href = "feed.php">Explore</a>
     <a href = "galleries.php">Galleries</a></li>
+    <a href = "friendPage.php">Friends</a></li>
   </ul>
   <ul class="leftHead">
     <li><a href = "account.php">My Account</a>
