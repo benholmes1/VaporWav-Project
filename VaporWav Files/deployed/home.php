@@ -42,6 +42,7 @@ include 'config.php';
     <ul>
       <li><a href = "home.php">Home</a>
       <a href = "uploadPage.php">Upload</a>
+      <a href = "feed.php">Explore</a>
       <a href = "galleries.php">Galleries</a></li>
     </ul>
     <ul class="leftHead">
