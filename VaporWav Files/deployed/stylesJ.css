@@ -149,7 +149,16 @@ main {
     padding: 10px;
     margin-bottom: 20px;
 }
-
+#friends, #requests {
+   background-color: white;
+   display: block;
+}
+#container3 {
+   margin-right:3em;
+}
+#friends p {
+   margin-right:3em;
+}
 .underHeader {
     font-family: Alien Encounters S;
     font-size: 100%;
