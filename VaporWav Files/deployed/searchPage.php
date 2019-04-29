@@ -44,7 +44,10 @@ if($conn->connect_error){
     <!list of the seperate parts of this page>
     <ul>
       <li><a href = "home.php">Home</a>
-      <a href = "uploadPage.php">Upload</a></li>
+      <a href = "uploadPage.php">Upload</a>
+      <a href = "feed.php">Explore</a>
+      <a href = "galleries.php">Galleries</a>
+      <a href = "friendPage.php">Friends</a></li>
     </ul>
     <ul class="leftHead">
       <li><a href = "account.php">My Account</a>
@@ -56,9 +59,7 @@ if($conn->connect_error){
 
 
 <main class="container2">
-<h2>Your Result(s)</h2>
-<br>
-    <section class="cards">
+
 <?php
 
 $email = $_SESSION['userData']['email'];
@@ -71,37 +72,44 @@ $s3 = new Aws\S3\S3Client([
 $bucket_url = "https://s3-{$region}.amazonaws.com/{$bucket}";
 
 $sEmail = $_GET['searchQ'];
-$sEmail = $sEmail . "/";
+$fEmail = $sEmail . "/";
 $del = '/';
 
-$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $sEmail, 'Delimiter' => $del));
+$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $fEmail, 'Delimiter' => $del));
+
+$qry1 = "SELECT id FROM users WHERE email = '" .$sEmail."'";
+$friendR = $conn->query($qry1);
+$friendID = $friendR->fetch_assoc();
+
+$getName = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
+$getNameRes = $conn->query($getName);
+$getNameRow = $getNameRes->fetch_assoc();
+
+echo '<h2>' . $getNameRow['nickname'] . '\'s Gallery</h2>';
 
 //Friend feature
 
 if ($sEmail!="" && $email != $sEmail)
 { 
-	$qry1 = "SELECT id FROM users WHERE email = '" .$sEmail."'";
-	$friendR = $conn->query($qry1);
-	$friendID = $friendR->fetch_assoc();
-	//echo"<script type='text/javascript'>alert('$friendID["id"]');</script>";
+  $checkFriend = "SELECT * FROM friends WHERE user = '".$_SESSION['userData']['id']."' AND friend = '".$friendID['id']."'";
+  $isFriend = $conn->query($checkFriend);
+  $numRows = $isFriend->num_rows;
+	//echo"<script type='text/javascript'>alert($numRows);</script>";
 
-	$friends = $conn->query("SELECT * FROM friends WHERE user = '"  .$_SESSION['userData']['id']. "' AND friend ='" . $friendID["id"] ."'");
-	//echo"<script type='text/javascript'>alert($friends);</script>";
-
-	if ($friends->num_row == 0)
+	if ($numRows == 0)
 	{
-	  $query0 = "SELECT id from users WHERE email ='" .$sEmail. "'";
-	  if($result = $conn->query($query0))
-	  {
-	    $row = $result->fetch_assoc();
-	  }
-	$add='<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$row['id'].'></input> <button type="submit">Add Friend</button></form>';
+    echo '<div class="addFriendBtn">';
+    echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button type="submit">Add Friend</button></form>';
+    echo '</div>';
 	}
 }
 else
 {
-
+  header('Location: index.php');
 }
+
+echo '<br>';
+echo '<section class="cards">';
 
 //$images = array();
 $Cnt = 0;
@@ -146,7 +154,6 @@ if($Cnt == 0) {
 }*/
 ?>
 <br>
-<?php echo $add; ?>
     </section>
 </main>
 </body>

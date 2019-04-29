@@ -332,6 +332,11 @@ a:active {
         width:100%;
     }
 }
+
+.addFriendBtn {
+    float: right;
+}
+
 --------------------------------------------------------------
 @font-face {
 font-family: Alien Encounters;

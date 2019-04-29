@@ -55,7 +55,9 @@ if($conn->connect_error){
     <ul>
       <li><a href = "home.php">Home</a>
       <a href = "uploadPage.php">Upload</a>
-      <a href = "galleries.php">Galleries</a></li>
+      <a href = "feed.php">Explore</a>
+      <a href = "galleries.php">Galleries</a>
+      <a href = "friendPage.php">Friends</a></li>
     </ul>
     <ul class="leftHead">
       <li><a href = "account.php">My Account</a>
@@ -110,9 +112,6 @@ if($numRows == 0) {
         //Get the actual url
         $signed_url = (string) $request->getUri();
         
-        //Clean up the etag
-        $etag = str_replace('"', '', $id); 
-    
         //Display each image as a link to the image display page 
         echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&exp=true"><figure><img src="'.$signed_url.'"</figure></a></article>';
     }
@@ -126,9 +125,23 @@ if($numRows == 0) {
 <?php
   echo '<br>';
   echo '<section class="cards">';
-  $friendQuery = "SELECT u.email from users u inner join friends f on u.id = f.friend where f.user = '".$_SESSION['userData']['id']."'"; 
+  $friendQuery = "SELECT u.email, i.keyname from images i inner join friends f on i.id = f.friend inner join users u on f.friend = u.id where f.user = '".$_SESSION['userData']['id']."' order by i.created";
   $friendRes = $conn->query($friendQuery);
   while($friendRow = $friendRes->fetch_assoc()) {
+    $friendKey = $friendRow['email'] . "/" . $friendRow['keyname'];
+    $cmd = $s3->getCommand('GetObject', [
+      'Bucket' => $bucket,
+      'Key'    => $friendKey,
+    ]);
+
+    //Create the presigned url, specify expire time declared earlier
+    $fr_request = $s3->createPresignedRequest($cmd, "+{$expire}");
+    //Get the actual url
+    $fr_signed_url = (string) $fr_request->getUri();
+    
+    //Display each image as a link to the image display page 
+    echo '<article class="card"><a href="imageDisplay.php?key='.$friendKey.'&exp=true"><figure><img src="'.$fr_signed_url.'"</figure></a></article>';
+
   }
 
 ?>
