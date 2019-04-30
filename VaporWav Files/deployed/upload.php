@@ -102,6 +102,7 @@
 
      //Create the keyname without the prefix and with the prefix
      $keyNoPrefix = $nKey . '_' . basename($_FILES["imgFile"]['name']);
+     $keyNoPrefix = str_replace("+", "", $keyNoPrefix);
      $keyName = $_SESSION['userData']['email'] . '/' . $keyNoPrefix;
 
       // Add it to S3
