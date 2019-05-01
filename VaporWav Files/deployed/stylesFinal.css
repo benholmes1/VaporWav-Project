@@ -283,7 +283,7 @@ a:active {
 }
 
 /* Dropdown button on hover & focus */
-#imageSolo .dropbtn:hover, .dropbtn:focus {
+#imageSolo .dropbtn:hover, .dropbtn:focus, .dropbtn:active {
   background-color: #4B0082;
   color: white;
 }

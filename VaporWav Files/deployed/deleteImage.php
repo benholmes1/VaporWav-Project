@@ -75,6 +75,24 @@
   $keyname = end($keyname);
 
   if(!isset($_GET['gal'])) {
+    $delCommQuery = "DELETE FROM `comments` WHERE `image_id` = '".$keyname."'";
+    $commRes = $conn->query($delCommQuery);
+    if($commRes) {
+      $message = "Success";
+    }
+    else {
+      $message = "Something went wrong.";
+    }
+
+    $delLikeQuery = "DELETE FROM `likes` WHERE `keyname` = '".$keyname."'";
+    $likeRes = $conn->query($delLikeQuery);
+    if($likeRes) {
+      $message = "Success";
+    }
+    else {
+      $message = "Something went wrong.";
+    }
+
     $delQuery = "DELETE FROM `images` where `keyname` = '".$keyname."'";
     $result = $conn->query($delQuery);
     if($result) {
