@@ -1,28 +1,11 @@
 <?php
-
   //This is the upload action that uploads an image to S3 and updates database
-
-  session_start(); 
+  include 'dbconn.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
     header('Location: index.php');
     exit();
-  }
- 
-  //Include the database credentials
-  include 'dbconfig.php';	
-  
-  //DB info
-  $dbHost     = DB_HOST;
-  $dbUsername = DB_USERNAME;
-  $dbPassword = DB_PASSWORD;
-  $dbName     = DB_NAME;
-   
-  // Connect to the database
-  $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-  if($conn->connect_error){
-    die("Failed to connect with MySQL: " . $conn->connect_error);
   }
 
   if(isset($_POST['name'])) {

@@ -1,7 +1,6 @@
 <?php
 
   //This is the upload page where a user can upload an image
-
   include_once 'header.php';
 
   //Check if user is logged in

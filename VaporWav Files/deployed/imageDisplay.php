@@ -1,8 +1,7 @@
 <?php
 
   //This page displays the image with information
-
-  include 'dbconfig.php';
+  include 'dbconn.php';
   include_once 'header_script.php';
   
   //Check if user is logged in
@@ -21,17 +20,6 @@
   if($key === '') {
     header('Location: home.php');
     exit();
-  }
-
-  $dbHost     = DB_HOST;
-  $dbUsername = DB_USERNAME;
-  $dbPassword = DB_PASSWORD;
-  $dbName     = DB_NAME;
-   
-  // Connect to the database
-  $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-  if($conn->connect_error){
-    die("Failed to connect with MySQL: " . $conn->connect_error);
   }
 
   //Expiration time

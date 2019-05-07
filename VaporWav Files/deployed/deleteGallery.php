@@ -1,8 +1,6 @@
 <?php
-
   //This is the upload action that uploads an image to S3 and updates database
-
-  session_start(); 
+  include 'dbconn.php';	
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
@@ -15,10 +13,6 @@
   //This is needed to use AWS SDK for PHP
   require './vendor/autoload.php';
  
-  //Include the database credentials
-  include 'dbconfig.php';	
-  include 'config.php';
-
   //S3Client for use in upload
   use Aws\S3\S3Client;
   use Aws\S3\Exception\S3Exception;
@@ -26,19 +20,7 @@
   // AWS Info
   $bucketName = BUCKET_NAME;
   $IAM_KEY = ACCESS_KEY;
-  $IAM_SECRET = SECRET_KEY;
-  
-  //DB info
-  $dbHost     = DB_HOST;
-  $dbUsername = DB_USERNAME;
-  $dbPassword = DB_PASSWORD;
-  $dbName     = DB_NAME;
-   
-  // Connect to the database
-  $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-  if($conn->connect_error){
-    die("Failed to connect with MySQL: " . $conn->connect_error);
-  }
+  $IAM_SECRET = SECRET_KEY; 
  
   // Connect to AWS
   try {

@@ -1,25 +1,11 @@
 <?php
-  session_start();
-//  if(isset($_POST['nname'])){
+	include 'dbconn.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])) {
     header('Location: index.php');
     exit();
   }
-
-    include 'dbconfig.php';
-
-    $dbHost     = DB_HOST;
-    $dbUsername = DB_USERNAME;
-    $dbPassword = DB_PASSWORD;
-    $dbName     = DB_NAME;
-   
-    // Connect to the database
-    $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-    if($conn->connect_error){
-      die("Failed to connect with MySQL: " . $conn->connect_error);
-    }
 
     $check = 0;
 

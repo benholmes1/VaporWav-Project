@@ -1,12 +1,5 @@
 <?php
-
-session_start();
-
-include "dbconfig.php";
-$dbHost     = DB_HOST;
-$dbUsername = DB_USERNAME;
-$dbPassword = DB_PASSWORD;
-$dbName     = DB_NAME;
+include 'dbconn.php';
 
 // Connect to the database
 $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
