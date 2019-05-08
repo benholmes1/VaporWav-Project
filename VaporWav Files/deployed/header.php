@@ -35,4 +35,4 @@ include 'dbconn.php'
     </nav>
   </header>
 
-<main class="container2">
+<main class="container">

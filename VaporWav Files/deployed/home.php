@@ -65,7 +65,11 @@ foreach ($iterator as $object) {
     $etag = str_replace('"', '', $id); 
    
     //Display each image as a link to the image display page 
-    echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$etag.'"><figure><img src="'.$signed_url.'"</figure></a></article>';
+    echo '<div class="reponsive">';
+    echo '<div class="gallery">';
+    echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$etag.'"><img src="'.$signed_url.'"></a></article>';
+    echo '</div>';
+    echo '</div>';
 }
 ?>
     </section>
