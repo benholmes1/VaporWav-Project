@@ -13,13 +13,19 @@ $expire = "1 hour";
 //Requires
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
+?>
 
+<main role="main">
+<br>
+<section class="jumbotron text-center" style="color:rebeccapurple">
+<div class="container">
 
+<?php
 if(isset($_GET['gal']))
 {
-  echo '<h2>'.$_GET['gal'].'</h2>';
+  echo '<h2 class="jumbotron-heading">'.$_GET['gal'].'</h2>';
 } else {
-  echo '<h2>Your Gallery</h2>';
+  echo '<h2 class="jumbotron-heading">Your Gallery</h2>';
 }
 
 //User's email address
@@ -30,12 +36,19 @@ if(isset($_GET['gal']))
 {
   $prefix .= $_GET['gal'];
   $del = '';
-  echo '<a style="float:right;color:white;font-size:16px" href="deleteGallery.php?prefix='.$prefix.'&gal='.$_GET['gal'].'">Delete Gallery</a>';
+  echo '<p>';
+  echo '<a class="btn my-2" style="background-color:#663399" href="deleteGallery.php?prefix='.$prefix.'&gal='.$_GET['gal'].'">Delete Gallery</a>';
+  echo '</p>';
 }
 
-echo '<br>';
-echo '<section class="cards">';
+echo '</div>';
+echo '</section>';
+?>
 
+<div class="container">
+<div class="gallery" id="gallery">
+
+<?php
 //Start a new AWS S3Client, specify region
 $s3 = new Aws\S3\S3Client([
     'version' => '2006-03-01',
@@ -65,14 +78,13 @@ foreach ($iterator as $object) {
     $etag = str_replace('"', '', $id); 
    
     //Display each image as a link to the image display page 
-    echo '<div class="reponsive">';
-    echo '<div class="gallery">';
-    echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$etag.'"><img src="'.$signed_url.'"></a></article>';
-    echo '</div>';
+    echo '<div class="mb-3">';
+    echo '<a href="imageDisplay.php?key='.$key.'&id='.$etag.'"><img class="img-fluid" src="'.$signed_url.'"></a>';
     echo '</div>';
 }
 ?>
-    </section>
+</div>
+</div>
 </main>
 </body>
 </html>

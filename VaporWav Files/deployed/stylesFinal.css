@@ -12,6 +12,7 @@ header {
     background-position: center center;
     width:100%;
     margin-left:0px;
+    margin-bottom: 0;
     filter: drop-shadow(5px 5px 5px black);
 }
 
@@ -152,8 +153,9 @@ hr {
 }
 
 main {
-    width: 100%;
-    position: relative;
+  background-color: rebeccapurple !important;
+  background-image: url(images/sxxm11g749vx.jpg) !important;
+  background-position: center !important;
 }
 #imageSolo {
     padding:100px;
@@ -436,72 +438,48 @@ a:active {
     font-family: Tinos;
 }
 
+.jumbotron {
+  background-color: #663399 !important;
+}
+
+.jumbotron .container h2 {
+  font-size: 150%;
+  font-family: Alien Encounters;
+}
+
 /*----------------------------------------------------------------------------------------*/
 /* Gallery */
 
 .gallery {
-    border: 1px solid #ccc;
-  }
+  -webkit-column-count: 3;
+  -moz-column-count: 3;
+  column-count: 3;
+  -webkit-column-width: 33%;
+  -moz-column-width: 33%;
+  column-width: 33%; 
+}
   
-.gallery:hover {
-    border: 1px solid #777;
-  }
+.gallery .pics {
+  -webkit-transition: all 350ms ease;
+  transition: all 350ms ease; 
+}
   
-.gallery img {
-    width: 100%;
-    height: auto;
-  }
+.gallery .animation {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1); 
+}
   
-.desc {
-    padding: 15px;
-    text-align: center;
+@media (max-width: 450px) {
+  .gallery {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+    -webkit-column-width: 100%;
+    -moz-column-width: 100%;
+    column-width: 100%;
   }
-  
-  * {
-    box-sizing: border-box;
-  }
-  
-  .responsive {
-    padding: 0 6px;
-    float: left;
-    width: 24.99999%;
-  }
-  
-  @media only screen and (max-width: 700px) {
-    .responsive {
-      width: 49.99999%;
-      margin: 6px 0;
-    }
-  }
-  
-  @media only screen and (max-width: 500px) {
-    .responsive {
-      width: 100%;
-    }
-  }
-  
-  .clearfix:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-  .card figure img:hover {
-    filter:saturate(150%);
-    transition:0.75s;
- }
-
-  .card {
-    background: white;
-    margin-bottom: 2em;	
-    padding: 0;
-    width:24%;
- }
- 
- .card a {
-    color: black;
-    text-decoration: none;
- }
+}
 
 .addFriendBtn {
    float: right;
