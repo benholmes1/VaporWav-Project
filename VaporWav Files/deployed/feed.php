@@ -16,13 +16,20 @@ date_default_timezone_set("UTC");
 require './vendor/autoload.php';
 include 'chromephp/ChromePhp.php';
 ?>
-<main class="container2">
-  <h2>Your Feed</h2>
-  <p>Trending</p>
-<?php
-echo '<br>';
-echo '<section class="cards">';
 
+<main role="main">
+  <br>
+  <section class="jumbotron text-center" style="color:rebeccapurple">
+    <div class="container">
+      <h2 class="jumbotron-heading">Your Feed</h2>
+    </div>
+  </section>
+  <br>
+  <div class="container">
+    <h2>Trending</h2>
+    <br>
+    <div class="gallery" id="gallery">
+<?php
 $topQuery = "SELECT email, keyname, likes FROM images i
             INNER JOIN users u ON i.id = u.id
             WHERE private = '0'
@@ -63,39 +70,47 @@ if($numRows == 0) {
         $signed_url = (string) $request->getUri();
         
         //Display each image as a link to the image display page 
-        echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&exp=true"><figure><img src="'.$signed_url.'"</figure></a></article>';
+        echo '<div class="mb-3">';
+        echo '<a href="imageDisplay.php?key='.$key.'&exp=true"><img class="img-fluid" src="'.$signed_url.'"></a>';
+        echo '</div>';
     }
 }
 ?>
-    </section>
-    <a href="explore.php">See More</a>
-
-    <p>Friend's Uploads</p>
-
+    </div>
+  <a class="btn" style="background-color:#663399;color:white;font-family:Tinos" href="explore.php">See More</a>
+  <br>
+  <br>
+  <h2>Friend's Uploads</h2>
+    <br>
+    <div class="gallery" id="gallery">
+  
 <?php
-  echo '<br>';
-  echo '<section class="cards">';
   $friendQuery = "SELECT u.email, i.keyname from images i inner join friends f on i.id = f.friend inner join users u on f.friend = u.id where f.user = '".$_SESSION['userData']['id']."' order by i.created";
   $friendRes = $conn->query($friendQuery);
-  while($friendRow = $friendRes->fetch_assoc()) {
-    $friendKey = $friendRow['email'] . "/" . $friendRow['keyname'];
-    $cmd = $s3->getCommand('GetObject', [
-      'Bucket' => $bucket,
-      'Key'    => $friendKey,
-    ]);
+  if($friendRes->num_rows == 0){
+    echo '<p>No Results</p>';
+  } else {
+    while($friendRow = $friendRes->fetch_assoc()) {
+      $friendKey = $friendRow['email'] . "/" . $friendRow['keyname'];
+      $cmd = $s3->getCommand('GetObject', [
+        'Bucket' => $bucket,
+        'Key'    => $friendKey,
+      ]);
 
-    //Create the presigned url, specify expire time declared earlier
-    $fr_request = $s3->createPresignedRequest($cmd, "+{$expire}");
-    //Get the actual url
-    $fr_signed_url = (string) $fr_request->getUri();
-    
-    //Display each image as a link to the image display page 
-    echo '<article class="card"><a href="imageDisplay.php?key='.$friendKey.'&exp=true"><figure><img src="'.$fr_signed_url.'"</figure></a></article>';
-
+      //Create the presigned url, specify expire time declared earlier
+      $fr_request = $s3->createPresignedRequest($cmd, "+{$expire}");
+      //Get the actual url
+      $fr_signed_url = (string) $fr_request->getUri();
+      
+      //Display each image as a link to the image display page 
+      echo '<div class="mb-3">';
+      echo '<a href="imageDisplay.php?key='.$key.'&exp=true"><img class="img-fluid" src="'.$fr_signed_url.'"></a>';
+      echo '</div>';
+    }
   }
-
 ?>
-</section>
+</div>
+</div>
 </main>
 </body>
 </html>

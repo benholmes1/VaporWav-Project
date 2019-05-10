@@ -9,6 +9,7 @@
     exit();
   }
 ?>
+<main role="main">
   <div class="container">
     <div class="wrapacct">
       <h2>Edit Account Settings</h2>
@@ -30,6 +31,7 @@
       </div>
     </div>
   </div>
+</main>
   <script>
    //Javascript function to restrict entry in nickname field
    $("#nname").alphanum({

@@ -10,7 +10,10 @@ date_default_timezone_set("UTC");
 require './vendor/autoload.php';
 ?>
 
-<main class="container2">
+<main role="main">
+<br>
+<section class="jumbotron text-center" style="color:rebeccapurple">
+<div class="container">
 
 <?php
 
@@ -37,7 +40,7 @@ $getName = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
 $getNameRes = $conn->query($getName);
 $getNameRow = $getNameRes->fetch_assoc();
 
-echo '<h2>' . $getNameRow['nickname'] . '\'s Gallery</h2>';
+echo '<h2 class="jumbotron-heading">' . $getNameRow['nickname'] . '\'s Gallery</h2>';
 
 //Friend feature
 
@@ -50,9 +53,8 @@ if ($sEmail!="" && $email != $sEmail)
 
 	if ($numRows == 0)
 	{
-    echo '<div class="addFriendBtn">';
-    echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button type="submit">Add Friend</button></form>';
-    echo '</div>';
+        echo '<br>';
+        echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button class="btn" type="submit">Add Friend</button></form>';
 	}
 }
 else
@@ -60,15 +62,19 @@ else
   header('Location: index.php');
 }
 
-echo '<br>';
-echo '<section class="cards">';
+echo '</div>';
+echo '</section>';
+?>
 
+<div class="container">
+<div class="gallery" id="gallery">
+
+<?php
 //$images = array();
 $Cnt = 0;
 
 foreach ($iterator as $object) {
     $key = $object['Key'];
-    $id = $object['ETag'];
     $cmd = $s3->getCommand('GetObject', [
         'Bucket' => $bucket,
         'Key'    => $key,
@@ -79,7 +85,6 @@ foreach ($iterator as $object) {
 
     $request = $s3->createPresignedRequest($cmd, "+{$expire}");
     $signed_url = (string) $request->getUri();
-    $etag = str_replace('"','',$id);
     //$images[] = new ImageObject($signed_url, $id);
     /*$imgObj->setUrl($signed_url);
     $imgObj->setId($id);*/
@@ -91,8 +96,9 @@ foreach ($iterator as $object) {
     //ideally you use this in a for loop that grabs each signed url and prints it out this through this echos
    //echo("<article class='card'><a href=""><figure><img src=\"{$signed_url}\"></figure></a></article>");
     // echo "<script type='text/javascript'>alert('$pleaseHelp');</script>";
-	 echo '<article class="card"><a href="imageDisplay.php?key='.$key.'&id='.$etag.'"><figure><img src="'.$signed_url.'"</figure></a></article>';
-
+	echo '<div class="mb-3">';
+    echo '<a href="imageDisplay.php?key='.$key.'&exp=true"><img class="img-fluid" src="'.$signed_url.'"></a>';
+    echo '</div>';
 }
 if($Cnt == 0) {
 	echo '<p>No results found.</p>';
@@ -105,8 +111,9 @@ if($Cnt == 0) {
   echo("<article class='card'><a href=\"testDisplay.php\"><figure><img src=\"{$url}\"></figure></a></article>");
 }*/
 ?>
-<br>
-    </section>
+
+</div>
+</div>
 </main>
 </body>
 </html>

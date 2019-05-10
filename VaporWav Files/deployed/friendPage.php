@@ -14,22 +14,24 @@ $queryF = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'
 $Cnt = 0;
 
 ?>
-<main id="container3">
-<h2> Your Friends</h2>
-<section id="friends">
+<main role="main">
+    <div class="container">
+        <div class="jumbotron">
+            <h2 class="jumbotron-heading">Your Friends</h2>
+        </div>
+        <div class="friends">
 <?php
     if ($resultF = $conn->query($queryF)) {
     /* fetch associative array */
     while ($rowF = $resultF->fetch_assoc()) {
-        $queryFF = "SELECT nickname FROM usernames where id = '" . $rowF["friend"] . "'";
-        $queryTest = "SELECT email FROM usernames u INNER join users n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
-        $resultTest = $conn->query($queryTest);
-        $rowTest = $resultTest->fetch_assoc();
-        if($resultFF = $conn->query($queryFF)) {
-            $rowFF = $resultFF->fetch_assoc();
+        $friendsQuery = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
+        if($friendsRes = $conn->query($friendsQuery)) {
+            $friendsRow = $friendsRes->fetch_assoc();
             //echo "<p>" . $rowFF["nickname"] . ", </p>";
-            echo "<a href = 'searchPage.php?searchQ=" . $rowTest["email"] . "'>" . $rowFF["nickname"] . "</a>";
-            echo "<br>";
+            echo '<div style="margin-bottom:.3em">';
+            echo '<img src="'.$friendsRow['picture'].'" class="img-thumbnail">';
+            echo "<a href = 'searchPage.php?searchQ=" . $friendsRow["email"] . "'>" . $friendsRow["nickname"] . "</a>";
+            echo '</div>';
             //echo "<a href = 'searchPage.php?searchQ=" . $row["email"] . "'>" . $row["nickname"] . "</a>";
         }
         }
@@ -38,10 +40,12 @@ $Cnt = 0;
     /* free result set */
     //$result->free();
 ?>
-</section>
-<h2>Your Friend Requests</h2>
-<br>
-    <section id = "requests">
+</div>
+    <br>
+    <div class="jumbotron">
+        <h2 class="jumbotron-heading">Your Friends Requests</h2>
+    </div>
+    <div class="friends">
 <?php
 if ($result = $conn->query($query0)) {
     while ($row = $result->fetch_assoc()) {
@@ -50,8 +54,8 @@ if ($result = $conn->query($query0)) {
             $row1 = $result1->fetch_assoc();
             echo "<p>" . $row1["nickname"];
             echo '<form action = "accept.php" method="get"><input type="hidden" name="accept" value='.$row["sender"].'></input> <button type="submit">Accept</button></form></p>';
+            echo '<br>';
         }
-        echo "<br>";
     }
 
     /* free result set */
@@ -59,7 +63,8 @@ if ($result = $conn->query($query0)) {
 }
 
 ?>
-    </section>
+</div>
+</container>
 </main>
 </body>
 </html>

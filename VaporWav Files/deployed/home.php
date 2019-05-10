@@ -36,9 +36,8 @@ if(isset($_GET['gal']))
 {
   $prefix .= $_GET['gal'];
   $del = '';
-  echo '<p>';
-  echo '<a class="btn my-2" style="background-color:#663399" href="deleteGallery.php?prefix='.$prefix.'&gal='.$_GET['gal'].'">Delete Gallery</a>';
-  echo '</p>';
+  echo '<br>';
+  echo '<a class="btn" style="background-color:#663399" href="deleteGallery.php?prefix='.$prefix.'&gal='.$_GET['gal'].'">Delete Gallery</a>';
 }
 
 echo '</div>';

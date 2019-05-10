@@ -103,6 +103,14 @@ html {
     background-color: rebeccapurple;
     background-image: url(images/sxxm11g749vx.jpg);
     background-position: center;
+    height: 100%;
+}
+
+body {
+    background-color: rebeccapurple;
+    background-image: url(images/sxxm11g749vx.jpg);
+    background-position: center;
+    height: 100%;
 }
 
 p {
@@ -153,10 +161,13 @@ hr {
 }
 
 main {
-  background-color: rebeccapurple !important;
+  /*background-color: rebeccapurple !important;
   background-image: url(images/sxxm11g749vx.jpg) !important;
   background-position: center !important;
+  height: 100%;*/
+  background: none !important;
 }
+
 #imageSolo {
     padding:100px;
     width: auto;
@@ -191,7 +202,8 @@ main {
 
 
 .container{
-	padding: 20px;
+  padding: 20px;
+  background: none;
 }
 .wrapper{
 	width: 340px;
@@ -443,8 +455,43 @@ a:active {
 }
 
 .jumbotron .container h2 {
-  font-size: 150%;
+  font-size: 200%;
   font-family: Alien Encounters;
+}
+
+.jumbotron .btn {
+  background-color: mediumpurple !important; 
+  font-family: Tinos !important;
+  color: white !important;
+}
+
+.img-thumbnail {
+  width: 5%;
+  vertical-align: middle;
+}
+
+.friends {
+  background-color: mediumpurple;
+  padding-top: 1.6em;
+  padding-bottom: 1.6em;
+  padding-left: 2em;
+}
+
+.friends a {
+  color: white;
+  font-family: Tinos;
+  font-size: 125%;
+  padding: .5em;
+}
+
+.friends a:hover {
+  color: #663399 !important;
+  background-color: transparent !important;
+}
+
+.container h2 {
+  font-family: Alien Encounters;
+  font-size: 150%;
 }
 
 /*----------------------------------------------------------------------------------------*/
@@ -469,6 +516,13 @@ a:active {
   -ms-transform: scale(1);
   transform: scale(1); 
 }
+
+.gallery p {
+  text-align: center;
+  font-family: Streamster;
+  font-size: 200%;
+  color: white;
+}
   
 @media (max-width: 450px) {
   .gallery {
@@ -480,11 +534,6 @@ a:active {
     column-width: 100%;
   }
 }
-
-.addFriendBtn {
-   float: right;
-}
-
 
 @-webkit-keyframes animatetop {
     from {top:-300px; opacity:0} 
