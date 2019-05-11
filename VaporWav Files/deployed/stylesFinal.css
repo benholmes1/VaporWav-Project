@@ -16,6 +16,37 @@ header {
     filter: drop-shadow(5px 5px 5px black);
 }
 
+.navbar {
+  background-image: url(images/bgimage2.png);
+  background-position: center center;
+  margin-bottom: 0;
+  filter: drop-shadow(5px 5px 5px black);
+}
+
+.navbar-nav a {
+  color: white;
+  font-family: Tinos;
+  font-size: 1.2em;
+}
+
+.navbar-nav button {
+  background-color: mediumpurple;
+  color: white;
+  font-family: Tinos;
+}
+
+.collapse button:hover {
+  color: #663399;
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 1.0)' stroke-width='2.5' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.custom-toggler .navbar-toggler {
+  border-color: rgb(255,255,255);
+} 
+
 footer {
     padding: 3px;
 }
@@ -88,7 +119,7 @@ header nav li .dropdown:hover .dropdown-content {
     display: block;
 }
 
-nav a {
+/*nav a {
     color: white;
     margin-left: 0.5em;
 }
@@ -97,7 +128,7 @@ a:hover {
     font-family: Tinos;
     background-color: #F50057;
     transition:0.25s;
-}
+}*/
 
 html {
     background-color: rebeccapurple;
@@ -225,17 +256,21 @@ main {
 }
 
 .wrapacct{
-	width: 50%;
 	margin: auto;
 	padding: 10px;
-    background-color: #663399;
+  background-color: #663399;
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
-    text-align: center;
+  text-align: center;
 }
 
 .wrapacct h2{
 	font-family: Alien Encounters;
 	font-size: 150%;
+}
+
+.wrapacct .btn {
+  background-color: #663399;
+  color: white;
 }
 
 .center {
@@ -277,6 +312,10 @@ a:active {
     padding: 10px;
     font-family: Tinos;
     margin: 0em 0em 0em 0em;
+}
+
+.acct p {
+  font-size: 1.1em;
 }
 
 .count {
@@ -466,7 +505,8 @@ a:active {
 }
 
 .img-thumbnail {
-  width: 5%;
+  height: 6vw;
+  width: 6vw;
   vertical-align: middle;
 }
 
@@ -475,13 +515,15 @@ a:active {
   padding-top: 1.6em;
   padding-bottom: 1.6em;
   padding-left: 2em;
+  padding-right: 2em;
+  width: 75%;
+  margin: auto;
 }
 
 .friends a {
   color: white;
   font-family: Tinos;
-  font-size: 125%;
-  padding: .5em;
+  padding: 1em;
 }
 
 .friends a:hover {
@@ -489,9 +531,69 @@ a:active {
   background-color: transparent !important;
 }
 
+.friends p {
+  color: white;
+  font-family: Tinos;
+}
+
+.friends .btn {
+  background-color: #663399;
+  color: white;
+  font-family: Tinos;
+}
+
+@media screen and (min-width: 601px) {
+  .friends a {
+    font-size: 1.5em;
+  }
+
+  .friends p {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .friends a {
+    font-size: 1em;
+  }
+
+  .friends p {
+    font-size: 1em;
+  }
+}
+
 .container h2 {
   font-family: Alien Encounters;
   font-size: 150%;
+}
+
+@media (min-width: 768px) {
+  .container-small {
+      width: 400px;
+  }
+  .container-large {
+      width: 970px;
+  } 
+} 
+@media (min-width: 992px) {
+  .container-small {
+      width: 400px;
+  }
+  .container-large {
+      width: 1170px;
+  } 
+} 
+@media (min-width: 1200px) {
+  .container-small {
+      width: 500px;
+  }
+  .container-large {
+      width: 1500px;
+  } 
+}
+
+.container-small, .container-large {
+  max-width: 100%;
 }
 
 /*----------------------------------------------------------------------------------------*/
@@ -522,6 +624,15 @@ a:active {
   font-family: Streamster;
   font-size: 200%;
   color: white;
+}
+
+.gallery img:hover {
+  transition:0.25s;
+  filter:drop-shadow(5px 5px 2px black);
+}
+
+.gallery a:hover {
+  background-color: transparent !important;
 }
   
 @media (max-width: 450px) {

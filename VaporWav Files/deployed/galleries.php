@@ -10,8 +10,8 @@ if($_SESSION['login'] != TRUE) {
 }
 ?>
 <main role="main">
-<div class="container">
-  <div class="wrapper">
+<div class="container container-small" style="text-align:center">
+  <div class="wrapacct">
   <h2 style="font-family:Alien Encounters;size:150%">Your Galleries</h2>
   <div class="gal">
     <button id="galBtn">Create A New Gallery</button>
@@ -31,7 +31,7 @@ if($_SESSION['login'] != TRUE) {
         </div>
     </div>
     <ul>
-      <li><a href="home.php">Your Gallery</a></li>
+      <li><a href="home.php">Your Uploads</a></li>
       <?php
         foreach($_SESSION['galleries'] as $gal) {
           echo '<li><a href="home.php?gal='.$gal.'">'.$gal.'</a></li>';

@@ -49,12 +49,14 @@ $Cnt = 0;
 <?php
 if ($result = $conn->query($query0)) {
     while ($row = $result->fetch_assoc()) {
-        $query1 = "SELECT nickname FROM usernames where id = '".$row["sender"]. "'";
+        $query1 = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id = '".$row["sender"]. "'";
         if($result1 = $conn->query($query1)) {
             $row1 = $result1->fetch_assoc();
-            echo "<p>" . $row1["nickname"];
-            echo '<form action = "accept.php" method="get"><input type="hidden" name="accept" value='.$row["sender"].'></input> <button type="submit">Accept</button></form></p>';
-            echo '<br>';
+            echo '<div style="margin-bottom:.3em">';
+            echo '<img style="display:inline-block" src="'.$row1['picture'].'" class="img-thumbnail">';
+            echo "<p style='display:inline-block'>" . $row1["nickname"]. "</p>";
+            echo '<form style="display:inline-block" action = "accept.php" method="get"><input type="hidden" name="accept" value='.$row["sender"].'></input> <button class="btn" type="submit">Accept</button></form>';
+            echo '</div>';
         }
     }
 

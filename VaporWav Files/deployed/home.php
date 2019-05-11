@@ -25,7 +25,7 @@ if(isset($_GET['gal']))
 {
   echo '<h2 class="jumbotron-heading">'.$_GET['gal'].'</h2>';
 } else {
-  echo '<h2 class="jumbotron-heading">Your Gallery</h2>';
+  echo '<h2 class="jumbotron-heading">Your Uploads</h2>';
 }
 
 //User's email address
@@ -38,6 +38,26 @@ if(isset($_GET['gal']))
   $del = '';
   echo '<br>';
   echo '<a class="btn" style="background-color:#663399" href="deleteGallery.php?prefix='.$prefix.'&gal='.$_GET['gal'].'">Delete Gallery</a>';
+} else {
+  ?>
+  <br>
+  <button id="galBtn">Create A New Gallery</button>
+    <div id="galModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+              <span class="close" style="margin-left:10px">&times;</span>
+              <h2>Create a New Gallery</h2>
+            </div>
+            <div class="modal-body">
+              <form action="create_gallery.php" method="post" id="galForm">
+                  <label for="name" style="color:white">Enter the name of your gallery:</label>
+                  <input type="text" id="name" name="name" required>
+                  <button type="submit" class="subBtn">Submit</button>
+              </form>
+            </div>
+        </div>
+    </div>
+    <?php
 }
 
 echo '</div>';
@@ -85,5 +105,35 @@ foreach ($iterator as $object) {
 </div>
 </div>
 </main>
+
+<script>
+  // Get the modal
+  var modal = document.getElementById('galModal');
+  // Get the button that opens the modal
+  var btn = document.getElementById("galBtn");
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+  // When the user clicks the button, open the modal 
+  btn.onclick = function() {
+      modal.style.display = "block";
+  }
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function() {
+      modal.style.display = "none";
+  }
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+      if (event.target == modal) {
+          modal.style.display = "none";
+      }
+  }
+  $("#name").alphanum({
+   allowSpace: true,
+   allowNewline: false,
+   allowOtherCharSets: false,
+   allowNumeric: false
+   });
+</script>
+
 </body>
 </html>
