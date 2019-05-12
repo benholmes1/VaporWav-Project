@@ -2,7 +2,7 @@ html, body, header, footer, main, nav, article, section, figure, figcaption, h1,
 body, div, p, img
 { margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; border: 0; }
 
-header, footer {
+/*header, footer {
  color: white;
  background-color: rebeccapurple;
  margin: 0em 4em 0.25em 4em;
@@ -14,6 +14,17 @@ header {
     margin-left:0px;
     margin-bottom: 0;
     filter: drop-shadow(5px 5px 5px black);
+}*/
+
+.inner {
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.inner h1 {
+  color: white;
+  font-size: 5em;
 }
 
 .navbar {
@@ -260,7 +271,6 @@ main {
 	padding: 10px;
   background-color: #663399;
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
-  text-align: center;
 }
 
 .wrapacct h2{
@@ -318,6 +328,16 @@ a:active {
   font-size: 1.1em;
 }
 
+.acct a {
+  font-family: Tinos;
+  font-size: 1.1em;
+  color: white;
+}
+
+.acct a:hover {
+  color: #663399;
+}
+
 .count {
   font-family: Tinos;
   font-size: 200%;
@@ -325,7 +345,7 @@ a:active {
   text-align: center;
 }
 
-/* Dropdown Button */
+/*
 #imageSolo .dropbtn {
   background-color: white;
   font-family: Tinos;
@@ -335,18 +355,15 @@ a:active {
   cursor: pointer;
 }
 
-/* Dropdown button on hover & focus */
 #imageSolo .dropbtn:hover, .dropbtn:focus, .dropbtn:active {
   background-color: #4B0082;
   color: white;
 }
 
-/* The container <div> - needed to position the dropdown content */
 #imageSolo .imgDropdown {
   display: inline-block;
 }
 
-/* Dropdown Content (Hidden by Default) */
 #imageSolo .dropdown-content {
   display: none;
   position: absolute;
@@ -356,7 +373,6 @@ a:active {
   z-index: 1;
 }
 
-/* Links inside the dropdown */
 #imageSolo .dropdown-content a {
   color: black;
   padding: 12px 16px;
@@ -379,15 +395,13 @@ a:active {
   overflow: hidden;
 }
 
-/* Change color of dropdown links on hover */
 #imageSolo .dropdown-content a:hover {background-color: #ddd}
 
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 #imageSolo .show {display:block;}
 
 #imageSolo .same-row {
     display: inline-block;
-}
+}*/
 
 /*.gal {
     background-color: mediumpurple;
@@ -557,8 +571,8 @@ a:active {
 }
 
 .dropdown-menu a:hover {
-  background-color: mediumpurple;
-  color: white;
+  background-color: mediumpurple !important;
+  color: white !important;
 }
 
 /*----------------------------------------------------------------------------------------*/

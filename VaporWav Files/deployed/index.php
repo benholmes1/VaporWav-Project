@@ -80,7 +80,17 @@ if($gClient->getAccessToken()){
         $outputh .= '</header>';
 
 	// Render google login button
-	$output = '<a href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'"><img src="images/google-sign-in-btn.png" alt="" class="center" style="width:300px"/></a>';
+	$output = '
+    <div class="container">
+		<div class="inner cover my-auto">
+			<h1 class="cover-heading">VaporWav</h1>
+			<p class="lead">Show Us What You\'ve Been Working On</p>
+			<p class="lead">
+				<a href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'"><img src="images/google-sign-in-btn.png" alt="" class="center" style="width:300px"/></a>
+			</p>
+		</div>
+	</div>';
+	//$output = '<a href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'"><img src="images/google-sign-in-btn.png" alt="" class="center" style="width:300px"/></a>';
 }
 ?>
 
@@ -89,17 +99,18 @@ if($gClient->getAccessToken()){
 <head>
     <!needed this to stop a warning in the validator>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>VaporWav - Share your art</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>VaporWav - Share your art</title>
+	
+	<!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="stylesFinal.css">
 </head>
 <body>
 
-<?php echo $outputh; ?>	
-
-<div class="container">
-    <?php echo $output; ?>
-</div>
+	<?php echo $output; ?>
 
 </body>
 </html>

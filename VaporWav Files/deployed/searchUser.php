@@ -14,29 +14,34 @@ $Cnt = 0;
 
 ?>
 
-<main class="container2">
-<h2>Your Result(s)</h2>
-<br>
-    <section class="cards">
-<?php
-if ($result = $conn->query($query0)) {
-    global $Cnt;
-    $Cnt = $Cnt + 1;
-    /* fetch associative array */
-    while ($row = $result->fetch_assoc()) {
-        echo "<a href = 'searchPage.php?searchQ=" . $row["email"] . "'>" . $row["nickname"] . "</a>";
-        echo "<br>";
-    }
+<main role="main">
+    <div class="container">
+        <div class="jumbotron">
+            <h2 class="jumbotron-heading">Your Result(s)</h2>
+        </div>
+    </div>
+    <div class="container container-small">
+        <div class="wrapacct">
+            <div class="acct">
+            <?php
+            if ($result = $conn->query($query0)) {
+                if($result->num_rows == 0) {
+                    echo '<p style="color:white;font-family:Streamster;font-size:1.4em">No Results Found</p>';
+                } else {
+                    /* fetch associative array */
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<a href = 'searchPage.php?searchQ=" . $row["email"] . "'>" . $row["nickname"] . "</a>";
+                        echo "<br>";
+                    }
+                }
+                /* free result set */
+                $result->free();
+            }
+            ?>
 
-    /* free result set */
-    $result->free();
-}
-if($Cnt == 0) {
-	echo '<p>No results found.</p>';
-}
-
-?>
-    </section>
+            </div>
+        </div>
+    </div>
 </main>
 </body>
 </html>
