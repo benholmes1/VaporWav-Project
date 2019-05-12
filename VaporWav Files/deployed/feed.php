@@ -104,7 +104,7 @@ if($numRows == 0) {
       
       //Display each image as a link to the image display page 
       echo '<div class="mb-3">';
-      echo '<a href="imageDisplay.php?key='.$key.'&exp=true"><img class="img-fluid" src="'.$fr_signed_url.'"></a>';
+      echo '<a href="imageDisplay.php?key='.$friendKey.'&exp=true"><img class="img-fluid" src="'.$fr_signed_url.'"></a>';
       echo '</div>';
     }
   }

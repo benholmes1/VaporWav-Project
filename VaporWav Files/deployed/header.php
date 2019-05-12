@@ -73,9 +73,6 @@ include 'dbconn.php';
           <a class="nav-link" href="feed.php"><button class="btn">Explore</button></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="galleries.php"><button class="btn">Galleries</button></a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="friendPage.php"><button class="btn">Friends</button></a>
         </li>
         <li class="nav-item">

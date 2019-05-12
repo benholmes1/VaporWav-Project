@@ -178,7 +178,7 @@ figcaption {
 }
 
 figure {
-    background-color: #C5CAE9;
+    background-color: #663399;
 }
 
 figure img {
@@ -389,7 +389,7 @@ a:active {
     display: inline-block;
 }
 
-.gal {
+/*.gal {
     background-color: mediumpurple;
     padding: 10px;
     font-family: Tinos;
@@ -424,69 +424,15 @@ a:active {
 
 .gal button:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}*/
+
+#galModal .modal-content {
+  background-color: #663399 !important;
 }
 
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-.modal-header {
-  padding: 2px 16px;
-  background-color: #663399;
-  color: white;
-  font-family: Alien Encounters;
-}
-
-.modal-header h2 {
-    background-color: #663399;
-}
-
-.modal-body {
-    padding: 2px 16px;
-}
-  
-/* Modal Content/Box */
-.modal-content {
-  background-color: mediumpurple;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 60%; /* Could be more or less, depending on screen size */
-}
-  
-/* The Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-  
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.modal-body .subBtn {
-    background-color: #663399;
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    font-family: Tinos;
+#galModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
 }
 
 .jumbotron {
@@ -505,19 +451,11 @@ a:active {
 }
 
 .img-thumbnail {
-  height: 6vw;
-  width: 6vw;
   vertical-align: middle;
 }
 
 .friends {
   background-color: mediumpurple;
-  padding-top: 1.6em;
-  padding-bottom: 1.6em;
-  padding-left: 2em;
-  padding-right: 2em;
-  width: 75%;
-  margin: auto;
 }
 
 .friends a {
@@ -546,9 +484,20 @@ a:active {
   .friends a {
     font-size: 1.5em;
   }
-
   .friends p {
     font-size: 1.5em;
+  }
+  .friends .img-thumbnail {
+    height: 4em;
+    width: 4em;
+  }
+  .friends {
+    padding-top: 1.6em;
+    padding-bottom: 1.6em;
+    padding-left: 2em;
+    padding-right: 2em;
+    width: 75%;
+    margin: auto;
   }
 }
 
@@ -556,9 +505,20 @@ a:active {
   .friends a {
     font-size: 1em;
   }
-
   .friends p {
     font-size: 1em;
+  }
+  .friends .img-thumbnail {
+    height: 2.5em;
+    width: 2.5em;
+  }
+  .friends {
+    padding-top: .8em;
+    padding-bottom: .8em;
+    padding-left: 1.2em;
+    padding-right: 1.2em;
+    width: 90%;
+    margin: auto;
   }
 }
 
@@ -594,6 +554,11 @@ a:active {
 
 .container-small, .container-large {
   max-width: 100%;
+}
+
+.dropdown-menu a:hover {
+  background-color: mediumpurple;
+  color: white;
 }
 
 /*----------------------------------------------------------------------------------------*/

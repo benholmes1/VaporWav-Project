@@ -1,8 +1,7 @@
 <?php
 
   //This page displays the image with information
-  include 'dbconn.php';
-  include_once 'header_script.php';
+  include_once 'header.php';
   
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
@@ -75,54 +74,56 @@
 
 ?>
     
-    <main id="imageSolo">
-    <article>
-    <section>
+<main role="main">
+  <div class="container">
+    <div class="wrapacct" style="text-align:left">
 
     <!--image title-->  
-    <h2><?php echo $imageinfo['title'] ?></h2>
-    
-    <div class="bordThis">
-    
+    <ul class="nav" style="background-color:mediumpurple">
+      <h2 class="navbar-brand"><?php echo $imageinfo['title'] ?></h2>
+      <?php
+        if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
+          ?>
+          <li class="nav-item dropdown ml-auto">
+            <a class="nav-link pull-right" data-toggle="dropdown" id="imgDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:white;vertical-align:middle" class="fa fa-bars"></i></a>
+            <div class="dropdown-menu" aria-labelledby="imgDropdown">
+              <?php
+                $keyLen = explode('/', $key);
+                if(count($keyLen) <= 2) {
+                  echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
+                  ?>
+                  <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="addDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To Gallery</a>
+                  <div class="dropdown-menu" aria-labelledby="addDropdown">
+                    <?php
+                    foreach($_SESSION['galleries'] as $gal) { 
+                      echo '<a class="dropdown-item" href="addToGallery.php?gal='.$gal.'&key='.$key.'">'.$gal.'</a>'; 
+                    }
+                    ?>
+                  </div>
+                <?php
+                } else {
+                  echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
+                }
+                ?>
+            </div>
+          </li>
+        <?php
+        }
+        ?>
+    </ul>
+        
     <!--image-->
     <figure>
     <img src="<?php echo $signed_url ?>">
         <!--image caption-->
         <figcaption><?php echo $imageinfo['caption'] ?></figcaption>
     </figure>
+
+    <div class="acct">
     
     <!--image author-->
     <p class="same-row">Created by: <?php echo $userinfo['nickname'] ?></p>
-    
-    <!--uploader options---------------------------------------------------------->
-    <?php
-      if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
-        $dropOut  = '<div class="same-row" style="float:right">';
-        $dropOut .= '<button onclick="myFunction()" class="dropbtn">Options</button>';
-        $dropOut .= '<div id="imgDropdown" class="dropdown-content">';
-        $keyLen = explode('/', $key);
-        if(count($keyLen) <= 2) {
-          $dropOut .= '  <a id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
-          $dropOut .= '  <a href="#" class="acc">Add To Gallery</a>';
-          $dropOut .= '    <div class="panel">';
-          echo $dropOut;
-          foreach($_SESSION['galleries'] as $gal) { 
-            echo '<a href="addToGallery.php?gal='.$gal.'&key='.$key.'">'.$gal.'</a>'; 
-          }
-          $dropOut  = '    </div>';
-          $dropOut .= '</div>';
-          $dropOut .= '</div>';
-        } else {
-          echo $dropOut;
-          $dropOut  = '  <a id="delete" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
-          $dropOut .= '    </div>';
-          $dropOut .= '</div>';
-        }
-        echo $dropOut;
-      }
-    ?>
-    <!-------------------------------------------------------------------------->
-    
+        
     <!--image upload date-->
     <p>Uploaded on: <?php echo $formatDate ?></p>
     
@@ -167,8 +168,9 @@
     ?>
 
     </div>
-
-    </section>
+    </div>
+  </div>
+</main>
 
     <script>
     function myFunction() {
