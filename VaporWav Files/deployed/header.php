@@ -16,7 +16,9 @@ include 'dbconn.php';
     <title>VaporWav - Share your art</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="jquery.alphanum-master/jquery.alphanum.js"></script>
-    <script src="https://cdnjs.com/libraries/ekko-lightbox"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js.map"></script>
     <link rel="stylesheet" href="stylesFinal.css">
 
     <script src="acctscript.js"></script>
@@ -77,10 +79,13 @@ include 'dbconn.php';
           <a class="nav-link" href="friendPage.php"><button class="btn">Friends</button></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="account.php"><button class="btn">My Account</button></a>
+          <a class="nav-link" href="#"><button class="btn">Draw</button></a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="account.php"><button class="btn">My Account</button></a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="logout.php"><button class="btn">Logout</button></a>
         </li>

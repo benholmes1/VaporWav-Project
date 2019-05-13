@@ -15,6 +15,7 @@ $Cnt = 0;
 ?>
 
 <main role="main">
+    <br>
     <div class="container">
         <div class="jumbotron">
             <h2 class="jumbotron-heading">Your Result(s)</h2>

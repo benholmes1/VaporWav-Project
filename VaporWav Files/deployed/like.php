@@ -5,6 +5,10 @@
   if(isset($_POST['key'])) {
     $keyname = $_POST['key'];
   }
+
+  if(isset($_POST['type'])) {
+    $type = $_POST['type'];
+  }
   
   // Check entry within table
   $queryLikeI = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."' and userid='".$_SESSION['userData']['id']."'";
@@ -12,15 +16,26 @@
   if($queryLikeIRes) {
     $likesinfoI = $queryLikeIRes->fetch_assoc();
     $likescountI = $likesinfoI['likescount'];
+    $test0 = "Success";
+  } else {
+    $test0 = "Fail";
   }
 
   if($likescountI == '0'){
     $insertquery = "INSERT INTO `likes`(`userid`, `keyname`) VALUES ('".$_SESSION['userData']['id']."', '".$keyname."')";
     $insertResult = $conn->query($insertquery);
     if($insertResult) {
-      $test = "Success";
+      $test1 = "Success";
     } else {
-      $test = "Fail";
+      $test1 = "Fail";
+    }
+  } else {
+    $delLikeQuery = "DELETE FROM likes WHERE keyname = '".$keyname."' and userid='".$_SESSION['userData']['id']."'";
+    $delLikeRes = $conn->query($delLikeQuery);
+    if($delLikeRes) {
+      $test2 = "Success";
+    } else {
+      $test2 = "Fail";
     }
   }
   
@@ -34,11 +49,11 @@
   $insertLikes = "UPDATE images SET likes = '".$likescount."' WHERE keyname = '".$keyname."'";
   $insertLikeRes = $conn->query($insertLikes);
   if($insertResult) {
-    $test = "Success";
+    $test3 = "Success";
   } else {
-    $test = "Fail";
+    $test3 = "Fail";
   }
 
-  $arrayreturn = array("likes"=>$likescount, "test"=>$test, "key"=>$keyname, "id"=>$_SESSION['userData']['id']);
+  $arrayreturn = array("likes"=>$likescount, "test0"=>$test0, "tes1"=>$test1, "test2"=>$test2, "test3"=>$test3, "key"=>$keyname, "id"=>$_SESSION['userData']['id']);
 
   echo json_encode($arrayreturn);

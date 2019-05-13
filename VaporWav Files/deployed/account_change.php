@@ -10,9 +10,10 @@
   }
 ?>
 <main role="main">
-  <div class="container">
+  <div class="container container-small">
+  <br>
     <div class="wrapacct">
-      <h2>Edit Account Settings</h2>
+      <h2 style="text-align:center">Edit Account Settings</h2>
       <div id="form">
         <form action="insertAcct.php" method="post" id="acctForm" class="acctform">
           <label>Nickname: </label>
@@ -26,7 +27,7 @@
             <label for="private">Private</label>
           </div>
           <br>
-	        <button type="submit">Submit</button>
+	        <button class="btn" type="submit">Submit</button>
 	      </form>
       </div>
     </div>

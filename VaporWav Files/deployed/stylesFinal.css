@@ -185,7 +185,7 @@ figcaption {
     padding: 5px;
     font-size: 120%;
     color:black;
-    background-image: url(images/vpwaveGrad.jpg);
+    background-color: #FD01FF;
 }
 
 figure {
@@ -359,6 +359,16 @@ a:active {
 
 .imgInfo form {
   font-family: Tinos;
+}
+
+.imgInfo a {
+  font-family: Tinos;
+  font-size: 1.1em;
+  color: white;
+}
+
+.imgInfo a:hover {
+  color: #663399;
 }
 
 /*

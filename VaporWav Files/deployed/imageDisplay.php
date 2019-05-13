@@ -66,6 +66,14 @@
   $likesinfo = $queryResL->fetch_assoc();
   $likescount = $likesinfo['likescount'];
 
+  $checkLikeQuery = "SELECT * FROM likes WHERE userid = '".$_SESSION['userData']['id']."' AND keyname = '".$keyname."'";
+  $checkLikeRes = $conn->query($checkLikeQuery);
+  if($checkLikeRes->num_rows == 0) {
+    $checkLike = FALSE;
+  } else {
+    $checkLike = TRUE;
+  }
+
   $date = strtotime($imageinfo['created']);
   $formatDate = date("m/d/y", $date);
 
@@ -124,12 +132,17 @@
     
       <div class="row">
         <!--image author-->
-        <div class="col-6">Created by: <?php echo $userinfo['nickname'] ?></div>
+        <div class="col-6">Created by: <a href="searchPage.php?searchQ=<?php echo $mail; ?>"><?php echo $userinfo['nickname'] ?></a></div>
 
           <!--like button-->
           <div class="col-6 text-right">
-              <input type="button" value="Like" id="like_<?php echo $keyname; ?>" class="like btn" />
-              <span style="color:white;margin-left:1em;margin-right:1em" id="likecount"><?php echo $likescount; ?></span>
+            <?php
+            if($checkLike) {
+              echo '<input style="color:#FD01FF" type="button" value="&#xf087" id="unlike_'.$keyname.'" class="like btn fa" />';
+            } else {
+              echo '<input type="button" value="&#xf087" id="like_'.$keyname.'" class="like btn fa" />';
+            } ?>
+            <span style="color:white;margin-left:1em;margin-right:1em" id="likecount"><?php echo $likescount; ?></span>
           </div>
       </div>
           
@@ -227,7 +240,7 @@
           var keyname = id.split(/_(.+)/)[1];
           
           var data = {
-              key: keyname,
+            key: keyname,
           };
 
           // AJAX Request
@@ -241,6 +254,13 @@
 
                   //var type = typeof(data['likes']);
                   //alert(type);
+                  if(type === "like") {
+                    $(".like").attr('id', 'unlike_'+keyname);
+                    $(".like").css('color', '#FD01FF');
+                  } else {
+                    $(".like").attr('id', 'like_'+keyname);
+                    $(".like").css('color', 'white');
+                  }
 
                   $("#likecount").text(data['likes']);        // setting likes
               
