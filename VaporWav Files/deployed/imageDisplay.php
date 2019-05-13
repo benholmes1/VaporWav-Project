@@ -124,10 +124,10 @@
     
       <div class="row">
         <!--image author-->
-        <div class="col-8">Created by: <?php echo $userinfo['nickname'] ?></div>
+        <div class="col-6">Created by: <?php echo $userinfo['nickname'] ?></div>
 
           <!--like button-->
-          <div class="col-4 text-right">
+          <div class="col-6 text-right">
               <input type="button" value="Like" id="like_<?php echo $keyname; ?>" class="like btn" />
               <span style="color:white;margin-left:1em;margin-right:1em" id="likecount"><?php echo $likescount; ?></span>
           </div>
