@@ -16,6 +16,7 @@ $Cnt = 0;
 ?>
 <main role="main">
     <div class="container">
+        <br>
         <div class="jumbotron">
             <h2 class="jumbotron-heading">Your Friends</h2>
         </div>

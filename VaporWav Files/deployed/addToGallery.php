@@ -14,7 +14,7 @@
   require './vendor/autoload.php';
  
   //Include the database credentials
-  include 'dbconfig.php';	
+  include 'dbconn.php';	
 
   //S3Client for use in upload
   use Aws\S3\S3Client;
@@ -66,7 +66,15 @@
      die('Error:' . $e->getMessage());
    } catch (Exception $e) {
      die('Error:' . $e->getMessage());
-   }   
+   }
+
+  $addQuery = "INSERT INTO `image_galleries`(`keyname`, `gallery`) VALUES ('".$keyArr[1]."', '".$destKey."')";
+  $addQueryRes = $conn->query($addQuery);
+  if($addQueryRes) {
+    $message = "Success";
+  } else {
+    $message = "Fail";
+  }
 
   //Redirect back to the upload page
   header("Location: home.php?msg=$message");

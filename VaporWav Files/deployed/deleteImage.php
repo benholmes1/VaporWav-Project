@@ -56,6 +56,33 @@
   $keyname = explode('/', $key);
   $keyname = end($keyname);
 
+  $imgGalQuery = "SELECT * FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
+  $imgGalRes = $conn->query($imgGalQuery);
+  if($imgGalRes->num_rows != 0) {
+    while($galRow = $imgGalRes->fetch_assoc()) {
+      try {
+        $result = $s3->DeleteObject(
+          array(
+            'Bucket'=>$bucketName,
+            'Key' =>  $galRow['gallery'],
+          )
+        );
+      } catch (S3Exception $e) {
+        die('Error:' . $e->getMessage());
+      } catch (Exception $e) {
+        die('Error:' . $e->getMessage());
+      }
+    }
+    $delGalQuery = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
+    $delGalRes = $conn->query($delGalQuery);
+    if($delGalRes) {
+      $message = "Success";
+    }
+    else {
+      $message = "Something went wrong.";
+    }
+  }
+  
   if(!isset($_GET['gal'])) {
     $delCommQuery = "DELETE FROM `comments` WHERE `image_id` = '".$keyname."'";
     $commRes = $conn->query($delCommQuery);

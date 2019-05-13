@@ -81,13 +81,19 @@ if($gClient->getAccessToken()){
 
 	// Render google login button
 	$output = '
-    <div class="container">
-		<div class="inner cover my-auto">
-			<h1 class="cover-heading">VaporWav</h1>
-			<p class="lead">Show Us What You\'ve Been Working On</p>
-			<p class="lead">
-				<a href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'"><img src="images/google-sign-in-btn.png" alt="" class="center" style="width:300px"/></a>
-			</p>
+	<div class="container-fluid container-large h-100">
+		<div class="row align-items-center h-100">
+			<div class="col mx-auto">
+				<section class="jumbotron text-center">
+					<div class="container">
+						<h1 class="display-4">VaporWav</h1>
+						<p>Show us what you have been working on.</p>
+						<p class="lead">
+							<a href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'"><img src="images/google-sign-in-btn.png" alt="" class="img-fluid"/></a>
+						</p>
+					</div>
+				</section>
+			</div>
 		</div>
 	</div>';
 	//$output = '<a href="'.filter_var($authUrl, FILTER_SANITIZE_URL).'"><img src="images/google-sign-in-btn.png" alt="" class="center" style="width:300px"/></a>';

@@ -76,6 +76,7 @@
     
 <main role="main">
   <div class="container">
+    <br>
     <div class="wrapacct" style="text-align:left">
 
     <!--image title-->  
@@ -86,7 +87,7 @@
           ?>
           <li class="nav-item dropdown ml-auto">
             <a class="nav-link pull-right" data-toggle="dropdown" id="imgDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:white;vertical-align:middle" class="fa fa-bars"></i></a>
-            <div class="dropdown-menu" aria-labelledby="imgDropdown">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="imgDropdown">
               <?php
                 $keyLen = explode('/', $key);
                 if(count($keyLen) <= 2) {
@@ -114,68 +115,61 @@
         
     <!--image-->
     <figure>
-    <img src="<?php echo $signed_url ?>">
+    <a href="<?php echo $signed_url ?>" data-toggle="lightbox"><img src="<?php echo $signed_url ?>"></a>
         <!--image caption-->
         <figcaption><?php echo $imageinfo['caption'] ?></figcaption>
     </figure>
 
-    <div class="acct">
+    <div class="imgInfo">
     
-    <!--image author-->
-    <p class="same-row">Created by: <?php echo $userinfo['nickname'] ?></p>
-        
-    <!--image upload date-->
-    <p>Uploaded on: <?php echo $formatDate ?></p>
-    
-    
-    <!--like button-->
-    <div class="post-action" style="float:right">
+      <div class="row">
+        <!--image author-->
+        <div class="col-8">Created by: <?php echo $userinfo['nickname'] ?></div>
 
-        <input 
-              type="button" 
-              value="Like" 
-              id="like_<?php echo $keyname; ?>" 
-              class="like" 
-               
-        />
-        &nbsp;(<span id="likecount"><?php echo $likescount; ?></span>)&nbsp;
+          <!--like button-->
+          <div class="col-4 text-right">
+              <input type="button" value="Like" id="like_<?php echo $keyname; ?>" class="like btn" />
+              <span style="color:white;margin-left:1em;margin-right:1em" id="likecount"><?php echo $likescount; ?></span>
+          </div>
+      </div>
+          
+      <div class="row">
+        <!--image upload date-->
+        <p>Uploaded on: <?php echo $formatDate ?></p>
+      </div>
 
-    </div>
+      <textarea placeholder="Comment . . ." style="width:100%;box-sizing:border-box;resize:none" id="comment" name="comment" form="commentForm" required></textarea>
+      <form action="addcomment.php" id="commentForm" method="post">
+        <input class="btn" id="uploadComment" type="submit" value="Publish">
+        <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
+        <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
+      </form>
 
-    </div>
-    <textarea placeholder="Comment . . ." style="width:100%;box-sizing:border-box;resize:none" id="comment" name="comment" form="commentForm" required></textarea>
-    <form action="addcomment.php" id="commentForm" method="post">
-      <input id="uploadComment" type="submit" value="Publish">
-      <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
-      <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
-    </form>
+      <div id="commentSection">
+        <?php
 
-    <div id="commentSection">
+          while($comments = $getCommentsRes->fetch_assoc()) {
+            $commentDate = date("m/d/y", $comments['created']);
+            $commentOut  = '<p>'.$comments['nickname'].'</p>';
+            $commentOut .= '<p style="padding-left:3em">'.$comments['comment'].'</p>';
+            $commentOut .= '<hr width:100%>';
+            echo $commentOut;
+          }
 
-    <?php
+          $comment = $getCommentsRes->fetch_assoc();
+          echo '<p>'.$comment['nickname'].'</p>';
 
-      while($comments = $getCommentsRes->fetch_assoc()) {
-        $commentDate = date("m/d/y", $comments['created']);
-        $commentOut  = '<p>'.$comments['nickname'].'</p>';
-        $commentOut .= '<p>'.$comments['comment'].'</p>';
-        $commentOut .= '<hr width:100%>';
-        echo $commentOut;
-      }
-
-      $comment = $getCommentsRes->fetch_assoc();
-      echo '<p>'.$comment['nickname'].'</p>';
-
-    ?>
-
+        ?>
+      </div>
     </div>
     </div>
   </div>
 </main>
 
     <script>
-    function myFunction() {
+    /*function myFunction() {
       document.getElementById("imgDropdown").classList.toggle("show");
-    }
+    }*/
 
     // Close the dropdown menu if the user clicks outside of it
     /*window.onclick = function(event) {
@@ -191,10 +185,10 @@
       }
     }*/
 
-    $('a.acc').click(function(e)
+    /*$('a.acc').click(function(e)
     {
       e.preventDefault();
-    });
+    });*/
 
     $('#delete').on('click',function(e) {
       var answer=confirm('Are you sure you want to delete this image?');
@@ -206,7 +200,7 @@
       }
     });
 
-    var acc = document.getElementsByClassName("acc");
+    /*var acc = document.getElementsByClassName("acc");
     var i;
 
     for (i = 0; i < acc.length; i++) {
@@ -219,7 +213,7 @@
           panel.style.display = "block";
         }
       });
-    }
+    }*/
 
     //Like Script
     $(document).ready(function(){
@@ -259,6 +253,11 @@
       });
 
     });
+
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });
     </script>
 
 </body>

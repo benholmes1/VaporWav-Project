@@ -16,6 +16,7 @@ include 'dbconn.php';
     <title>VaporWav - Share your art</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="jquery.alphanum-master/jquery.alphanum.js"></script>
+    <script src="https://cdnjs.com/libraries/ekko-lightbox"></script>
     <link rel="stylesheet" href="stylesFinal.css">
 
     <script src="acctscript.js"></script>

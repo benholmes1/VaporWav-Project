@@ -243,10 +243,10 @@ main {
 }
 
 
-.container{
+/*.container{
   padding: 20px;
   background: none;
-}
+}*/
 .wrapper{
 	width: 340px;
 	margin: auto;
@@ -343,6 +343,22 @@ a:active {
   font-size: 200%;
   color: white;
   text-align: center;
+}
+
+.imgInfo {
+  background-color: mediumpurple;
+  font-family: Tinos;
+  font-size: 1.1em;
+  padding: .5em !important;
+  margin: 0em 0em 0em 0em;
+}
+
+.imgInfo {
+  color: white;
+}
+
+.imgInfo form {
+  font-family: Tinos;
 }
 
 /*
@@ -464,6 +480,17 @@ a:active {
   color: white !important;
 }
 
+.jumbotron h1 {
+  color: white;
+  background-color: mediumpurple;
+}
+
+.jumbotron p {
+  color: white;
+  font-family: Alien Encounters;
+  font-size: 1.5em;
+}
+
 .img-thumbnail {
   vertical-align: middle;
 }
@@ -533,6 +560,15 @@ a:active {
     padding-right: 1.2em;
     width: 90%;
     margin: auto;
+  }
+  .jumbotron h1 {
+    font-size: 2.2em;
+  }
+  .jumbotron p {
+    font-size: 1.1em;
+  }
+  .imgInfo {
+    font-size: .9em;
   }
 }
 
