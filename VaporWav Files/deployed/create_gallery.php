@@ -37,6 +37,6 @@
   }
 
   //Redirect back to the upload page
-  header("Location: galleries.php?msg=$message");
+  header("Location: home.php?msg=$message");
 
 ?>

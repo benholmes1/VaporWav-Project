@@ -52,6 +52,7 @@
   $src .= $key;
   $keyArr = explode('/', $key);
   $destKey = $keyArr[0] . '/' . $gal . '/' . $keyArr[1];
+  $imgGallery = $keyArr[0] . '/' . $gal . '/';
 
    // Add it to S3
    try {

@@ -55,35 +55,35 @@
 
   $keyname = explode('/', $key);
   $keyname = end($keyname);
-
-  $imgGalQuery = "SELECT * FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
-  $imgGalRes = $conn->query($imgGalQuery);
-  if($imgGalRes->num_rows != 0) {
-    while($galRow = $imgGalRes->fetch_assoc()) {
-      try {
-        $result = $s3->DeleteObject(
-          array(
-            'Bucket'=>$bucketName,
-            'Key' =>  $galRow['gallery'],
-          )
-        );
-      } catch (S3Exception $e) {
-        die('Error:' . $e->getMessage());
-      } catch (Exception $e) {
-        die('Error:' . $e->getMessage());
-      }
-    }
-    $delGalQuery = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
-    $delGalRes = $conn->query($delGalQuery);
-    if($delGalRes) {
-      $message = "Success";
-    }
-    else {
-      $message = "Something went wrong.";
-    }
-  }
   
   if(!isset($_GET['gal'])) {
+    $imgGalQuery = "SELECT * FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
+    $imgGalRes = $conn->query($imgGalQuery);
+    if($imgGalRes->num_rows != 0) {
+      while($galRow = $imgGalRes->fetch_assoc()) {
+        try {
+          $result = $s3->DeleteObject(
+            array(
+              'Bucket'=>$bucketName,
+              'Key' =>  $galRow['gallery'],
+            )
+          );
+        } catch (S3Exception $e) {
+          die('Error:' . $e->getMessage());
+        } catch (Exception $e) {
+          die('Error:' . $e->getMessage());
+        }
+      }
+      $delGalQuery = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
+      $delGalRes = $conn->query($delGalQuery);
+      if($delGalRes) {
+        $message = "Success";
+      }
+      else {
+        $message = "Something went wrong.";
+      }
+    }
+
     $delCommQuery = "DELETE FROM `comments` WHERE `image_id` = '".$keyname."'";
     $commRes = $conn->query($delCommQuery);
     if($commRes) {
@@ -111,7 +111,13 @@
       $message = "Something went wrong.";
     }
   } else {
-    $message = "Success";
+    $delSingleGal = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyname."' AND gallery = '".$key."'";
+    $delSingleRes = $conn->query($delSingleGal);
+    if($delSingleRes) {
+      $message = "Success";
+    } else {
+      $message = "Fail";
+    }
   }
 
   //Redirect back to the upload page

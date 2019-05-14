@@ -111,7 +111,7 @@
                   </div>
                 <?php
                 } else {
-                  echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
+                  echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
                 }
                 ?>
             </div>
@@ -204,7 +204,17 @@
     });*/
 
     $('#delete').on('click',function(e) {
-      var answer=confirm('Are you sure you want to delete this image?');
+      var answer=confirm('Continuing will delete the image from all galleries.\nDo you want to continue?');
+      if(answer){
+        alert('Deleted');
+      }
+      else{
+        e.preventDefault();      
+      }
+    });
+
+    $('#remove').on('click',function(e) {
+      var answer=confirm('Continuing will remove this image from this gallery only.\nDo you want to continue?');
       if(answer){
         alert('Deleted');
       }
