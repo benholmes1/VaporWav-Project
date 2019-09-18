@@ -1,6 +1,6 @@
 <?php
 
-    class s3 {
+    class S3 {
 
         private $s3;
         public $signed_url;
@@ -14,16 +14,26 @@
         }
 
         public function get($key) {
-            $cmd = $s3->getCommand('GetObject', [
-                'Bucket' => $bucket,
-                'Key'    => $key,
-            ]);
+            try {
+                $cmd = $s3->getCommand('GetObject', [
+                    'Bucket' => $bucket,
+                    'Key'    => $key,
+                ]);
+            } catch (S3Exception $e) {
+                echo $e->getMessage();
+                echo "\n";
+            }
         
-            //Create the presigned url, specify expire time declared earlier
-            $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-            //Get the actual url
-            $signed_url = (string) $request->getUri();
-            return $this->$signed_url;
+            try {
+                //Create the presigned url, specify expire time declared earlier
+                $request = $s3->createPresignedRequest($cmd, "+{$expire}");
+                //Get the actual url
+                $signed_url = (string) $request->getUri();
+                return $this->$signed_url;
+            } catch (S3Exception $e) {
+                echo $e->getMessage();
+                echo "\n";
+            }
         }
     }
 
