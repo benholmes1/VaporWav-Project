@@ -13,6 +13,7 @@ $expire = "1 hour";
 //Requires
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
+require 's3Access.php';
 ?>
 
 <main role="main">
@@ -96,10 +97,8 @@ if(isset($_GET['gal']))
 
 <?php
 //Start a new AWS S3Client, specify region
-$s3 = new Aws\S3\S3Client([
-    'version' => '2006-03-01',
-    'region'  => $region,
-]);
+$s3 = new S3();
+$s3Client = $s3->getClient();
 
 //Get iterator for user's folder in S3 to get all images
 $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix, 'Delimiter' => $del));
@@ -110,15 +109,7 @@ foreach ($iterator as $object) {
     $key = $object['Key'];
     $id = $object['ETag'];
     //This command gets the image from S3 as presigned url
-    $cmd = $s3->getCommand('GetObject', [
-        'Bucket' => $bucket,
-        'Key'    => $key,
-    ]);
-
-    //Create the presigned url, specify expire time declared earlier
-    $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-    //Get the actual url
-    $signed_url = (string) $request->getUri();
+    $signed_url = $s3->get($key);
     
     //Clean up the etag
     $etag = str_replace('"', '', $id); 

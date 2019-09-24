@@ -13,6 +13,10 @@
             ]);
         }
 
+        public function getClient() {
+            return $s3;
+        }
+
         public function get($key) {
             try {
                 $cmd = $s3->getCommand('GetObject', [
