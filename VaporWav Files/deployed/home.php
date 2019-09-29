@@ -1,5 +1,6 @@
 <?php
 include 'header.php';
+require_once 's3Access.php';
 
 //Check if user is logged in, if not redirect to index
 if($_SESSION['login'] != TRUE) {
@@ -13,7 +14,6 @@ $expire = "1 hour";
 //Requires
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
-require 's3Access.php';
 ?>
 
 <main role="main">
@@ -96,9 +96,11 @@ if(isset($_GET['gal']))
 <div class="gallery" id="gallery">
 
 <?php
-//Start a new AWS S3Client, specify region
-$s3 = new S3();
-$s3Client = $s3->getClient();
+//Start a new AWS S3Client
+$s3 = new Aws\S3\S3Client([
+  'version' => '2006-03-01',
+  'region'  => $region,
+]);
 
 //Get iterator for user's folder in S3 to get all images
 $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix, 'Delimiter' => $del));
@@ -109,14 +111,12 @@ foreach ($iterator as $object) {
     $key = $object['Key'];
     $id = $object['ETag'];
     //This command gets the image from S3 as presigned url
-    $signed_url = $s3->get($key);
+    $s3Client = new S3Access();
+    $url = $s3Client->get($key);
     
-    //Clean up the etag
-    $etag = str_replace('"', '', $id); 
-   
     //Display each image as a link to the image display page 
     echo '<div class="mb-3">';
-    echo '<a href="imageDisplay.php?key='.$key.'&id='.$etag.'"><img class="img-fluid" src="'.$signed_url.'"></a>';
+    echo '<a href="imageDisplay.php?key='.$key.'"><img class="img-fluid" src="'.$url.'"></a>';
     echo '</div>';
 }
 ?>
