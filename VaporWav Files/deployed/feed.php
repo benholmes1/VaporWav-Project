@@ -1,15 +1,13 @@
 <?php
 //This page displays the user's gallery
-include 'header.php';	
+include 'header.php';
+require_once 's3Access.php';	
 
 //Check if user is logged in, if not redirect to index
 if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
     exit();
 }
-
-//This is the expire time for the image link
-$expire = "1 hour";
 
 //Requires
 date_default_timezone_set("UTC");
@@ -37,12 +35,6 @@ $topQuery = "SELECT email, keyname, likes FROM images i
             ORDER BY likes desc";
 $topResult = $conn->query($topQuery);
 
-//Start a new AWS S3Client, specify region
-$s3 = new Aws\S3\S3Client([
-    'version' => '2006-03-01',
-    'region'  => $region,
-]);
-
 $numRows = $topResult->num_rows;
 if($numRows >= 6) {
     $n = 6;
@@ -58,20 +50,13 @@ if($numRows == 0) {
         //Get the images key (filename)
         $image = $topResult->fetch_assoc();
         $key = $image['email'] . '/' . $image['keyname'];
-        //This command gets the image from S3 as presigned url
-        $cmd = $s3->getCommand('GetObject', [
-            'Bucket' => $bucket,
-            'Key'    => $key,
-        ]);
-
-        //Create the presigned url, specify expire time declared earlier
-        $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-        //Get the actual url
-        $signed_url = (string) $request->getUri();
+        
+        $s3Client = new S3Access();
+        $url = $s3Client->get($region, $bucket, $key);
         
         //Display each image as a link to the image display page 
         echo '<div class="mb-3">';
-        echo '<a href="imageDisplay.php?key='.$key.'&exp=true"><img class="img-fluid" src="'.$signed_url.'"></a>';
+        echo '<a href="imageDisplay.php?key='.$key.'&exp=true"><img class="img-fluid" src="'.$url.'"></a>';
         echo '</div>';
     }
 }
@@ -92,15 +77,8 @@ if($numRows == 0) {
   } else {
     while($friendRow = $friendRes->fetch_assoc()) {
       $friendKey = $friendRow['email'] . "/" . $friendRow['keyname'];
-      $cmd = $s3->getCommand('GetObject', [
-        'Bucket' => $bucket,
-        'Key'    => $friendKey,
-      ]);
-
-      //Create the presigned url, specify expire time declared earlier
-      $fr_request = $s3->createPresignedRequest($cmd, "+{$expire}");
-      //Get the actual url
-      $fr_signed_url = (string) $fr_request->getUri();
+      $s3Client = new S3Access();
+      $fr_signed_url = $s3Client->get($region, $bucket, $friendKey);
       
       //Display each image as a link to the image display page 
       echo '<div class="mb-3">';

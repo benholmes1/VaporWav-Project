@@ -2,6 +2,7 @@
 
   //This page displays the image with information
   include_once 'header.php';
+  require_once 's3Access.php';
   
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
@@ -21,26 +22,12 @@
     exit();
   }
 
-  //Expiration time
-  $expire = "1 hour";
-
   date_default_timezone_set("UTC");
   require './vendor/autoload.php';
   include 'config.php';
  
-  //Get image again from S3
-  $s3 = new Aws\S3\S3Client([
-    'version' => '2006-03-01',
-    'region'  => $region,
-  ]);
-
-  $cmd = $s3->getCommand('GetObject', [
-    'Bucket' => $bucket,
-    'Key'    => $key,
-  ]);//
- 
-  $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-  $signed_url = (string) $request->getUri();   
+  $s3Client = new S3Access();
+  $signed_url = $s3Client->get($region, $bucket, $key);
  
   $keyname = explode('/', $key);
   $keyname = end($keyname);

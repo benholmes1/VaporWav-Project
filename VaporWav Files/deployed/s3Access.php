@@ -1,8 +1,14 @@
 <?php
 
     class S3Access {
+        public function get($region, $bucket, $key) {
+            $expire = "1 hour";
 
-        public function get($key) {
+            $s3 = new Aws\S3\S3Client([
+                'version' => '2006-03-01',
+                'region'  => $region,
+            ]);
+
             try {
                 $cmd = $s3->getCommand('GetObject', [
                     'Bucket' => $bucket,
@@ -24,8 +30,6 @@
             }
             return $signed_url;
         }
-
-        //public function iterate($prefix, $del)
     }
 
 ?>

@@ -8,9 +8,6 @@ if($_SESSION['login'] != TRUE) {
     exit();
 }
 
-//This is the expire time for the image link
-$expire = "1 hour";
-
 //Requires
 date_default_timezone_set("UTC");
 require './vendor/autoload.php';
@@ -112,7 +109,7 @@ foreach ($iterator as $object) {
     $id = $object['ETag'];
     //This command gets the image from S3 as presigned url
     $s3Client = new S3Access();
-    $url = $s3Client->get($key);
+    $url = $s3Client->get($region, $bucket, $key);
     
     //Display each image as a link to the image display page 
     echo '<div class="mb-3">';
