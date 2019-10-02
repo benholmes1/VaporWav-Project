@@ -1,5 +1,7 @@
 <?php
 include 'header.php';
+include 'queries.php';
+
 if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
 }
@@ -32,11 +34,11 @@ $del = '/';
 
 $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $fEmail, 'Delimiter' => $del));
 
-$qry1 = "SELECT id FROM users WHERE email = '" .$sEmail."'";
+$qry1 = $selectId_Users_Email;
 $friendR = $conn->query($qry1);
 $friendID = $friendR->fetch_assoc();
 
-$getName = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
+$getName = $selectFriendNickname_Usernames_Id;
 $getNameRes = $conn->query($getName);
 $getNameRow = $getNameRes->fetch_assoc();
 
@@ -46,7 +48,7 @@ echo '<h2 class="jumbotron-heading">' . $getNameRow['nickname'] . '\'s Gallery</
 
 if ($sEmail!="" && $email != $sEmail)
 { 
-  $checkFriend = "SELECT * FROM friends WHERE user = '".$_SESSION['userData']['id']."' AND friend = '".$friendID['id']."'";
+  $checkFriend = $selectFriends_User_UserFriend;
   $isFriend = $conn->query($checkFriend);
   $numRows = $isFriend->num_rows;
 	//echo"<script type='text/javascript'>alert($numRows);</script>";

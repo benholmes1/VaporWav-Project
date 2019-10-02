@@ -1,5 +1,7 @@
 <?php
 include 'header.php';
+include 'queries.php';
+
 if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
 }
@@ -8,7 +10,7 @@ date_default_timezone_set("UTC");
 
 $emailCompare = $_GET['searchQ'];
         
-$query0 = "SELECT nickname, email FROM usernames u INNER join users n on u.id = n.id WHERE nickname LIKE '%".$emailCompare."%'";
+$query0 = $selectNicknameEmail_Usernames_Nickname;
 
 $Cnt = 0;
 

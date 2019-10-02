@@ -1,6 +1,7 @@
 <?php
 //This page displays the user's gallery
-include 'header.php';	
+include 'header.php';
+include 'queries.php';
 
 //Check if user is logged in, if not redirect to index
 if($_SESSION['login'] != TRUE) {
@@ -28,10 +29,7 @@ require './vendor/autoload.php';
     <div class="gallery" id="gallery">
 
 <?php
-$topQuery = "SELECT email, keyname, likes FROM images i
-            INNER JOIN users u ON i.id = u.id
-            WHERE private = '0'
-            ORDER BY likes desc, i.created desc";
+$topQuery = $selectImageDetails_Explore;
 $topResult = $conn->query($topQuery);
 
 //Start a new AWS S3Client, specify region

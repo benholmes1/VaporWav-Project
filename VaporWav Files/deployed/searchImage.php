@@ -8,6 +8,7 @@ date_default_timezone_set("UTC");
 
 include 'dbconfig.php';
 include 'config.php';
+include 'queries.php';
 $dbHost     = DB_HOST;
 $dbUsername = DB_USERNAME;
 $dbPassword = DB_PASSWORD;
@@ -20,7 +21,7 @@ if($conn->connect_error){
 }
 $emailCompare = $_GET['searchQ'];
         
-$query0 = "SELECT title FROM images WHERE title LIKE '%".$imageCompare."%'";
+$query0 = $selectTitle_Images_Title;
 $Cnt = 0;
 
 if ($result = $conn->query($query0)) {

@@ -1,16 +1,17 @@
 <?php
 include 'dbconn.php';
+include 'queries.php';
 
 //echo"<script type='text/javascript'>alert('works');</script>";
 
 //START OF ADD FRIEND
 if($_GET["add"]) {
-    $_query ="SELECT * FROM friend_requests WHERE sender = '" . $_SESSION["userData"]["id"] . "' AND recipient = '" . $_GET["add"] . "'";
+    $_query = $selectAll_FriendRequests_SessionData;
     if($result = $conn->query($_query))
 	{
 	 //echo"<script type='text/javascript'>alert('$result->num_rows');</script>";
 	if($result->num_rows == 0) {
-	  $query1 = "INSERT INTO friend_requests SET sender = '" . $_SESSION["userData"]["id"] . "', recipient = '" . $_GET["add"] . "'";
+	  $query1 = $insertUsers_FriendRequests;
 	  if($result = $conn->query($query1)) {
 	
 	   // echo"<script type='text/javascript'>alert('works');</script>";

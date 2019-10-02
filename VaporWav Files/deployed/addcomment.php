@@ -1,5 +1,6 @@
 <?php
 include 'dbconn.php';
+include 'queries.php';
 
 // Connect to the database
 $conn = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
@@ -19,7 +20,7 @@ if(isset($_POST['fullKey'])) {
     $fullKey = $_POST['fullKey'];
 }
 
-$commentquery = "INSERT INTO comments(`image_id`,`user_id`,`comment`,`created`) VALUES ('".$keyname."','".$_SESSION['userData']['id']."','".$comment."',CURDATE())";
+$commentquery = $insertComment_Comments;
 $commentqueryRes = $conn->query($commentquery);
 
 if($commentqueryRes) {

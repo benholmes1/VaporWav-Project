@@ -1,7 +1,7 @@
 <?php
 include 'dbconn.php';
 
-$commlquery = "SELECT * FROM comments ORDER BY created asc";
+$commlquery = $selectComments;
 $commlqueryRes = $conn->query(commlquery);
 
 $record_set = array();
