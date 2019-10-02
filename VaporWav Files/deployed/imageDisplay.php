@@ -157,7 +157,7 @@
         <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
         <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
       </form>
-
+      <!--display comments-->
       <div id="commentSection">
         <?php
 
@@ -174,6 +174,7 @@
 
         ?>
       </div>
+      <!--display comments-->
     </div>
     </div>
   </div>

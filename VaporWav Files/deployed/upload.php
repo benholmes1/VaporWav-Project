@@ -113,6 +113,11 @@
       //Insert image information into the database
       $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE(), '0')";
       $queryRes = $conn->query($query);
+      //$message = "Success!";
+
+      
+      $tagquery = "INSERT INTO tags(`keyname`,`tag`) VALUES ('".$keyname."','".$tag."')";
+      $tagqueryRes = $conn->query($tagquery);
       $message = "Success!";
     }
     else {
