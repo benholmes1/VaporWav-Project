@@ -58,19 +58,15 @@ header {
   border-color: rgb(255,255,255);
 } 
 
-footer {
-    padding: 3px;
-}
-footer nav {
-    margin-top: .5em;
-    margin-left: .7em;
-}
-footer nav a{
-    margin: 0 .5em 0em .5em;
-}
-
-footer nav ul {
-    list-style: none;
+.footer {
+  font-family: Tinos;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(89, 0, 124);
+  color: white;
+  text-align: center;
 }
 header nav ul {
     list-style: none;
