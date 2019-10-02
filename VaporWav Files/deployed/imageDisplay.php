@@ -122,7 +122,18 @@
         <div class="col-6">Created by: <a href="searchPage.php?searchQ=<?php echo $mail; ?>"><?php echo $userinfo['nickname'] ?></a></div>
 
           <!--like button-->
-          <div class="col-6 text-right">
+            <div class="col-6 text-right">
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a class="twitter-share-button"
+            href="https://twitter.com/intent/tweet?text=Come%20check%20this%20art%20piece%20out%20on%20VaporWav"
+            data-size="large">Tweet</a>
+
+            <a href="" id="fb_share">Share this on Facebook</a>
+            <script>
+            window.onload = function() {
+            fb_share.href ='http://www.facebook.com/share.php?u=' + location.href;//encodeURIComponent(location.href); 
+            }  
+            </script>
             <?php
             if($checkLike) {
               echo '<input style="color:#FD01FF" type="button" value="&#xf087" id="unlike_'.$keyname.'" class="like btn fa" />';
