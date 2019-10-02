@@ -50,3 +50,17 @@ CREATE TABLE `galleries` (
  CONSTRAINT gallery_key PRIMARY KEY (`user_id`, `galleries`),
  FOREIGN KEY (`user_id`) REFERENCES users(`id`)
 );
+
+CREATE TABLE `tags`( 
+ 
+`tag_id` int(11) NOT NULL AUTO_INCREMENT, 
+ 
+`keyname` VARCHAR(512) NOT NULL,
+ 
+`tag` VARCHAR(100) NOT NULL,
+
+ PRIMARY KEY (`tag_id`),
+ 
+FOREIGN KEY (`keyname`) REFERENCES images(`keyname`)
+ 
+); 
