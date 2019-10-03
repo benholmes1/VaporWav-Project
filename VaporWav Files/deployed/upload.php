@@ -55,9 +55,18 @@
     if($ext_error == false) {
 
       if(isset($_POST["desc"])) {
-	$description = $_POST['desc'];
+	      $description = $_POST['desc'];
         $descriptionTag = 'Description=' . $_POST['desc'];
       }
+
+      
+      //NEW-------------------------------
+      if(isset($_POST["taglist"])){
+        $taglist = $_POST['taglist'];
+        $tagArray = explode(",",$taglist);
+      }
+      //NEW-------------------------------
+
 
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
     
@@ -75,7 +84,7 @@
           $nKey = md5(uniqid(rand(), true));
           while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
             if($nKey == $row["keyname"]) {
-	      $checkKey = True;
+	            $checkKey = True;
             } else {
               $checkKey = False;
             }
@@ -94,14 +103,14 @@
         $file = $_FILES["imgFile"]['tmp_name'];
         $result = $s3->putObject(
           array(
-	    'Bucket'=>$bucketName,
-	    'Key' =>  $keyName,
-	    'SourceFile' => $file
+	          'Bucket'=>$bucketName,
+	          'Key' =>  $keyName,
+	          'SourceFile' => $file
           )
         );
 
         $eTag = $result['ETag'];
-	$vID = $result['VersionId'];
+	      $vID = $result['VersionId'];
       } catch (S3Exception $e) {
         die('Error:' . $e->getMessage());
       } catch (Exception $e) {
@@ -115,9 +124,15 @@
       $queryRes = $conn->query($query);
       //$message = "Success!";
 
-      
-      $tagquery = "INSERT INTO tags(`keyname`,`tag`) VALUES ('".$keyname."','".$tag."')";
+      //NEW---------------------------------------
+      //Insert Tags into database-----------------
+      $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
+      $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
+      for ($x = 1; $x < count($tagArray); $x++){
+        $tagquery = $tagquery.", ('".$keyNoPrefix."','".$tagArray[$x]."')";
+      }
       $tagqueryRes = $conn->query($tagquery);
+      //NEW---------------------------------------
       $message = "Success!";
     }
     else {
