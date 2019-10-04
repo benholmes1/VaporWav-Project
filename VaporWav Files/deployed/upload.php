@@ -129,7 +129,7 @@
       $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
       $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
       for ($x = 1; $x < count($tagArray); $x++){
-        $tagquery = $tagquery.", ('".$keyNoPrefix."','".$tagArray[$x]."')";
+        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
       }
       $tagqueryRes = $conn->query($tagquery);
       //NEW---------------------------------------
