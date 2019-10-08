@@ -25,9 +25,20 @@
   date_default_timezone_set("UTC");
   require './vendor/autoload.php';
   include 'config.php';
+
+  $IAM_KEY = ACCESS_KEY;
+  $IAM_SECRET = SECRET_KEY;
  
   $s3Client = new S3Access();
-  $signed_url = $s3Client->get($region, $bucket, $key);
+  $checkExists = $s3Client->checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET);
+  if($checkExists == 1) {
+    $signed_url = $s3Client->get($region, $bucket, $key);
+  }
+  else {
+    echo "Image Not Found";
+
+    header('Location: home.php');
+  }
  
   $keyname = explode('/', $key);
   $keyname = end($keyname);
