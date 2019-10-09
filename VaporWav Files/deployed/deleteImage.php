@@ -102,6 +102,17 @@
       $message = "Something went wrong.";
     }
 
+    //NEW-----------------------------------
+    $delTagQuery = "DELETE FROM `tags` WHERE `keyname` = '".$keyname."'";
+    $tagRes = $conn->query($delTagQuery);
+    if($likeRes) {
+      $message = "Success";
+    }
+    else{
+      $message = "Something went wrong.";
+    }
+    //--------------------------------------
+
     $delQuery = "DELETE FROM `images` where `keyname` = '".$keyname."'";
     $result = $conn->query($delQuery);
     if($result) {
