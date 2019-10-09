@@ -3,6 +3,7 @@
   //This page displays the image with information
   include_once 'header.php';
   include 'queries.php';
+  require_once 's3Access.php';
   
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
@@ -22,26 +23,23 @@
     exit();
   }
 
-  //Expiration time
-  $expire = "1 hour";
-
   date_default_timezone_set("UTC");
   require './vendor/autoload.php';
   include 'config.php';
- 
-  //Get image again from S3
-  $s3 = new Aws\S3\S3Client([
-    'version' => '2006-03-01',
-    'region'  => $region,
-  ]);
 
-  $cmd = $s3->getCommand('GetObject', [
-    'Bucket' => $bucket,
-    'Key'    => $key,
-  ]);//
+  $IAM_KEY = ACCESS_KEY;
+  $IAM_SECRET = SECRET_KEY;
  
-  $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-  $signed_url = (string) $request->getUri();   
+  $s3Client = new S3Access();
+  $checkExists = $s3Client->checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET);
+  if($checkExists == 1) {
+    $signed_url = $s3Client->get($region, $bucket, $key);
+  }
+  else {
+    echo "Image Not Found";
+
+    header('Location: home.php');
+  }
  
   $keyname = explode('/', $key);
   $keyname = end($keyname);
@@ -136,7 +134,18 @@
         <div class="col-6">Created by: <a href="searchPage.php?searchQ=<?php echo $mail; ?>"><?php echo $userinfo['nickname'] ?></a></div>
 
           <!--like button-->
-          <div class="col-6 text-right">
+            <div class="col-6 text-right">
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a class="twitter-share-button"
+            href="https://twitter.com/intent/tweet?text=Come%20check%20this%20art%20piece%20out%20on%20VaporWav"
+            data-size="large">Tweet</a>
+
+            <a href="" id="fb_share">Share this on Facebook</a>
+            <script>
+            window.onload = function() {
+            fb_share.href ='http://www.facebook.com/share.php?u=' + location.href;//encodeURIComponent(location.href); 
+            }  
+            </script>
             <?php
             if($checkLike) {
               echo '<input style="color:#FD01FF" type="button" value="&#xf087" id="unlike_'.$keyname.'" class="like btn fa" />';
@@ -158,7 +167,7 @@
         <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
         <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
       </form>
-
+      <!--display comments-->
       <div id="commentSection">
         <?php
 
@@ -175,6 +184,7 @@
 
         ?>
       </div>
+      <!--display comments-->
     </div>
     </div>
   </div>
