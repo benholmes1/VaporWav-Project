@@ -1,6 +1,7 @@
 <?php
 //This page displays the user's gallery
 include 'header.php';
+include 'queries.php';
 require_once 's3Access.php';
 
 //Check if user is logged in, if not redirect to index
@@ -26,10 +27,7 @@ require './vendor/autoload.php';
     <div class="gallery" id="gallery">
 
 <?php
-$topQuery = "SELECT email, keyname, likes FROM images i
-            INNER JOIN users u ON i.id = u.id
-            WHERE private = '0'
-            ORDER BY likes desc, i.created desc";
+$topQuery = $selectImageDetails_Explore;
 $topResult = $conn->query($topQuery);
 
 $numRows = $topResult->num_rows;

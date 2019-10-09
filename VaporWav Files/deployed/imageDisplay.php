@@ -2,6 +2,7 @@
 
   //This page displays the image with information
   include_once 'header.php';
+  include 'queries.php';
   require_once 's3Access.php';
   
   //Check if user is logged in
@@ -49,22 +50,22 @@
   $mail = current(explode('/',$key));
   //echo "<script type='text/javascript'>alert('$keyname');</script>";
 
-  $queryUser = "SELECT nickname FROM users u INNER JOIN usernames n on u.id = n.id where email = '".$mail."'";
+  $queryUser = $selectNickname_Innerjoin_UsersUsernames;
   $queryResU = $conn->query($queryUser);
   $userinfo = $queryResU->fetch_assoc();
 
   //get IDs
-  $queryImage = "SELECT * FROM images WHERE keyname = '".$keyname."'";
+  $queryImage = $selectImages_Keyname;
   $queryResI = $conn->query($queryImage);
   $imageinfo = $queryResI->fetch_assoc();
 
   // Count post total likes and unlikes
-  $queryLike = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."'";
+  $queryLike = $updateLikes;
   $queryResL = $conn->query($queryLike);
   $likesinfo = $queryResL->fetch_assoc();
   $likescount = $likesinfo['likescount'];
 
-  $checkLikeQuery = "SELECT * FROM likes WHERE userid = '".$_SESSION['userData']['id']."' AND keyname = '".$keyname."'";
+  $checkLikeQuery = $selectAll_Likes_SessionKeyname;
   $checkLikeRes = $conn->query($checkLikeQuery);
   if($checkLikeRes->num_rows == 0) {
     $checkLike = FALSE;
@@ -75,7 +76,7 @@
   $date = strtotime($imageinfo['created']);
   $formatDate = date("m/d/y", $date);
 
-  $getComments = "SELECT * FROM comments INNER JOIN usernames ON comments.user_id = usernames.id WHERE image_id = '".$keyname."'";
+  $getComments = $selectAll_CommentsUsernames_Keyname;
   $getCommentsRes = $conn->query($getComments);
 
 ?>

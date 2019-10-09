@@ -1,6 +1,7 @@
 <?php
   //This is the upload action that uploads an image to S3 and updates database
   include 'dbconn.php';	
+  include 'queries.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
@@ -70,7 +71,7 @@
 
   $id = $_SESSION['userData']['id'];
 
-  $delQuery = "DELETE FROM `galleries` where `user_id` = '".$id."' and `galleries` = '".$gal."'";
+  $delQuery = $deleteGalleries;
   $result = $conn->query($delQuery);
   if($result) {
     $message = "Success";

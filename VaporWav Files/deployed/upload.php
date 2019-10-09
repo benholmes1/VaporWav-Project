@@ -1,6 +1,7 @@
 <?php
   //This is the upload action that uploads an image to S3 and updates database
   include 'dbconn.php';
+  include 'queries.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
@@ -71,7 +72,7 @@
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
     
       //Select all the keynames from the database
-      $keyQuery = "SELECT keyname from images";
+      $keyQuery = $selectKeyname_Images;
       $keyRes = $conn->query($keyQuery);
 
       if($keyRes->num_rows === 0){
@@ -120,7 +121,7 @@
       $tag = str_replace('"', '', $eTag);
  
       //Insert image information into the database
-      $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE(), '0')";
+      $query = $insertImages;
       $queryRes = $conn->query($query);
       //$message = "Success!";
 

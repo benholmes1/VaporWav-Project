@@ -1,5 +1,6 @@
 <?php
-	include 'dbconn.php';
+  include 'dbconn.php';
+  include 'queries.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])) {
@@ -10,10 +11,10 @@
     $check = 0;
 
   //if(!empty($_POST['nname1'] {
-    $editName = "UPDATE usernames SET nickname = '".$_POST['nname1']."' WHERE id = '".$_SESSION['userData']['id']."'";
+    $editName = $updateNickname_Usernames;
     $edit = $conn->query($editName);
     if($edit) {
-      $getName = "SELECT nickname from usernames WHERE id = '".$_SESSION['userData']['id']."'";
+      $getName = $selectNickname_Usernames;
       $result = $conn->query($getName);
       $nickname = $result->fetch_assoc(); 
       $_SESSION['nickname'] = $nickname["nickname"];
@@ -30,10 +31,10 @@
      $privacySetting = "1";
    }
 
-   $privacyQuery = "UPDATE users SET private = '".$privacySetting."' WHERE id = '".$_SESSION['userData']['id']."'";
+   $privacyQuery = $updatePrivacy_Users;
    $privacyQRes = $conn->query($privacyQuery);
    if($privacyQRes) {
-     $getPrivacy = "SELECT private FROM users where id = '".$_SESSION['userData']['id']."'";
+     $getPrivacy = $selectPrivacy_Users;
      $getResult = $conn->query($getPrivacy);
      $privacy = $getResult->fetch_assoc();
      $_SESSION['private'] = $privacy['private'];
