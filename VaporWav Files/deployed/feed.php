@@ -1,5 +1,6 @@
 <?php
-//This page displays the user's gallery
+//This page displays the user's gallery	
+include 'queries.php';
 include 'header.php';
 require_once 's3Access.php';	
 
@@ -28,11 +29,7 @@ include 'chromephp/ChromePhp.php';
     <br>
     <div class="gallery" id="gallery">
 <?php
-$topQuery = "SELECT email, keyname, likes FROM images i
-            INNER JOIN users u ON i.id = u.id
-            WHERE private = '0'
-            AND i.created BETWEEN date_sub(now(), INTERVAL 1 WEEK) AND now()
-            ORDER BY likes desc";
+$topQuery = $selectImageDetails_Innerjoin_Organized;
 $topResult = $conn->query($topQuery);
 
 $numRows = $topResult->num_rows;
@@ -70,7 +67,7 @@ if($numRows == 0) {
     <div class="gallery" id="gallery">
   
 <?php
-  $friendQuery = "SELECT u.email, i.keyname from images i inner join friends f on i.id = f.friend inner join users u on f.friend = u.id where f.user = '".$_SESSION['userData']['id']."' order by i.created";
+  $friendQuery = $selectFriendImages_Innerjoin_SessionData;
   $friendRes = $conn->query($friendQuery);
   if($friendRes->num_rows == 0){
     echo '<p>No Results</p>';

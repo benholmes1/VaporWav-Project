@@ -1,6 +1,7 @@
 <?php
   //This is the upload action that uploads an image to S3 and updates database
   include 'dbconn.php';
+  include 'queries.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
@@ -12,7 +13,7 @@
     $galName = $_POST['name'];
   }
 
-  $galCheck = "SELECT galleries FROM galleries WHERE user_id = '".$_SESSION['userData']['id']."'";
+  $galCheck = $selectGalleries_SessionData;
   $galRes = $conn->query($galCheck);
   $check = FALSE;
   if($galRes->num_rows > 0) {
@@ -26,7 +27,7 @@
   if($check == TRUE) {
     $message = "Sorry, you have already created a gallery with this name.";
   } else {
-    $galQ = "INSERT INTO `galleries`(`user_id`, `galleries`) VALUES ('".$_SESSION['userData']['id']."', '".$galName."')";
+    $galQ = $insertUserGallery_Galleries;
     $result = $conn->query($galQ);
     if($result) {
       $_SESSION['galleries'][] = $galName;

@@ -1,6 +1,7 @@
 <?php
   //This is the upload action that uploads an image to S3 and updates database
   include 'dbconn.php';
+  include 'queries.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
@@ -55,14 +56,23 @@
     if($ext_error == false) {
 
       if(isset($_POST["desc"])) {
-	$description = $_POST['desc'];
+	      $description = $_POST['desc'];
         $descriptionTag = 'Description=' . $_POST['desc'];
       }
+
+      
+      //NEW-------------------------------
+      if(isset($_POST["taglist"])){
+        $taglist = $_POST['taglist'];
+        $tagArray = explode(",",$taglist);
+      }
+      //NEW-------------------------------
+
 
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
     
       //Select all the keynames from the database
-      $keyQuery = "SELECT keyname from images";
+      $keyQuery = $selectKeyname_Images;
       $keyRes = $conn->query($keyQuery);
 
       if($keyRes->num_rows === 0){
@@ -75,7 +85,7 @@
           $nKey = md5(uniqid(rand(), true));
           while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
             if($nKey == $row["keyname"]) {
-	      $checkKey = True;
+	            $checkKey = True;
             } else {
               $checkKey = False;
             }
@@ -94,14 +104,14 @@
         $file = $_FILES["imgFile"]['tmp_name'];
         $result = $s3->putObject(
           array(
-	    'Bucket'=>$bucketName,
-	    'Key' =>  $keyName,
-	    'SourceFile' => $file
+	          'Bucket'=>$bucketName,
+	          'Key' =>  $keyName,
+	          'SourceFile' => $file
           )
         );
 
         $eTag = $result['ETag'];
-	$vID = $result['VersionId'];
+	      $vID = $result['VersionId'];
       } catch (S3Exception $e) {
         die('Error:' . $e->getMessage());
       } catch (Exception $e) {
@@ -111,8 +121,19 @@
       $tag = str_replace('"', '', $eTag);
  
       //Insert image information into the database
-      $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE(), '0')";
+      $query = $insertImages;
       $queryRes = $conn->query($query);
+      //$message = "Success!";
+
+      //NEW---------------------------------------
+      //Insert Tags into database-----------------
+      $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
+      $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
+      for ($x = 1; $x < count($tagArray); $x++){
+        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
+      }
+      $tagqueryRes = $conn->query($tagquery);
+      //NEW---------------------------------------
       $message = "Success!";
       //Fetch the results of the SQL query and email each of the respective emails
       $queryF = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";

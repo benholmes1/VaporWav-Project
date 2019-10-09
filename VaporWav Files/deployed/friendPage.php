@@ -1,5 +1,6 @@
 <?php
-include 'header.php';	
+include 'header.php';
+include 'queries.php';
 if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
 }
@@ -8,8 +9,8 @@ date_default_timezone_set("UTC");
 
 $emailCompare = $_GET['searchQ'];
         
-$query0 = "SELECT recipient, sender FROM friend_requests WHERE recipient = '".$_SESSION["userData"]["id"]."'";
-$queryF = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";
+$query0 = $selectRecipientSender_Friendrequests_Recipient;
+$queryF = $selectAll_Friends_User;
 
 $Cnt = 0;
 
@@ -25,7 +26,7 @@ $Cnt = 0;
     if ($resultF = $conn->query($queryF)) {
     /* fetch associative array */
     while ($rowF = $resultF->fetch_assoc()) {
-        $friendsQuery = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
+        $friendsQuery = $selectFriendDetails_Innerjoin_Users;
         if($friendsRes = $conn->query($friendsQuery)) {
             $friendsRow = $friendsRes->fetch_assoc();
             //echo "<p>" . $rowFF["nickname"] . ", </p>";
@@ -50,7 +51,7 @@ $Cnt = 0;
 <?php
 if ($result = $conn->query($query0)) {
     while ($row = $result->fetch_assoc()) {
-        $query1 = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id = '".$row["sender"]. "'";
+        $query1 = $selectFriendRequest_Usernames_Sender;
         if($result1 = $conn->query($query1)) {
             $row1 = $result1->fetch_assoc();
             echo '<div style="margin-bottom:.3em">';
