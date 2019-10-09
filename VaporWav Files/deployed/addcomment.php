@@ -19,15 +19,25 @@ if(isset($_POST['fullKey'])) {
     $fullKey = $_POST['fullKey'];
 }
 
+$msg = "Come check it out ".$_POST["fullUrl"]."!";
+$test = $_POST["fullUrl"];
+wordwrap($msg,70);
+mail($_POST['aEmail'],"Your Friend ".$_SESSION['nickname']." commented on your post!",$msg);
+
 $commentquery = "INSERT INTO comments(`image_id`,`user_id`,`comment`,`created`) VALUES ('".$keyname."','".$_SESSION['userData']['id']."','".$comment."',CURDATE())";
 $commentqueryRes = $conn->query($commentquery);
 
 if($commentqueryRes) {
     $message = "Success";
+
 } else {
     $message = "Fail";
 }
 
 header("Location: imageDisplay.php?key=".$fullKey."#commentSection");
+$msg = "Come check it out ".$_POST["fullUrl"]."!";
+$test = $_POST["fullUrl"];
+wordwrap($msg,70);
+mail($_POST['aEmail'],"Your Friend ".$_SESSION['nickname']." commented on your post!",$msg);
 
 ?>

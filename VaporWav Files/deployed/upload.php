@@ -114,6 +114,21 @@
       $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE(), '0')";
       $queryRes = $conn->query($query);
       $message = "Success!";
+      //Fetch the results of the SQL query and email each of the respective emails
+      $queryF = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";
+
+      if ($resultF = $conn->query($queryF)) {
+        while ($rowF = $resultF->fetch_assoc()) {
+            $friendsQuery = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
+            if($friendsRes = $conn->query($friendsQuery)) {
+                $friendsRow = $friendsRes->fetch_assoc();
+                $msg = "Come check it out http://ec2-52-53-194-4.us-west-1.compute.amazonaws.com/searchPage.php?searchQ=".$_SESSION['userData']['email'];
+                wordwrap($msg,70);
+                mail($friendsRow['email'],"Your Friend ".$_SESSION['nickname']." posted something new!",$msg);
+                echo '<h2>Hello</h2>';
+            }
+            }
+        }
     }
     else {
       $message = "Please upload an image file.";

@@ -15,7 +15,9 @@ if ($resultF = $conn->query($queryF)) {
         if($friendsRes = $conn->query($friendsQuery)) {
             $friendsRow = $friendsRes->fetch_assoc();
             $msg = "Come check it out http://ec2-52-53-194-4.us-west-1.compute.amazonaws.com/searchPage.php?searchQ=".$_SESSION['userData']['email'];
+            wordwrap($msg,70);
             mail($friendsRow['email'],"Your Friend ".$_SESSION['nickname']." posted something new!",$msg);
+            echo '<h2>Hello</h2>';
         }
         }
     }
