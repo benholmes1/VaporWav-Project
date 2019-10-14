@@ -31,7 +31,7 @@
             return $signed_url;
         }
 
-        public function checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET) {
+        /*public function checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET) {
             $expire = "1 hour";
 
             // Connect to AWS
@@ -63,7 +63,7 @@
                 echo "\n";
             }
             return $checkKey;
-        }
+        }*/
     }
 
 ?>
