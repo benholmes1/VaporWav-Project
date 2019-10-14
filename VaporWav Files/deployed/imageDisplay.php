@@ -12,7 +12,7 @@
   }
 
   if(!(isset($_GET['key']))){
-    header('Location: home.php');
+    header('Location: index.php');
     exit();
   }
 
@@ -26,20 +26,9 @@
   date_default_timezone_set("UTC");
   require './vendor/autoload.php';
   include 'config.php';
-
-  $IAM_KEY = ACCESS_KEY;
-  $IAM_SECRET = SECRET_KEY;
  
   $s3Client = new S3Access();
-  $checkExists = $s3Client->checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET);
-  if($checkExists == 1) {
-    $signed_url = $s3Client->get($region, $bucket, $key);
-  }
-  else {
-    echo "Image Not Found";
-
-    header('Location: home.php');
-  }
+  $signed_url = $s3Client->get($region, $bucket, $key);
  
   $keyname = explode('/', $key);
   $keyname = end($keyname);
