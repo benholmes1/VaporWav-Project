@@ -30,6 +30,7 @@
             }
             return $signed_url;
         }
+<<<<<<< HEAD
 
         /*public function checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET) {
             $expire = "1 hour";
@@ -64,6 +65,8 @@
             }
             return $checkKey;
         }*/
+=======
+>>>>>>> ErrorHandling
     }
 
 ?>

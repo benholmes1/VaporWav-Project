@@ -4,6 +4,7 @@
   include_once 'header.php';
   include 'queries.php';
   require_once 's3Access.php';
+  require_once 's3Checks.php';
   
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
@@ -23,50 +24,46 @@
     exit();
   }
 
+  //Expiration time
+  $expire = "1 hour";
+
   date_default_timezone_set("UTC");
   require './vendor/autoload.php';
   include 'config.php';
 
-  echo "Here";
- 
-  $s3Client = new S3Access();
-  //$checkExists = $s3Client->checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET);
-  //if($checkExists == 1) {
-    $signed_url = $s3Client->get($region, $bucket, $key);
-  /*}
-  else {
-    echo "Image Not Found";
-
-    header('Location: home.php');
-  }*/
-
-  echo "\nHere 2";
- 
   $keyname = explode('/', $key);
   $keyname = end($keyname);
  
-  
+  $s3Client = new S3Access();
+  $s3Check = new S3Check();
+  $checkExists = $s3Check->checkObjectExists($keyname, $conn);
+  if($checkExists == 1) {
+    $signed_url = $s3Client->get($region, $bucket, $key);
+  } else {
+    header('Location: home.php');
+    exit();
+  }
   
   //get user nickname
   $mail = current(explode('/',$key));
   //echo "<script type='text/javascript'>alert('$keyname');</script>";
 
-  $queryUser = $selectNickname_Innerjoin_UsersUsernames;
+  $queryUser = "SELECT nickname FROM users u INNER JOIN usernames n on u.id = n.id where email = '".$mail."'";
   $queryResU = $conn->query($queryUser);
   $userinfo = $queryResU->fetch_assoc();
 
   //get IDs
-  $queryImage = $selectImages_Keyname;
+  $queryImage = "SELECT * FROM images WHERE keyname = '".$keyname."'";
   $queryResI = $conn->query($queryImage);
   $imageinfo = $queryResI->fetch_assoc();
 
   // Count post total likes and unlikes
-  $queryLike = $updateLikes;
+  $queryLike = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."'";
   $queryResL = $conn->query($queryLike);
   $likesinfo = $queryResL->fetch_assoc();
   $likescount = $likesinfo['likescount'];
 
-  $checkLikeQuery = $selectAll_Likes_SessionKeyname;
+  $checkLikeQuery = "SELECT * FROM likes WHERE userid = '".$_SESSION['userData']['id']."' AND keyname = '".$keyname."'";
   $checkLikeRes = $conn->query($checkLikeQuery);
   if($checkLikeRes->num_rows == 0) {
     $checkLike = FALSE;
@@ -77,7 +74,7 @@
   $date = strtotime($imageinfo['created']);
   $formatDate = date("m/d/y", $date);
 
-  $getComments = $selectAll_CommentsUsernames_Keyname;
+  $getComments = "SELECT * FROM comments INNER JOIN usernames ON comments.user_id = usernames.id WHERE image_id = '".$keyname."'";
   $getCommentsRes = $conn->query($getComments);
 
   echo "\nHere 3";
@@ -137,18 +134,7 @@
         <div class="col-6">Created by: <a href="searchPage.php?searchQ=<?php echo $mail; ?>"><?php echo $userinfo['nickname'] ?></a></div>
 
           <!--like button-->
-            <div class="col-6 text-right">
-            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            <a class="twitter-share-button"
-            href="https://twitter.com/intent/tweet?text=Come%20check%20this%20art%20piece%20out%20on%20VaporWav"
-            data-size="large">Tweet</a>
-
-            <a href="" id="fb_share">Share this on Facebook</a>
-            <script>
-            window.onload = function() {
-            fb_share.href ='http://www.facebook.com/share.php?u=' + location.href;//encodeURIComponent(location.href); 
-            }  
-            </script>
+          <div class="col-6 text-right">
             <?php
             if($checkLike) {
               echo '<input style="color:#FD01FF" type="button" value="&#xf087" id="unlike_'.$keyname.'" class="like btn fa" />';
@@ -169,15 +155,8 @@
         <input class="btn" id="uploadComment" type="submit" value="Publish">
         <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
         <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
-        <?php $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
-        $test123 = explode("/",$_GET['key']);
-        $emailA = $test123[0];?>
-        <input id="authorEmail" name="aEmail" type="hidden" value="<?php echo $emailA; ?>">
-        <input id="imURL" name="fullUrl" type="hidden" value="<?php echo $actual_link; ?>">
       </form>
-      <script>
-      </script>
-      <!--display comments-->
+
       <div id="commentSection">
         <?php
 
@@ -194,7 +173,6 @@
 
         ?>
       </div>
-      <!--display comments-->
     </div>
     </div>
   </div>
