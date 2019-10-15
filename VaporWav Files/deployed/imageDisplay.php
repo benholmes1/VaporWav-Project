@@ -27,8 +27,7 @@
   require './vendor/autoload.php';
   include 'config.php';
 
-  $IAM_KEY = ACCESS_KEY;
-  $IAM_SECRET = SECRET_KEY;
+  echo "Here";
  
   $s3Client = new S3Access();
   //$checkExists = $s3Client->checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET);
@@ -40,6 +39,8 @@
 
     header('Location: home.php');
   }*/
+
+  echo "\nHere 2";
  
   $keyname = explode('/', $key);
   $keyname = end($keyname);
@@ -78,6 +79,8 @@
 
   $getComments = $selectAll_CommentsUsernames_Keyname;
   $getCommentsRes = $conn->query($getComments);
+
+  echo "\nHere 3";
 
 ?>
     

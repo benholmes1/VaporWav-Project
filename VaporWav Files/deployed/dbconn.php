@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 include 'dbconfig.php';
 include 'config.php';
 
