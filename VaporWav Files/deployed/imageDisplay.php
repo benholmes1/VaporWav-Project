@@ -4,6 +4,7 @@
   include_once 'header.php';
   include 'queries.php';
   require_once 's3Access.php';
+  //require_once 's3Checks.php';
   
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
@@ -26,9 +27,17 @@
   date_default_timezone_set("UTC");
   require './vendor/autoload.php';
   include 'config.php';
+
+  $IAM_KEY = ACCESS_KEY;
+  $IAM_SECRET = SECRET_KEY;
  
   $s3Client = new S3Access();
-  $signed_url = $s3Client->get($region, $bucket, $key);
+  //$s3Check = new S3Check();
+  //if(checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET) == 1) {
+    $signed_url = $s3Client->get($region, $bucket, $key);
+  /*} else {
+    echo "Image Not Found.";
+  }*/
  
   $keyname = explode('/', $key);
   $keyname = end($keyname);
