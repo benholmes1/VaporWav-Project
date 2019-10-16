@@ -103,6 +103,14 @@
       $message = "Something went wrong.";
     }
 
+    $delTagQuery = $deleteImageTags;
+    $tagRes = $conn->query($delTagQuery);
+    if($tagRes) {
+      $message = "Success";
+    }
+    else{
+      $message = "Something went wrong.";
+
     $delQuery = $deleteImage;
     $result = $conn->query($delQuery);
     if($result) {
