@@ -63,6 +63,10 @@
   $likesinfo = $queryResL->fetch_assoc();
   $likescount = $likesinfo['likescount'];
 
+  //get image tags
+  $tagQuery = "SELECT tag FROM tags WHERE keyname = '".$keyname."'";
+  $tagRow = $conn->query($tagQuery);
+
   $checkLikeQuery = "SELECT * FROM likes WHERE userid = '".$_SESSION['userData']['id']."' AND keyname = '".$keyname."'";
   $checkLikeRes = $conn->query($checkLikeQuery);
   if($checkLikeRes->num_rows == 0) {
@@ -148,8 +152,21 @@
       <div class="row">
         <!--image upload date-->
         <p>Uploaded on: <?php echo $formatDate ?></p>
+       
+        <!--tag section-->
+        
+        <div class="col-6 text-right">Tags:
+          <?php 
+            echo '<select name="Tags">';
+            while($rowT = $tagRow->fetch_assoc()){
+              echo '<option value="'.$rowT['tag'].'">#'.$rowT['tag'].'</option>';
+            }
+            echo '</select>';
+          ?>
+        </div>
       </div>
 
+      
       <textarea placeholder="Comment . . ." style="width:100%;box-sizing:border-box;resize:none" id="comment" name="comment" form="commentForm" required></textarea>
       <form action="addcomment.php" id="commentForm" method="post">
         <input class="btn" id="uploadComment" type="submit" value="Publish">
