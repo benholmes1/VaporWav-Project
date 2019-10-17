@@ -66,6 +66,11 @@
         $taglist = $_POST['taglist'];
         $tagArray = explode(",",$taglist);
       }
+      for($n = 0; $n < count($tagArray); $n++){
+        if(substr_compare($tagArray[$n], " ", 0, 1) == 0){//if first character in tag is a whitespace
+          $tagArray[$n] = substr($tagArray[$n],1);
+        }
+      }
       //NEW-------------------------------
 
 
