@@ -66,11 +66,6 @@
         $taglist = $_POST['taglist'];
         $tagArray = explode(",",$taglist);
       }
-      for($n = 0; $n < count($tagArray); $n++){
-        if(substr_compare($tagArray[$n], " ", 0, 1) == 0){//if first character in tag is a whitespace
-          $tagArray[$n] = substr($tagArray[$n],1);
-        }
-      }
       //NEW-------------------------------
 
 
@@ -135,7 +130,12 @@
       $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
       $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
       for ($x = 1; $x < count($tagArray); $x++){
-        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
+        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";if(substr_compare($tagArray[$x], " ", 0, 1) == 0){//if first character in tag is a whitespace
+          $tagquery = $tagquery.", ('".$keyNoPrefix."', '".substr($tagArray[$x],1)."')";
+        }
+        else{
+          $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
+        }
       }
       $tagqueryRes = $conn->query($tagquery);
       //NEW---------------------------------------
