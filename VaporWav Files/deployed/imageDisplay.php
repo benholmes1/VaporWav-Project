@@ -172,6 +172,11 @@
         <input class="btn" id="uploadComment" type="submit" value="Publish">
         <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
         <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
+        <?php $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
+        $test123 = explode("/",$_GET['key']);
+        $emailA = $test123[0];?>
+        <input id="authorEmail" name="aEmail" type="hidden" value="<?php echo $emailA; ?>">
+        <input id="imURL" name="fullUrl" type="hidden" value="<?php echo $actual_link; ?>">
       </form>
 
       <div id="commentSection">
