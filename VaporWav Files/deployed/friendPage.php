@@ -69,5 +69,6 @@ if ($result = $conn->query($query0)) {
 </div>
 </container>
 </main>
+    <?php include 'footer.php';?>
 </body>
 </html>

@@ -161,7 +161,6 @@ foreach ($iterator as $object) {
    allowNumeric: false
    });
 </script>
-
+    <?php include 'footer.php';?>
 </body>
-<?php include 'footer.php';?>
 </html>

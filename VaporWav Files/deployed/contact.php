@@ -1,31 +1,28 @@
 <?php
-include 'header.php';
-
-//Check if user is logged in, if not redirect to index
-if($_SESSION['login'] != TRUE) {
+  include 'header.php';
+  //Check if user is logged in
+  if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
     exit();
-}
-
-//This is the expire time for the image link
-$expire = "1 hour";
-
-//Requires
-date_default_timezone_set("UTC");
-require './vendor/autoload.php';
+  }
 ?>
 
+<?php
+    	$msg = "Check it out on your friends list!";
+        wordwrap($msg,70);
+        mail($_POST['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
+?>
     <div class="containerContact">
-    <form action="action_page.php">
+    <form action = "contact_action.php" method = "POST">
 
-        <label for="fname">First Name</label>
-        <input type="text" id="fname" name="firstname" placeholder="Your name..">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="firstname" placeholder="Your name..">
 
-        <label for="lname">Last Name</label>
-        <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="e-mail" placeholder="Your Email..">
 
         <label for="subject">Subject</label>
-        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+        <textarea id="subject" name="subject" placeholder="Write your issue." style="height:200px"></textarea>
 
         <input type="submit" value="Submit">
 

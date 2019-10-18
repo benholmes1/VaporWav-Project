@@ -115,5 +115,6 @@ if($Cnt == 0) {
 </div>
 </div>
 </main>
+    <?php include 'footer.php';?>
 </body>
 </html>
