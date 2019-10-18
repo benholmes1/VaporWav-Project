@@ -56,7 +56,9 @@ if ($sEmail!="" && $email != $sEmail)
 	if ($numRows == 0)
 	{
         echo '<br>';
-        echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button class="btn" type="submit">Add Friend</button></form>';
+        echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button class="btn" type="submit">Add Friend</button>';
+        echo '<input id="fEmail" name="fEmail" type="hidden" value="' . $_GET["searchQ"] . '">';
+        echo '</form>';
 	}
 }
 else

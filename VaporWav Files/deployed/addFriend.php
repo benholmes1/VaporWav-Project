@@ -6,6 +6,12 @@ include 'queries.php';
 
 //START OF ADD FRIEND
 if($_GET["add"]) {
+
+	$msg = "Check it out on your friends list!";
+	wordwrap($msg,70);
+	mail($_POST['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
+
+
     $_query = $selectAll_FriendRequests_SessionData;
     if($result = $conn->query($_query))
 	{
@@ -20,4 +26,7 @@ if($_GET["add"]) {
     }
 }
 header("Location:home.php");
+$msg = "Check it out on your friends list!";
+wordwrap($msg,70);
+mail($_POST['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
 ?>
