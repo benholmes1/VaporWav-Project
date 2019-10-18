@@ -2,6 +2,11 @@ html, body, header, footer, main, nav, article, section, figure, figcaption, h1,
 body, div, p, img
 { margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; border: 0; }
 
+/* main */
+main {
+  background: none !important;
+}
+
 .inner {
   text-align: center;
   margin-top: auto;
@@ -112,6 +117,11 @@ header nav li .dropdown-content a {
 header nav li .dropdown:hover .dropdown-content {
     display: block;
 }
+/* dropdown */
+.dropdown-menu a:hover {
+  background-color: mediumpurple !important;
+  color: white !important;
+}
 
 html {
     background-color: rebeccapurple;
@@ -174,10 +184,6 @@ hr {
     margin-bottom: 1em;
 }
 
-main {
-  background: none !important;
-}
-
 #imageSolo {
     padding:100px;
     width: auto;
@@ -229,6 +235,7 @@ main {
     text-align: left;
 }
 
+/* uploadPage */
 .wrapacct{
 	margin: auto;
 	padding: 10px;
@@ -254,6 +261,7 @@ main {
   text-align: center;
 }
 
+/* uploadPage*/
 .acctform {
   font-family: Tinos;
   padding: 10px;
@@ -334,6 +342,8 @@ a:active {
   color: #663399;
 }
 
+
+/* gal modal id homephp*/
 #galModal .modal-content {
   background-color: #663399 !important;
 }
@@ -343,6 +353,7 @@ a:active {
   color: white !important;
 }
 
+/* jumbotron home.php*/
 .jumbotron {
   background-color: #663399 !important;
 }
@@ -450,6 +461,7 @@ a:active {
   }
 }
 
+/* container home.php/uploadPage */
 .container h2 {
   font-family: Alien Encounters;
   font-size: 150%;
@@ -482,11 +494,6 @@ a:active {
 
 .container-small, .container-large {
   max-width: 100%;
-}
-
-.dropdown-menu a:hover {
-  background-color: mediumpurple !important;
-  color: white !important;
 }
 
 /*----------------------------------------------------------------------------------------*/
