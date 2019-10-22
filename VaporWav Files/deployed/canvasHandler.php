@@ -4,7 +4,7 @@ session_start();
 
 include 'dbconn.php';
 include 'queries.php';
-include 'canvasClass.php';
+include 's3Access.php';
 
 if(!($_SESSION['login'])){
     header('Location: index.php');
@@ -66,8 +66,8 @@ if(isset($_POST['taglist'])) {
 }
 
 if($errorFlag == 0) {
-    $canvasUploadClient = new CanvasClass();
-    $canvasUploadClient->upload($s3, $imageToUpload, $title, $desc, $taglist);
+    $canvasUploadClient = new S3Access();
+    $canvasUploadClient->canvasUpload($s3, $bucketName, $imageToUpload, $title, $desc, $taglist);
 } else {
     echo "Upload Failed.";
 }
