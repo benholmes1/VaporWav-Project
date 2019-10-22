@@ -4,6 +4,7 @@ session_start();
 
 include 'dbconn.php';
 include 'queries.php';
+include 'canvasClass.php';
 include 's3Access.php';
 
 if(!($_SESSION['login'])){
@@ -66,8 +67,13 @@ if(isset($_POST['taglist'])) {
 }
 
 if($errorFlag == 0) {
-    $canvasUploadClient = new S3Access();
-    $canvasUploadClient->canvasUpload($s3, $bucketName, $imageToUpload, $title, $desc, $taglist);
+    $originalKey = $title . '.png';
+    $keyCheckClient = new S3Access();
+    $keyname = $_SESSION['userData']['email'] . '/' . $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalKey);
+
+    $canvasUploadClient = new CanvasClass();
+    $canvasUploadClient->set($bucketName, $s3, $conn);
+    $canvasUploadClient->upload($imageToUpload, $keyname, $title, $desc, $taglist, $insertCanvas);
 } else {
     echo "Upload Failed.";
 }

@@ -9,20 +9,43 @@ if(!($_SESSION['login'])){
 
 class CanvasClass {
 
-  function upload($s3, $bucket, $image, $title, $desc, $taglist) {
+  private $bucket;
+  private $s3;
+  private $conn;
+
+  public function set($bucket, $s3, $conn) {
+    $this->bucket = $bucket;
+    $this->s3 = $s3;
+    $this->conn = $conn;
+  }
+
+  public function upload($image, $keyname, $title, $desc, $taglist, $query) {
     try {
       // Uploaded:
-      $result = $s3->putObject(
+      $result = $this->s3->putObject(
         array(
-            'Bucket'=>$bucket,
-            'Key' =>  "thisisatest.png",
+            'Bucket'=>$this->bucket,
+            'Key' =>  $keyname,
             'Body' => $image,
         )
       );
+      $eTag = $result['ETag'];
     } catch (S3Exception $e) {
       die('Error:' . $e->getMessage());
     } catch (Exception $e) {
       die('Error:' . $e->getMessage());
+    }
+
+    $tag = str_replace('"', '', $eTag);
+
+    $driver = new mysqli_driver();
+    $driver->report_mode = MYSQLI_REPORT_STRICT;
+
+    try {
+      $insertCanvasQuery = $query;
+      $insertQueryResult = $this->conn->query($insertCanvasQuery);
+    } catch (mysqli_sql_exception $e) {
+      echo $e->__toString();
     }
   }
 

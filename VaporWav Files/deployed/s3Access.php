@@ -31,22 +31,36 @@
             return $signed_url;
         }
 
-        public function canvasUpload($s3, $bucket, $image, $title, $desc, $taglist) {
+        public function generateKey($conn, $query, $originalKey) {
+            $driver = new mysqli_driver();
+            $driver->report_mode = MYSQLI_REPORT_STRICT;
+
             try {
-              // Uploaded:
-              $result = $s3->putObject(
-                array(
-                    'Bucket'=>$bucket,
-                    'Key' =>  "thisisatest.png",
-                    'Body' => $image,
-                )
-              );
-            } catch (S3Exception $e) {
-              die('Error:' . $e->getMessage());
-            } catch (Exception $e) {
-              die('Error:' . $e->getMessage());
+                $keyRes = $conn->query($query);
+
+                if($keyRes->num_rows === 0){
+                    $nKey = md5(uniqid(rand(), true));
+                } else {
+                    //This checks to make sure the keyname is unique
+                    $checkKey = True;
+                    while($checkKey) {
+                        $nKey = md5(uniqid(rand(), true));
+                        $newKey = $nKey . '_' . $originalKey;
+                        while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
+                            if($newKey == $row["keyname"]) {
+                                $checkKey = True;
+                            } else {
+                                $checkKey = False;
+                            }
+                        }
+                    }
+                }
+                $keyRes->close();
+            } catch (mysqli_sql_exception $e) {
+                echo $e->__toString();
             }
-          }
+            return $newKey;
+        }
     }
 
 ?>
