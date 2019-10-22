@@ -1,27 +1,50 @@
 <?php
 
+session_start();
+
 //This is the upload action that uploads an image to S3 and updates database
-include 'dbconn.php';
-include 'queries.php';
+//include 'dbconn.php';
+//include 'queries.php';
 //Check if user is logged in
 if(!($_SESSION['login'])){
   header('Location: index.php');
   exit();
 }
+
+class CanvasClass {
+
+  function upload($s3, $image, $title, $desc, $taglist) {
+    try {
+      // Uploaded:
+      $result = $s3->putObject(
+        array(
+            'Bucket'=>$bucketName,
+            'Key' =>  "thisisatest.png",
+            'Body' => $imageToUpload,
+        )
+      );
+    } catch (S3Exception $e) {
+      die('Error:' . $e->getMessage());
+    } catch (Exception $e) {
+      die('Error:' . $e->getMessage());
+    }
+  }
+
+}
 //This is needed to use AWS SDK for PHP
-require './vendor/autoload.php';
+//require './vendor/autoload.php';
 
 //S3Client for use in upload
-use Aws\S3\S3Client;
-use Aws\S3\Exception\S3Exception;
+//use Aws\S3\S3Client;
+//use Aws\S3\Exception\S3Exception;
 
 // AWS Info
-$bucketName = BUCKET_NAME;
-$IAM_KEY = ACCESS_KEY;
-$IAM_SECRET = SECRET_KEY;
+//$bucketName = BUCKET_NAME;
+//$IAM_KEY = ACCESS_KEY;
+//$IAM_SECRET = SECRET_KEY;
 
 // Connect to AWS
-try {
+/*try {
     $s3 = S3Client::factory(
         array(
             'credentials' => array(
@@ -57,6 +80,4 @@ try {
     die('Error:' . $e->getMessage());
   } catch (Exception $e) {
     die('Error:' . $e->getMessage());
-  }
-
-echo $_POST['title'] . ", " . $_POST['desc'] . ", " . $_POST['taglist'];
+  }*/

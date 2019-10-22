@@ -59,10 +59,6 @@ require './vendor/autoload.php';
   </div>
 </div>
 
-<form class="canvasSubmit">
-    <input type="submit" data-action="s3Upload" value="Upload">
-</form>
-
 <script src="canvasAssests/react-0.14.3.js"></script>
 <script src="canvasAssests/literallycanvas.js"></script>
 
@@ -85,12 +81,10 @@ require './vendor/autoload.php';
       var desc = document.getElementById("desc").value;
       var taglist = document.getElementById("taglist").value;
 
-      alert(title);
-
       $('.canvasSubmit').html('Uploading...')
 
       $.ajax({
-        url: 'canvasClass.php',
+        url: 'canvasHandler.php',
         type: 'POST',
         data: {
           // convert the image data to base64
