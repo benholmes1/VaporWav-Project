@@ -20,6 +20,7 @@ class CanvasClass {
   }
 
   public function upload($image, $keyname, $title, $desc, $taglist, $query, $id) {
+    $keyname = str_replace(" ", "_", $keyname);
     try {
       // Uploaded:
       $result = $this->s3->putObject(
