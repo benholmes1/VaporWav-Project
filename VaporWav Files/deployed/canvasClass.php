@@ -44,6 +44,11 @@ class CanvasClass {
 
     try {
       $insertQueryResult = $this->conn->query($query);
+      if($insertQueryResult) {
+        echo "Success";
+      } else {
+        echo "Fail";
+      }
     } catch (mysqli_sql_exception $e) {
       echo $e->__toString();
     }

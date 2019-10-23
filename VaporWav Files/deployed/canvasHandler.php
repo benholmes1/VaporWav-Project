@@ -69,10 +69,12 @@ if(isset($_POST['taglist'])) {
 if($errorFlag == 0) {
     $originalKey = $title . '.png';
     $keyCheckClient = new S3Access();
-    $keyname = $_SESSION['userData']['email'] . '/' . $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalKey);
+    $keyNoPrefix = $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalKey);
+    $keyname = $_SESSION['userData']['email'] . '/' . $keyNoPrefix;
 
     $canvasUploadClient = new CanvasClass();
     $canvasUploadClient->set($bucketName, $s3, $conn);
+    $insertCanvas = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', NULL, '".$keyNoPrefix."', '".$title."', '".$desc."', CURDATE(), '0')";
     $canvasUploadClient->upload($imageToUpload, $keyname, $title, $desc, $taglist, $insertCanvas, $_SESSION['userData']['id']);
 } else {
     echo "Upload Failed.";
