@@ -73,7 +73,7 @@ if($errorFlag == 0) {
 
     $canvasUploadClient = new CanvasClass();
     $canvasUploadClient->set($bucketName, $s3, $conn);
-    $canvasUploadClient->upload($imageToUpload, $keyname, $title, $desc, $taglist, $insertCanvas);
+    $canvasUploadClient->upload($imageToUpload, $keyname, $title, $desc, $taglist, $insertCanvas, $_SESSION['userData']['id']);
 } else {
     echo "Upload Failed.";
 }

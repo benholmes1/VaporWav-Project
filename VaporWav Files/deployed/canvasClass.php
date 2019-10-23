@@ -19,7 +19,7 @@ class CanvasClass {
     $this->conn = $conn;
   }
 
-  public function upload($image, $keyname, $title, $desc, $taglist, $query) {
+  public function upload($image, $keyname, $title, $desc, $taglist, $query, $id) {
     try {
       // Uploaded:
       $result = $this->s3->putObject(
@@ -42,8 +42,7 @@ class CanvasClass {
     $driver->report_mode = MYSQLI_REPORT_STRICT;
 
     try {
-      $insertCanvasQuery = $query;
-      $insertQueryResult = $this->conn->query($insertCanvasQuery);
+      $insertQueryResult = $this->conn->query($query);
     } catch (mysqli_sql_exception $e) {
       echo $e->__toString();
     }
