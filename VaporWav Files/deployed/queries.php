@@ -52,10 +52,12 @@ $selectRecipientSender_Friendrequests_Recipient = "SELECT recipient, sender FROM
 $selectAll_Friends_User = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";
 
 //friendPage.php
-$selectFriendDetails_Innerjoin_Users = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
-
+//$selectFriendDetails_Innerjoin_Users = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
 //friendPage.php
-$selectFriendRequest_Usernames_Sender = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id = '".$row["sender"]. "'";
+//$selectFriendRequest_Usernames_Sender = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id = '".$row["sender"]. "'";
+//friendPage.php
+$selectAll_Blocked_User = "SELECT blocked_user FROM blocked WHERE owner ='".$_SESSION["userData"]["id"]."'";
+//$selectBlockedUserDetails = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id ='".$rowB["blocked_user"]."'";
 
 //deleteImage.php
 $selectAll_ImageGalleries = "SELECT * FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
