@@ -39,43 +39,78 @@ try {
   die("Error: " . $e->getMessage());
 }
 
+$canvasUploadClient = new CanvasClass();
+$canvasUploadClient->set($bucketName, $s3, $conn);
+
 $errorFlag = 0;
 
-if(isset($_POST['image'])) {
-    $image = $_POST['image'];
-    $imageToUpload = base64_decode($image);
+if(isset($_POST['function'])) {
+    $function = $_POST['function'];
 } else {
     $errorFlag = 1;
 }
 
-if(isset($_POST['title'])) {
-    $title = $_POST['title'];
-} else {
-    $errorFlag = 1;
-}
+if($function == "upload" && $errorFlag == 0) {
+    $uploadFlag = 0;
 
-if(isset($_POST['desc'])) {
-    $desc = $_POST['desc'];
-} else {
-    $errorFlag = 1;
-}
+    if(isset($_POST['image'])) {
+        $image = $_POST['image'];
+        $imageToUpload = base64_decode($image);
+    } else {
+        $uploadFlag = 1;
+    }
 
-if(isset($_POST['taglist'])) {
-    $taglist = $_POST['taglist'];
-} else {
-    $errorFlag = 1;
-}
+    if(isset($_POST['title'])) {
+        $title = $_POST['title'];
+    } else {
+        $uploadFlag = 1;
+    }
 
-if($errorFlag == 0) {
-    $originalKey = $title . '.png';
-    $keyCheckClient = new S3Access();
-    $keyNoPrefix = $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalKey);
-    $keyname = $_SESSION['userData']['email'] . '/' . $keyNoPrefix;
+    if(isset($_POST['desc'])) {
+        $desc = $_POST['desc'];
+    } else {
+        $uploadFlag = 1;
+    }
 
-    $canvasUploadClient = new CanvasClass();
-    $canvasUploadClient->set($bucketName, $s3, $conn);
-    $insertCanvas = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', NULL, '".$keyNoPrefix."', '".$title."', '".$desc."', CURDATE(), '0')";
-    $canvasUploadClient->upload($imageToUpload, $keyname, $title, $desc, $taglist, $insertCanvas, $_SESSION['userData']['id']);
+    if(isset($_POST['taglist'])) {
+        $taglist = $_POST['taglist'];
+    } else {
+        $uploadFlag = 1;
+    }
+
+    if($uploadFlag == 0) {
+        $originalKey = $title . '.png';
+        $keyCheckClient = new S3Access();
+        $keyNoPrefix = $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalKey);
+        $keyname = $_SESSION['userData']['email'] . '/' . $keyNoPrefix;
+    
+        $tag = $canvasUploadClient->upload($imageToUpload, $keyname);
+        $insertCanvas = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', NULL, '".$keyNoPrefix."', '".$title."', '".$desc."', CURDATE(), '0')";
+        $canvasUploadClient->insertImage($title, $desc, $taglist, $insertCanvas, $_SESSION['userData']['id'], $tag);
+    } else {
+        echo "Upload Failed";
+    }
+
+} else if($function == "save" && $errorFlag == 0) {
+    $saveFlag = 0;
+
+    if(isset($_POST['snapshot'])) {
+        $snapshot = $_POST['snapshot'];
+    } else {
+        $saveFlag = 1;
+    }
+
+    if($saveFlag == 0) {
+        $originalSnapKey = "test";
+        $keyCheckClient = new S3Access();
+        $snapKeyNoPrefix = $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalSnapKey);
+        $snapKey = $_SESSION['userData']['email'] . '/' . 'Saves/' . $snapKeyNoPrefix;
+
+        $snapTag = $canvasUploadClient->upload($snapshot, $snapKey);
+    } else {
+        echo "Save Failed";
+    }
+
 } else {
-    echo "Upload Failed.";
+    echo "Fail";
 }

@@ -19,15 +19,14 @@ class CanvasClass {
     $this->conn = $conn;
   }
 
-  public function upload($image, $keyname, $title, $desc, $taglist, $query, $id) {
-    $keyname = str_replace(" ", "_", $keyname);
+  public function upload($content, $keyname) {
     try {
       // Uploaded:
       $result = $this->s3->putObject(
         array(
             'Bucket'=>$this->bucket,
             'Key' =>  $keyname,
-            'Body' => $image,
+            'Body' => $content,
         )
       );
       $eTag = $result['ETag'];
@@ -38,7 +37,10 @@ class CanvasClass {
     }
 
     $tag = str_replace('"', '', $eTag);
+    return $tag;
+  }
 
+  public function insertImage($title, $desc, $taglist, $query, $id, $tag) {
     $driver = new mysqli_driver();
     $driver->report_mode = MYSQLI_REPORT_STRICT;
 

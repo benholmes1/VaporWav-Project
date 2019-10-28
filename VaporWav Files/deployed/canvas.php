@@ -21,6 +21,9 @@ require './vendor/autoload.php';
         <li class="nav-item dropdown ml-auto">
           <a class="nav-link pull-right" data-toggle="dropdown" id="imgDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:white;vertical-align:middle" class="fa fa-bars"></i></a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="imgDropdown">
+          <form class="canvasSave">
+            <input class="btn" type="submit" data-action="save" value="Save">
+          </form>
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">
             Upload
           </button>
@@ -87,7 +90,7 @@ require './vendor/autoload.php';
         url: 'canvasHandler.php',
         type: 'POST',
         data: {
-          // convert the image data to base64
+          function: "upload",
           image:  lc.canvasForExport().toDataURL().split(',')[1],
           type: 'base64',
           title: title,
@@ -97,6 +100,29 @@ require './vendor/autoload.php';
         success: function(result) {
           alert(result);
           $('.canvasSubmit').html('Uploaded')
+        },
+      });
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+    //var lc = LC.init(document.getElementsByClassName('canvasUpload')[0]);
+    $('[data-action=save]').click(function(e) {
+      e.preventDefault();
+
+      var snapshot = JSON.stringify(lc.getSnapshot(['shapes', 'imageSize', 'colors', 'position', 'scale', 'backgroundShapes']));
+
+      $.ajax({
+        url: 'canvasHandler.php',
+        type: 'POST',
+        data: {
+          function: "save",
+          snapshot: snapshot
+        },
+        success: function(result) {
+          alert(result);
         },
       });
     });
