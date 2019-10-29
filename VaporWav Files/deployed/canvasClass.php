@@ -56,4 +56,18 @@ class CanvasClass {
     }
   }
 
+  public function insertSave($query) {
+    $driver = new mysqli_driver();
+    $driver->report_mode = MYSQLI_REPORT_STRICT;
+
+    try {
+      $saveQueryResult = $this->conn->query($query);
+      if(!($saveQueryResult)) {
+        echo "Fail";
+      }
+    } catch (mysqli_sql_exception $e) {
+      echo $e->__toString();
+    }
+  }
+
 }

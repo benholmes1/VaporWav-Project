@@ -100,13 +100,28 @@ if($function == "upload" && $errorFlag == 0) {
         $saveFlag = 1;
     }
 
+    if(isset($_POST['canvasTitle'])) {
+        $canvasTitle = $_POST['canvasTitle'];
+    } else {
+        $saveFlag = 1;
+    }
+
     if($saveFlag == 0) {
-        $originalSnapKey = "test";
-        $keyCheckClient = new S3Access();
-        $snapKeyNoPrefix = $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalSnapKey);
+        if(isset($_POST['canvasKey'])) {
+            $snapKeyNoPrefix = $_POST['canvasKey'];
+        } else {
+            $originalSnapKey = $canvasTitle;
+            $keyCheckClient = new S3Access();
+            $snapKeyNoPrefix = $keyCheckClient->generateKey($conn, $selectKeyname_Images, $originalSnapKey);
+        }
         $snapKey = $_SESSION['userData']['email'] . '/' . 'Saves/' . $snapKeyNoPrefix;
 
         $snapTag = $canvasUploadClient->upload($snapshot, $snapKey);
+        if(!isset($_POST['canvasKey'])) {
+            $insertCanvasSave = "INSERT INTO `saves`(`user_id`, `title`, `save_keyname`) VALUES ('".$_SESSION['userData']['id']."', '".$canvasTitle."', '".$snapKeyNoPrefix."')";
+            $canvasUploadClient->insertSave($insertCanvasSave);
+        }
+        echo $snapKeyNoPrefix;
     } else {
         echo "Save Failed";
     }
