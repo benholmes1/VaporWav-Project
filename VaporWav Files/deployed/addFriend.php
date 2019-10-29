@@ -11,6 +11,9 @@ if($_GET["add"]) {
 	wordwrap($msg,70);
 	mail($_POST['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
 
+	$qryNotific = "INSERT INTO `notifications`(`userEmail`, `message`) VALUES ('".$_POST['fEmail']."', '".$_SESSION['nickname']." sent you a friend request')";
+	$qryNotificRes = $conn->query($qryNotific);
+
 
     $_query = $selectAll_FriendRequests_SessionData;
     if($result = $conn->query($_query))

@@ -152,6 +152,8 @@
                 wordwrap($msg,70);
                 mail($friendsRow['email'],"Your Friend ".$_SESSION['nickname']." posted something new!",$msg);
                 echo '<h2>Hello</h2>';
+                $qryNotific = "INSERT INTO `notifications`(`userEmail`, `message`) VALUES ('".$friendsRow['email']."', '".$_SESSION['nickname']." uploaded a new image.')";
+                $qryNotificRes = $conn->query($qryNotific);
             }
             }
         }
