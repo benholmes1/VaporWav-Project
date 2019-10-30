@@ -60,14 +60,61 @@
         $descriptionTag = 'Description=' . $_POST['desc'];
       }
 
-      
-      //NEW-------------------------------
       if(isset($_POST["taglist"])){
         $taglist = $_POST['taglist'];
         $tagArray = explode(",",$taglist);
       }
-      //NEW-------------------------------
-
+      //Add category
+      $catlist = array("Digital Art","Traditional Art","Photography","Comics","Collage","Drawing","Painting","Landscape","Sculpture","Typography","3D Art","Photomanipulation","Pixel Art","Text Art","Vector","Fan Art");
+      $incatlist = [];
+      if(isset($_POST["cat0"])){
+        array_push($incatlist,$catlist[0]);
+      }
+      if(isset($_POST["cat1"])){
+        array_push($incatlist,$catlist[1]);
+      }
+      if(isset($_POST["cat2"])){
+        array_push($incatlist,$catlist[2]);
+      }
+      if(isset($_POST["cat3"])){
+        array_push($incatlist,$catlist[3]);
+      }
+      if(isset($_POST["cat4"])){
+        array_push($incatlist,$catlist[4]);
+      }
+      if(isset($_POST["cat5"])){
+        array_push($incatlist,$catlist[5]);
+      }
+      if(isset($_POST["cat6"])){
+        array_push($incatlist,$catlist[6]);
+      }
+      if(isset($_POST["cat7"])){
+        array_push($incatlist,$catlist[7]);
+      }
+      if(isset($_POST["cat8"])){
+        array_push($incatlist,$catlist[8]);
+      }
+      if(isset($_POST["cat9"])){
+        array_push($incatlist,$catlist[9]);
+      }
+      if(isset($_POST["cat10"])){
+        array_push($incatlist,$catlist[10]);
+      }
+      if(isset($_POST["cat11"])){
+        array_push($incatlist,$catlist[11]);
+      }
+      if(isset($_POST["cat12"])){
+        array_push($incatlist,$catlist[12]);
+      }
+      if(isset($_POST["cat13"])){
+        array_push($incatlist,$catlist[13]);
+      }
+      if(isset($_POST["cat14"])){
+        array_push($incatlist,$catlist[14]);
+      }
+      if(isset($_POST["cat15"])){
+        array_push($incatlist,$catlist[15]);
+      }
 
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
     
@@ -125,12 +172,12 @@
       $queryRes = $conn->query($query);
       //$message = "Success!";
 
-      //NEW---------------------------------------
-      //Insert Tags into database-----------------
+      //Insert Tags into database
       $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
       $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
       for ($x = 1; $x < count($tagArray); $x++){
-        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";if(substr_compare($tagArray[$x], " ", 0, 1) == 0){//if first character in tag is a whitespace
+        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
+        if(substr_compare($tagArray[$x], " ", 0, 1) == 0){//if first character in tag is a whitespace
           $tagquery = $tagquery.", ('".$keyNoPrefix."', '".substr($tagArray[$x],1)."')";
         }
         else{
@@ -138,8 +185,12 @@
         }
       }
       $tagqueryRes = $conn->query($tagquery);
-      //NEW---------------------------------------
+
+      //Inserting categories into database
+      $cattag = "INSERT INTO categories (`category_id`, `keyname`, `category_name`) VALUES ";
+      
       $message = "Success!";
+
       //Fetch the results of the SQL query and email each of the respective emails
       $queryF = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";
 
