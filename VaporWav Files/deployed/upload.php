@@ -66,54 +66,71 @@
       }
       //Add category
       $catlist = array("Digital Art","Traditional Art","Photography","Comics","Collage","Drawing","Painting","Landscape","Sculpture","Typography","3D Art","Photomanipulation","Pixel Art","Text Art","Vector","Fan Art");
+      $catIDlist = [];
       $incatlist = [];
       if(isset($_POST["cat0"])){
         array_push($incatlist,$catlist[0]);
+        array_push($catIDlist, 0);
       }
       if(isset($_POST["cat1"])){
         array_push($incatlist,$catlist[1]);
+        array_push($catIDlist, 1);
       }
       if(isset($_POST["cat2"])){
         array_push($incatlist,$catlist[2]);
+        array_push($catIDlist, 2);
       }
       if(isset($_POST["cat3"])){
         array_push($incatlist,$catlist[3]);
+        array_push($catIDlist, 3);
       }
       if(isset($_POST["cat4"])){
         array_push($incatlist,$catlist[4]);
+        array_push($catIDlist, 4);
       }
       if(isset($_POST["cat5"])){
         array_push($incatlist,$catlist[5]);
+        array_push($catIDlist, 5);
       }
       if(isset($_POST["cat6"])){
         array_push($incatlist,$catlist[6]);
+        array_push($catIDlist, 6);
       }
       if(isset($_POST["cat7"])){
         array_push($incatlist,$catlist[7]);
+        array_push($catIDlist, 7);
       }
       if(isset($_POST["cat8"])){
         array_push($incatlist,$catlist[8]);
+        array_push($catIDlist, 8);
       }
       if(isset($_POST["cat9"])){
         array_push($incatlist,$catlist[9]);
+        array_push($catIDlist, 9);
       }
       if(isset($_POST["cat10"])){
         array_push($incatlist,$catlist[10]);
+        array_push($catIDlist, 10);
       }
       if(isset($_POST["cat11"])){
         array_push($incatlist,$catlist[11]);
+        array_push($catIDlist, 11);
       }
       if(isset($_POST["cat12"])){
         array_push($incatlist,$catlist[12]);
+        array_push($catIDlist, 12);
       }
       if(isset($_POST["cat13"])){
         array_push($incatlist,$catlist[13]);
+        array_push($catIDlist, 13);
       }
       if(isset($_POST["cat14"])){
         array_push($incatlist,$catlist[14]);
+        array_push($catIDlist, 14);
       }
       if(isset($_POST["cat15"])){
         array_push($incatlist,$catlist[15]);
+        array_push($catIDlist, 15);
       }
 
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
@@ -176,7 +193,7 @@
       $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
       $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
       for ($x = 1; $x < count($tagArray); $x++){
-        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
+        //$tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
         if(substr_compare($tagArray[$x], " ", 0, 1) == 0){//if first character in tag is a whitespace
           $tagquery = $tagquery.", ('".$keyNoPrefix."', '".substr($tagArray[$x],1)."')";
         }
@@ -187,8 +204,12 @@
       $tagqueryRes = $conn->query($tagquery);
 
       //Inserting categories into database
-      $cattag = "INSERT INTO categories (`category_id`, `keyname`, `category_name`) VALUES ";
-      
+      $catconcat = "('".$catIDlist[0]."','".$keyNoPrefix."','".$incatlist[0]."')";
+      $catquery = "INSERT INTO categories (`category_id`, `keyname`, `category_name`) VALUES ".$catconcat;
+      for($i = 1; $i < count($incatlist); $i++){
+        $catquery = $catquery.", ('".$catIDlist[i]."', '".$keyNoPrefix."', '".$incatlist[0]."')";
+      }
+      $catqueryRes = $conn->query($catquery);
       $message = "Success!";
 
       //Fetch the results of the SQL query and email each of the respective emails
