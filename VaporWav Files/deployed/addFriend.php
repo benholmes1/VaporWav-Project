@@ -9,7 +9,10 @@ if($_GET["add"]) {
 
 	$msg = "Check it out on your friends list!";
 	wordwrap($msg,70);
-	mail($_POST['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
+	mail($_GET['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
+
+	$qryNotific = "INSERT INTO `notifications`(`userEmail`, `message`) VALUES ('".$_GET['fEmail']."', '".$_SESSION['nickname']." sent you a friend request')";
+	$qryNotificRes = $conn->query($qryNotific);
 
 
     $_query = $selectAll_FriendRequests_SessionData;
@@ -28,5 +31,5 @@ if($_GET["add"]) {
 header("Location:home.php");
 $msg = "Check it out on your friends list!";
 wordwrap($msg,70);
-mail($_POST['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
+mail($_GET['fEmail'],"The user ".$_SESSION['nickname']." sent you a friend request!",$msg);
 ?>
