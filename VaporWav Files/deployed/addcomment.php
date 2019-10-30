@@ -29,7 +29,7 @@ $qryNotific = "INSERT INTO `notifications`(`userEmail`, `message`) VALUES ('".$_
 $qryNotificRes = $conn->query($qryNotific);
 
 $commentquery = "INSERT INTO comments(`image_id`,`user_id`,`comment`,`created`) VALUES ('".$keyname."','".$_SESSION['userData']['id']."','".$comment."',CURDATE())";
-$commentquery = $insertComment_Comments;
+//$commentquery = $insertComment_Comments;
 $commentqueryRes = $conn->query($commentquery);
 
 if($commentqueryRes) {
