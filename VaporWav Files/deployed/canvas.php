@@ -109,7 +109,8 @@ if(isset($_GET['key'])) {
     imageURLPrefix: 'canvasAssests/lc-images',
     toolbarPosition: 'bottom',
     defaultStrokeWidth: 2,
-    strokeWidths: [1, 2, 3, 5, 10, 20, 30]
+    strokeWidths: [1, 2, 3, 5, 10, 20, 30],
+    backgroundColor: '#fff'
   });
 </script>
 
