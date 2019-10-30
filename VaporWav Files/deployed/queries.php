@@ -7,10 +7,13 @@ $selectTitle_Images_Title = "SELECT title FROM images WHERE title LIKE '%".$imag
 $selectNicknameEmail_Usernames_Nickname = "SELECT nickname, email FROM usernames u INNER join users n on u.id = n.id WHERE nickname LIKE '%".$emailCompare."%'";
 
 //searhPage.php check function
-$selectId_Users_Email = "SELECT id FROM users WHERE email = '" .$sEmail."'";
+$selectId_Users_Email = "SELECT id FROM users WHERE email = '".$sEmail."'";
 
 //searchPage.php check function
 $selectFriendNickname_Usernames_Id = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
+
+//searchPage.php check function
+$selectBlocked_Usernames_Id = "SELECT blocked_user FROM blocked WHERE owner = '".$BlockerID['id']."' AND blocked_user = '".$userID."'";
 
 //searchPage.php check function
 $selectFriends_User_UserFriend = "SELECT * FROM friends WHERE user = '".$_SESSION['userData']['id']."' AND friend = '".$friendID['id']."'";
