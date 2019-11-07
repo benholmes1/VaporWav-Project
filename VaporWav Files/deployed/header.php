@@ -102,7 +102,7 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
           <a class="nav-link" href="friendPage.php"><button class="btn">Friends</button></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="categories.php"><button class="btn">Category List</button></a>
+          <a class="nav-link" href="categoriesPage.php"><button class="btn">Categories</button></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#"><button class="btn">Draw</button></a>
