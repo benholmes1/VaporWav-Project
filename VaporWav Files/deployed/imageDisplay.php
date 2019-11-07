@@ -169,16 +169,23 @@
           ?>
         </div>
       </div>
-      
+
       <!--category section-->
       <div class ="row">
         <div class="col">Categories:
           <?php
-            echo '<select name="Categories">';
+            $categoryString = "";
+            $i = 0;
             while($rowC = $catRow->fetch_assoc()){
-              echo '<option value="'.$rowC['category_name'].'">#'.$rowC['category_name'].'</option>';
+              if($i == 0){
+                $categoryString = $categoryString."<i>".$rowC['category_name']."</i> ";
+              }
+              else{
+                $categoryString = $categoryString."/"."<i>".$rowC['category_name']."</i> ";
+              }
+              $i=$i+1;
             }
-            echo '</select>';
+            echo $categoryString;
           ?>
         </div>
       </div>
