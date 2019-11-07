@@ -67,6 +67,10 @@
   $tagQuery = "SELECT tag FROM tags WHERE keyname = '".$keyname."'";
   $tagRow = $conn->query($tagQuery);
 
+  //get image categories
+  $catQuery = "SELECT category_name FROM categories WHERE keyname = '".$keyname."'";;
+  $catRow = $conn->query($catQuery);
+
   $checkLikeQuery = "SELECT * FROM likes WHERE userid = '".$_SESSION['userData']['id']."' AND keyname = '".$keyname."'";
   $checkLikeRes = $conn->query($checkLikeQuery);
   if($checkLikeRes->num_rows == 0) {
@@ -160,6 +164,19 @@
             echo '<select name="Tags">';
             while($rowT = $tagRow->fetch_assoc()){
               echo '<option value="'.$rowT['tag'].'">#'.$rowT['tag'].'</option>';
+            }
+            echo '</select>';
+          ?>
+        </div>
+      </div>
+      
+      <!--category section-->
+      <div class ="row">
+        <div class="col">Categories:
+          <?php
+            echo '<select name="Categories">';
+            while($rowC = $catRow->fetch_assoc()){
+              echo '<option value="'.$rowC['category_name'].'">#'.$rowC['category_name'].'</option>';
             }
             echo '</select>';
           ?>
