@@ -8,6 +8,12 @@
     header('Location: index.php');
     exit();
   }
+  //Alert the success or fail message
+  if(isset($_GET['msg'])) {
+    $msg = $_GET['msg'];
+    echo "<script type='text/javascript'>alert('$msg');</script>"; 
+    unset($_GET['msg']);
+  }
   $cateNames = array("Digital Art","Traditional Art","Photography","Comics","Collage","Drawing","Painting","Landscape","Sculpture","Typography","3D Art","Photomanipulation","Pixel Art","Text Art","Vector","Fan Art");
   $catQuery0 = "SELECT COUNT(*) AS cat0count FROM categories WHERE category_name = '".$cateNames[0]."'";
   $catQuery1 = "SELECT COUNT(*) AS cat1count FROM categories WHERE category_name = '".$cateNames[1]."'";
@@ -27,25 +33,23 @@
   $catQuery15 = "SELECT COUNT(*) AS cat15count FROM categories WHERE category_name = '".$cateNames[15]."'";
 ?>
 <main role="main">
-<br>
-<section class="jumbotron text-center" style="color:rebeccapurple">
-  <br>
-  <div class="jumbotron">
-    <h2 class="jumbotron-heading">Category List</h2>
-  </div>
-  <div class="container">
-  <div class="row">
-    <div class="col">Column</div>
-    <div class="col">Column</div>
-    <div class="w-100"></div>
-    <div class="col">Column</div>
-    <div class="col">Column</div>
-  </div>
-</div>
-  </div>
-</div>
+    <div class="container">
+        <br>
+        <div class="jumbotron">
+            <h2 class="jumbotron-heading">Categories</h2>
+        </div>
 
+        <div class="container">
+            <div class="jumbotron">
+                <div class="col">col</div>
+                <div class="col">col</div>
+                <div class="w-100"></div>
+                <div class="col">col</div>
+                <div class="col">col</div>
+            </div>
+        </div>
 
+    </div>  
 </main>
 </body>
 </html
