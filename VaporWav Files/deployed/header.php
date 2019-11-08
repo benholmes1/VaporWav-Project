@@ -43,6 +43,7 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js.map"></script>
     <link rel="stylesheet" href="stylesFinal.css">
+    <link rel="stylesheet" href="literallycanvas.css">
 
     <script src="acctscript.js"></script>
 </head>
@@ -107,8 +108,26 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
         <li class="nav-item">
           <a class="nav-link" href="#"><button class="btn">Draw</button></a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="igenPage.php"><button class="btn">Idea Gen</button></a>
+        </li>
       </ul>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item" id="dropdown">
+          <a class="nav-link"><button class="btn">Notifications</button></a>
+          <div id="dropdown-content">
+            <?php
+            $notifQ = "SELECT * from notifications where userEmail = '" . $_SESSION['userData']['email'] . "'";
+            if($notificRes = $conn->query($notifQ)) 
+            {
+              while($notifications = $notificRes->fetch_assoc()) {
+                echo '<p>' . $notifications['message'] . '</p>';
+                echo '<br>';
+              }
+            }
+            ?>
+          </div>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="account.php"><button class="btn">My Account</button></a>
         </li>

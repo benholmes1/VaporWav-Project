@@ -72,6 +72,15 @@ else
 {
   header('Location: index.php');
 }
+$qryBlocked = "SELECT blocked_user FROM blocked WHERE owner ='".$_SESSION["userData"]["id"]."'";
+$isBlocked = $conn->query($qryBlocked);
+$bRows = $isBlocked->num_rows;
+if ($bRows == 0)
+{
+    echo 'br';
+    echo '<form action = "blockUser.php" method = "get"><input type ="hidden" name="bID" value='.$friendID['id'].'></input> <button class="btn" type="submit">Block User</button>';
+    echo '</form>';
+}
 
 //Follower Button
 //FollowerID is the page owner
