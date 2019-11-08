@@ -77,7 +77,7 @@ $isBlocked = $conn->query($qryBlocked);
 $bRows = $isBlocked->num_rows;
 if ($bRows == 0)
 {
-    echo 'br';
+    echo '<br>';
     echo '<form action = "blockUser.php" method = "get"><input type ="hidden" name="bID" value='.$friendID['id'].'></input> <button class="btn" type="submit">Block User</button>';
     echo '</form>';
 }
