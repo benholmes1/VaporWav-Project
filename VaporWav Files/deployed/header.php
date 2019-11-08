@@ -107,6 +107,9 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
         <li class="nav-item">
           <a class="nav-link" href="#"><button class="btn">Draw</button></a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="igenPage.php"><button class="btn">Idea Gen</button></a>
+        </li>
       </ul>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
         <li class="nav-item" id="dropdown">
