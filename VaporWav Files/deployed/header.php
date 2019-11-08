@@ -112,6 +112,21 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
         </li>
       </ul>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item" id="dropdown">
+          <a class="nav-link"><button class="btn">Notifications</button></a>
+          <div id="dropdown-content">
+            <?php
+            $notifQ = "SELECT * from notifications where userEmail = '" . $_SESSION['userData']['email'] . "'";
+            if($notificRes = $conn->query($notifQ)) 
+            {
+              while($notifications = $notificRes->fetch_assoc()) {
+                echo '<p>' . $notifications['message'] . '</p>';
+                echo '<br>';
+              }
+            }
+            ?>
+          </div>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="account.php"><button class="btn">My Account</button></a>
         </li>
