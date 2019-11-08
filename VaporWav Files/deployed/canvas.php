@@ -132,7 +132,7 @@ if(isset($_GET['key'])) {
         type: 'POST',
         data: {
           function: "upload",
-          image:  lc.canvasForExport().toDataURL().split(',')[1],
+          image:  lc.getImage({scaleDownRetina: true}).toDataURL().split(',')[1],
           type: 'base64',
           title: title,
           desc: desc,
@@ -173,7 +173,7 @@ if(isset($_GET['key'])) {
           snapshot: snapshot
         },
         success: function(result) {
-          window.location.replace("http://ec2-52-53-194-4.us-west-1.compute.amazonaws.com/canvas.php?title="+canvasTitle+"&&key="+result);
+          window.location.replace("http://ec2-52-53-194-4.us-west-1.compute.amazonaws.com/canvas.php?title="+canvasTitle+"&&key="+result+"&&type=load");
         },
       });
     });
@@ -192,6 +192,47 @@ if(isset($_GET['key'])) {
       window.location.replace("http://ec2-52-53-194-4.us-west-1.compute.amazonaws.com/canvas.php?title="+canvasTitle);
     });
   });
+</script>
+
+<script>
+  let params = (new URL(document.location)).searchParams;
+
+  if(params.has("type")) {
+    var type = params.get("type");
+  }
+
+  if(type == "load") {
+    window.onload = loadFunction;
+  }
+
+  function loadFunction() {
+
+    let params = (new URL(document.location)).searchParams;
+
+    if(params.has("key")) {
+      var canvasKey = params.get("key");
+    }
+
+    $.ajax({
+      url: 'canvasHandler.php',
+      type: 'POST',
+      data: {
+        function: "load",
+        canvasKey: canvasKey
+      },
+      success: function(result) {
+        //alert(result);
+        var loadObject = JSON.parse(result);
+        lc.loadSnapshot(loadObject);
+      },
+    });
+  }
+</script>
+
+<script>
+  window.onbeforeunload = function(){
+    return 'Are you sure you want to leave?';
+  };
 </script>
 
 </body>

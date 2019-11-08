@@ -44,7 +44,7 @@ try {
             <div class="card card-body">
                 <?php
                     while ($saveRow = $saveQueryResult->fetch_assoc()) {
-                        echo '<a href="canvas.php?title='.$saveRow['title'].'&&key='.$saveRow['save_keyname'].'">'.$saveRow['title'].'</a>';
+                        echo '<a href="canvas.php?title='.$saveRow['title'].'&&key='.$saveRow['save_keyname'].'&&type=load">'.$saveRow['title'].'</a>';
                     }
                 ?>
             </div>

@@ -126,6 +126,22 @@ if($function == "upload" && $errorFlag == 0) {
         echo "Save Failed";
     }
 
+} else if($function == "load" && $errorFlag == 0) {
+    $loadFlag = 0;
+
+    if(isset($_POST['canvasKey'])) {
+        $canvasKey = $_POST['canvasKey'];
+    } else {
+        $loadFlag = 1;
+    }
+    
+    if($loadFlag == 0) {
+        $loadKeyname = $_SESSION['userData']['email'] . '/' . 'Saves/' . $canvasKey;
+        $loadObject = $canvasUploadClient->getSave($loadKeyname);
+        echo $loadObject;
+    } else {
+        echo "Load Failed";
+    }
 } else {
     echo "Fail";
 }

@@ -70,4 +70,22 @@ class CanvasClass {
     }
   }
 
+  public function getSave($keyname) {
+    try {
+      // Uploaded:
+      $result = $this->s3->getObject(
+        array(
+            'Bucket'=>$this->bucket,
+            'Key' =>  $keyname,
+        )
+      );
+    } catch (S3Exception $e) {
+      die('Error:' . $e->getMessage());
+    } catch (Exception $e) {
+      die('Error:' . $e->getMessage());
+    }
+
+    return $result['Body'];
+  }
+
 }
