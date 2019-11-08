@@ -72,7 +72,7 @@ else
 {
   header('Location: index.php');
 }
-$qryBlocked = "SELECT blocked_user FROM blocked WHERE owner ='".$_SESSION["userData"]["id"]."'";
+$qryBlocked = "SELECT blocked_user FROM blocked WHERE owner ='".$_SESSION["userData"]["id"]."'AND blocked_user = '".$friendID['id']."'";
 $isBlocked = $conn->query($qryBlocked);
 $bRows = $isBlocked->num_rows;
 if ($bRows == 0)
