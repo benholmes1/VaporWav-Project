@@ -68,36 +68,36 @@ $Cnt = 0;
                     }
                 }
 
-                /* free result set */
-                $result->free();
-            }
-        ?>
-        </div>
-        <br>
-        <div class="jumbotron">
-            <h2 class="jumbotron-heading">Your Blocked List</h2>
-        </div>
-        <div class="friends">
-        <?php
-            if ($resultB = $conn->query($queryB)) 
-            {
-                while ($rowB = $resultB->fetch_assoc()) 
-                {
-                    $queryU = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id ='".$rowB["blocked_user"]."'";
-                    if($resultU = $conn->query($queryU)) 
-                    {
-                        $rowU = $resultU->fetch_assoc();
-                        echo '<div style="margin-bottom:.3em">';
-                        echo '<img style="display:inline-block" src="'.$rowU['picture'].'" class="img-thumbnail">';
-                        echo "<p style='display:inline-block'>" .$rowU["nickname"]. "</p>";
-                        echo '</div>';
-                    }
-                }
-            }
-                /* free result set */
-            $resultU->free();
-            ?>
-        </div>
+              /* free result set */
+              $result->free();
+}
+?>
+</div>
+    <br>
+    <div class="jumbotron">
+        <h2 class="jumbotron-heading">Your Blocked List</h2>
+    </div>
+    <div class="friends">
+<?php
+if ($resultB = $conn->query($queryB)) 
+{
+    while ($rowB = $resultB->fetch_assoc()) 
+    {
+        $queryU = "SELECT nickname, email, picture FROM usernames n inner join users u on n.id = u.id where n.id ='".$rowB["blocked_user"]."'";
+        if($resultU = $conn->query($queryU)) 
+        {
+            $rowU = $resultU->fetch_assoc();
+            echo '<div style="margin-bottom:.3em">';
+            echo '<img style="display:inline-block" src="'.$rowU['picture'].'" class="img-thumbnail">';
+            echo "<a href = 'searchPage.php?searchQ=" . $rowU["email"] . "'>" . $rowU["nickname"] . "</a>";
+            echo '</div>';
+        }
+    }
+}
+    /* free result set */
+$resultU->free();
+?>
+</div>
 
     </container>
 </main>
