@@ -114,7 +114,7 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
       </ul>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
         <li class="nav-item" id="dropdown">
-          <a class="nav-link"><button class="btn">Notifications</button></a>
+          <a class="nav-link"><button class="btn"><span class = "fa fa-bell"></span></button></a>
           <div id="dropdown-content">
             <?php
             $notifQ = "SELECT * from notifications where userEmail = '" . $_SESSION['userData']['email'] . "'";
