@@ -45,6 +45,9 @@ $getName = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
 $getNameRes = $conn->query($getName);
 $getNameRow = $getNameRes->fetch_assoc();
 
+$followerR = $conn->query($qry1);
+$followerID = $followerR->fetch_assoc();
+
 echo '<h2 class="jumbotron-heading">' . $getNameRow['nickname'] . '\'s Gallery</h2>';
 
 //Friend feature
@@ -61,6 +64,27 @@ if ($sEmail!="" && $email != $sEmail)
 	{
         echo '<br>';
         echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button class="btn" type="submit">Add Friend</button>';
+        echo '<input id="fEmail" name="fEmail" type="hidden" value="' . $_GET["searchQ"] . '">';
+        echo '</form>';
+	}
+}
+else
+{
+  header('Location: index.php');
+}
+
+//Follower Button
+//FollowerID is the page owner
+if ($sEmail!="" && $email != $sEmail)
+{ 
+  $checkFollower = "SELECT * FROM followers WHERE user = '".$followerID['id']."' AND follower = '".$_SESSION['userData']['id']."'";
+  $isFollower = $conn->query($checkFollower);
+  $numF = $isFollower->num_rows;
+
+	if ($numF == 0)
+	{
+        echo '<br>';
+        echo '<form action = "addFollower.php" method ="get"><input type ="hidden" name="follow" value='.$followerID['id'].'></input> <button class="btn" type="submit">Follow</button>';
         echo '<input id="fEmail" name="fEmail" type="hidden" value="' . $_GET["searchQ"] . '">';
         echo '</form>';
 	}
