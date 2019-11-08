@@ -103,10 +103,31 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
           <a class="nav-link" href="friendPage.php"><button class="btn">Friends</button></a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="categoriesPage.php"><button class="btn">Categories</button></a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="#"><button class="btn">Draw</button></a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="igenPage.php"><button class="btn">Idea Gen</button></a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item" id="dropdown">
+          <a class="nav-link"><button class="btn">Notifications</button></a>
+          <div id="dropdown-content">
+            <?php
+            $notifQ = "SELECT * from notifications where userEmail = '" . $_SESSION['userData']['email'] . "'";
+            if($notificRes = $conn->query($notifQ)) 
+            {
+              while($notifications = $notificRes->fetch_assoc()) {
+                echo '<p>' . $notifications['message'] . '</p>';
+                echo '<br>';
+              }
+            }
+            ?>
+          </div>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="account.php"><button class="btn">My Account</button></a>
         </li>

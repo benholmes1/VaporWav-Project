@@ -30,15 +30,18 @@ $bucket_url = "https://s3-{$region}.amazonaws.com/{$bucket}";
 
 $sEmail = $_GET['searchQ'];
 $fEmail = $sEmail . "/";
+$userID = $_SESSION['userData']['id'];
 $del = '/';
 
 $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $fEmail, 'Delimiter' => $del));
 
-$qry1 = $selectId_Users_Email;
+//$qry1 = $selectId_Users_Email;
+$qry1 = "SELECT id FROM users WHERE email = '".$sEmail."'";
 $friendR = $conn->query($qry1);
 $friendID = $friendR->fetch_assoc();
 
-$getName = $selectFriendNickname_Usernames_Id;
+//$getName = $selectFriendNickname_Usernames_Id;
+$getName = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
 $getNameRes = $conn->query($getName);
 $getNameRow = $getNameRes->fetch_assoc();
 
@@ -48,7 +51,8 @@ echo '<h2 class="jumbotron-heading">' . $getNameRow['nickname'] . '\'s Gallery</
 
 if ($sEmail!="" && $email != $sEmail)
 { 
-  $checkFriend = $selectFriends_User_UserFriend;
+  //$checkFriend = $selectFriends_User_UserFriend;
+  $checkFriend = "SELECT * FROM friends WHERE user = '".$_SESSION['userData']['id']."' AND friend = '".$friendID['id']."'";
   $isFriend = $conn->query($checkFriend);
   $numRows = $isFriend->num_rows;
 	//echo"<script type='text/javascript'>alert($numRows);</script>";
@@ -74,6 +78,22 @@ echo '</section>';
 <div class="gallery" id="gallery">
 
 <?php
+
+$BlockR = $conn->query($qry1);
+$BlockerID = $BlockR->fetch_assoc();
+
+//$checkBlocked = $selectBlocked_Usernames_Id;
+$checkBlocked = "SELECT blocked_user FROM blocked WHERE owner = '".$BlockerID['id']."' AND blocked_user = '".$userID."'";
+$isBlocked = $conn->query($checkBlocked);
+$blockRow =  $isBlocked->num_rows;
+//echo "$BlockerID";
+//$userID == $isBlocked['blocked_user']
+if ($blockRow == 1)
+{ 
+  echo "blocked";
+}
+else
+{
 //$images = array();
 $Cnt = 0;
 
@@ -107,7 +127,7 @@ foreach ($iterator as $object) {
 if($Cnt == 0) {
 	echo '<p>No results found.</p>';
 }
-
+}
 /*foreach ($images as $object) {
   $url = $object->getUrl();
   $message = "wrong answer";

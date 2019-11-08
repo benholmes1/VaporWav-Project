@@ -67,20 +67,35 @@ if($numRows == 0) {
     <div class="gallery" id="gallery">
   
 <?php
-  $friendQuery = $selectFriendImages_Innerjoin_SessionData;
+
+  //$friendQuery = $selectFriendImages_Innerjoin_SessionData;
+  $friendQuery = "SELECT u.email, i.keyname from images i inner join friends f on i.id = f.friend inner join users u on f.friend = u.id where f.user = '".$_SESSION['userData']['id']."' order by i.created";
   $friendRes = $conn->query($friendQuery);
   if($friendRes->num_rows == 0){
     echo '<p>No Results</p>';
   } else {
     while($friendRow = $friendRes->fetch_assoc()) {
-      $friendKey = $friendRow['email'] . "/" . $friendRow['keyname'];
-      $s3Client = new S3Access();
-      $fr_signed_url = $s3Client->get($region, $bucket, $friendKey);
-      
-      //Display each image as a link to the image display page 
-      echo '<div class="mb-3">';
-      echo '<a href="imageDisplay.php?key='.$friendKey.'&exp=true"><img class="img-fluid" src="'.$fr_signed_url.'"></a>';
-      echo '</div>';
+      $BlockR = $conn->query("SELECT id FROM users WHERE email = '".$friendRow['email']."'");
+      $BlockerID = $BlockR->fetch_assoc();
+
+      $checkBlocked = "SELECT blocked_user FROM blocked WHERE owner = '".$BlockerID['id']."' AND blocked_user = '".$_SESSION['userData']['id']."'";
+      $isBlocked = $conn->query($checkBlocked);
+      $blockRow =  $isBlocked->num_rows;
+      if ($blockRow == 1)
+      { 
+        echo "blocked";
+      }
+      else
+      {
+        $friendKey = $friendRow['email'] . "/" . $friendRow['keyname'];
+        $s3Client = new S3Access();
+        $fr_signed_url = $s3Client->get($region, $bucket, $friendKey);
+        
+        //Display each image as a link to the image display page 
+        echo '<div class="mb-3">';
+        echo '<a href="imageDisplay.php?key='.$friendKey.'&exp=true"><img class="img-fluid" src="'.$fr_signed_url.'"></a>';
+        echo '</div>';
+      }
     }
   }
 ?>

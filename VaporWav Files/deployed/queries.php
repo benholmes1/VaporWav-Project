@@ -7,10 +7,13 @@ $selectTitle_Images_Title = "SELECT title FROM images WHERE title LIKE '%".$imag
 $selectNicknameEmail_Usernames_Nickname = "SELECT nickname, email FROM usernames u INNER join users n on u.id = n.id WHERE nickname LIKE '%".$emailCompare."%'";
 
 //searhPage.php check function
-$selectId_Users_Email = "SELECT id FROM users WHERE email = '" .$sEmail."'";
+$selectId_Users_Email = "SELECT id FROM users WHERE email = '".$sEmail."'";
 
 //searchPage.php check function
 $selectFriendNickname_Usernames_Id = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
+
+//searchPage.php check function
+$selectBlocked_Usernames_Id = "SELECT blocked_user FROM blocked WHERE owner = '".$BlockerID['id']."' AND blocked_user = '".$userID."'";
 
 //searchPage.php check function
 $selectFriends_User_UserFriend = "SELECT * FROM friends WHERE user = '".$_SESSION['userData']['id']."' AND friend = '".$friendID['id']."'";
@@ -52,10 +55,12 @@ $selectRecipientSender_Friendrequests_Recipient = "SELECT recipient, sender FROM
 $selectAll_Friends_User = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";
 
 //friendPage.php
-$selectFriendDetails_Innerjoin_Users = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
-
+//$selectFriendDetails_Innerjoin_Users = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
 //friendPage.php
-$selectFriendRequest_Usernames_Sender = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id = '".$row["sender"]. "'";
+//$selectFriendRequest_Usernames_Sender = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id = '".$row["sender"]. "'";
+//friendPage.php
+$selectAll_Blocked_User = "SELECT blocked_user FROM blocked WHERE owner ='".$_SESSION["userData"]["id"]."'";
+//$selectBlockedUserDetails = "SELECT nickname, picture FROM usernames n inner join users u on n.id = u.id where n.id ='".$rowB["blocked_user"]."'";
 
 //deleteImage.php
 $selectAll_ImageGalleries = "SELECT * FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
@@ -129,6 +134,9 @@ $deleteImage_Gallery = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyn
 
 //
 $deleteImageTags = "DELETE FROM `tags` WHERE `keyname` = '".$keyname."'";
+
+//
+$deleteImageCategories = "DELETE FROM `categories` WHERE `keyname` = '".$keyname."'";
 
 //deleteGallery
 $deleteGalleries = "DELETE FROM `galleries` where `user_id` = '".$id."' and `galleries` = '".$gal."'";
