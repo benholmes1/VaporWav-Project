@@ -48,6 +48,26 @@ main {
 .custom-toggler .navbar-toggler {
   border-color: rgb(255,255,255);
 } 
+#dropdown {
+  position: relative;
+  display: inline-block;
+  color:#495057;border-color:#dee2e6 #dee2e6 #fff
+}
+
+#dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+#dropdown:hover #dropdown-content {
+  display: block;
+}
+
 
 footer {
     padding: 3px;
@@ -125,14 +145,14 @@ header nav li .dropdown:hover .dropdown-content {
 
 html {
     background-color: rebeccapurple;
-    background-image: url(images/background.jpg);
+    background-image: url(images/background.png);
     background-position: center;
     height: 100%;
 }
 
 body {
     background-color: rebeccapurple;
-    background-image: url(images/background.jpg);
+    background-image: url(images/background.png);
     background-position: center;
     height: 100%;
 }
