@@ -43,6 +43,7 @@ AAAAAAAAAAAAAA==" rel="icon" type="image/x-icon" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js.map"></script>
     <link rel="stylesheet" href="stylesFinal.css">
+    <link rel="stylesheet" href="literallycanvas.css">
 
     <script src="acctscript.js"></script>
 </head>

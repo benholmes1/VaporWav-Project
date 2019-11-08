@@ -86,6 +86,9 @@ $selectAll_FriendRequests_SessionData = "SELECT * FROM friend_requests WHERE sen
 //upload.php check func
 $insertImages = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE(), '0')";
 
+//canvasClass.php
+$insertCanvas = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$id."', '".$tag."', '".$keyname."', '".$title."', '".$desc."', CURDATE(), '0')";
+
 //like.php
 $insertLikes_SessionData = "INSERT INTO `likes`(`userid`, `keyname`) VALUES ('".$_SESSION['userData']['id']."', '".$keyname."')";
 

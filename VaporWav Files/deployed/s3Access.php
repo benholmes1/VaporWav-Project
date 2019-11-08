@@ -30,43 +30,37 @@
             }
             return $signed_url;
         }
-<<<<<<< HEAD
 
-        /*public function checkExists($region, $bucket, $key, $IAM_KEY, $IAM_SECRET) {
-            $expire = "1 hour";
-
-            // Connect to AWS
-            try {
-                $credentials = new Aws\Credentials\Credentials($IAM_KEY, $IAM_SECRET);
-                $s3 = new Aws\S3\S3Client([
-                    'version' => '2006-03-01',
-                    'region'  => $region,
-                    'credentials' => $credentials
-                ]);
-            } catch (Exception $e) {
-                die("Error: " . $e->getMessage());
-            }
+        public function generateKey($conn, $query, $originalKey) {
+            $driver = new mysqli_driver();
+            $driver->report_mode = MYSQLI_REPORT_STRICT;
 
             try {
-                $check = $s3->headObject([
-                    'Bucket' => $bucket,
-                    'Key' => $key,
-                ]);
-                if($check) {
-                    $checkKey = 1;
+                $keyRes = $conn->query($query);
+
+                if($keyRes->num_rows === 0){
+                    $nKey = md5(uniqid(rand(), true));
+                } else {
+                    //This checks to make sure the keyname is unique
+                    $checkKey = True;
+                    while($checkKey) {
+                        $nKey = md5(uniqid(rand(), true));
+                        $newKey = $nKey . '_' . $originalKey;
+                        while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
+                            if($newKey == $row["keyname"]) {
+                                $checkKey = True;
+                            } else {
+                                $checkKey = False;
+                            }
+                        }
+                    }
                 }
-                else {
-                    $checkKey = 0;
-                }
+                $keyRes->close();
+            } catch (mysqli_sql_exception $e) {
+                echo $e->__toString();
             }
-            catch (S3Exception $e) {
-                echo $e->getMessage();
-                echo "\n";
-            }
-            return $checkKey;
-        }*/
-=======
->>>>>>> ErrorHandling
+            return $newKey;
+        }
     }
 
 ?>
