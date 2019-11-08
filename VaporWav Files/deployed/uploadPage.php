@@ -40,6 +40,57 @@
           <textarea class="form-control" placeholder="Description . . ." style="width:100%;height:5em;box-sizing:border-box;resize:none" id="desc" name="desc" form="uploadForm"></textarea>
           <br>
           <textarea class="form-control" placeholder="Add Tags separated by commas. . ." style="width:100%;box-sizing:border-box;resize:none" id="taglist" name="taglist" form="uploadForm"></textarea>
+          <br>
+          Add Categories
+          <!--Categories-->
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Digital Art">Digital Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Traditional Art">Traditional Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Photography">Photography</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Comics">Comics</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Collage">Collage</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Drawing">Drawing</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Painting">Painting</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Landscape">Landscape</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Sculpture">Sculpture</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Typography">Typography</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="3D Art">3D Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Photomanipulation">Photomanipulation</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Pixel Art">Pixel Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Text Art">Text Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Vector">Vector</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="uploadForm" value="Fan Art">Fan Art</label>
+          </div>
         </div>
       </div>
     </div>

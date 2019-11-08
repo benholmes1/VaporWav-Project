@@ -132,6 +132,9 @@ $deleteImage_Gallery = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyn
 //
 $deleteImageTags = "DELETE FROM `tags` WHERE `keyname` = '".$keyname."'";
 
+//
+$deleteImageCategories = "DELETE FROM `categories` WHERE `keyname` = '".$keyname."'";
+
 //deleteGallery
 $deleteGalleries = "DELETE FROM `galleries` where `user_id` = '".$id."' and `galleries` = '".$gal."'";
 

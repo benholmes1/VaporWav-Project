@@ -60,14 +60,17 @@
         $descriptionTag = 'Description=' . $_POST['desc'];
       }
 
-      
-      //NEW-------------------------------
       if(isset($_POST["taglist"])){
         $taglist = $_POST['taglist'];
         $tagArray = explode(",",$taglist);
       }
-      //NEW-------------------------------
-
+      //Add category
+      //$catlist = array("Digital Art","Traditional Art","Photography","Comics","Collage","Drawing","Painting","Landscape","Sculpture","Typography","3D Art","Photomanipulation","Pixel Art","Text Art","Vector","Fan Art");
+      //$catIDlist = [];
+      if(!empty($_POST["categories"])){
+        //echo("categories selected");
+        $incatlist = $_POST['categories'];
+      }
 
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
     
@@ -126,21 +129,33 @@
       $queryRes = $conn->query($query);
       //$message = "Success!";
 
-      //NEW---------------------------------------
-      //Insert Tags into database-----------------
+      //Insert Tags into database
       $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
       $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
-      for ($x = 1; $x < count($tagArray); $x++){
-        $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";if(substr_compare($tagArray[$x], " ", 0, 1) == 0){//if first character in tag is a whitespace
+      for ($x = 1; $x < count($tagArray); $x++)
+      {
+        if(substr_compare($tagArray[$x], " ", 0, 1) == 0)
+        {//if first character in tag is a whitespace
           $tagquery = $tagquery.", ('".$keyNoPrefix."', '".substr($tagArray[$x],1)."')";
         }
-        else{
+        else
+        {
           $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
         }
       }
       $tagqueryRes = $conn->query($tagquery);
-      //NEW---------------------------------------
+
+      //Inserting categories into database
+      $catconcat = "('".$keyNoPrefix."','".$incatlist[0]."')";
+      $catquery = "INSERT INTO categories (`keyname`, `category_name`) VALUES ".$catconcat;
+      for($i = 1; $i < count($incatlist); $i++)
+      {
+        $catquery = $catquery.", ('".$keyNoPrefix."', '".$incatlist[$i]."')";
+      }
+      $catqueryRes = $conn->query($catquery);
+      
       $message = "Success!";
+
       //Fetch the results of the SQL query and email each of the respective emails
       $queryF = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";
 

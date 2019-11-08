@@ -108,6 +108,13 @@
     if($tagRes) {
       $message = "Success";
     }
+
+    $delCatQuery = $deleteImageCategories;
+    $catRes = $conn->query($delCatQuery);
+    if($catRes) {
+      $message = "Success";
+    }
+    
     else{
       $message = "Something went wrong.";
 
