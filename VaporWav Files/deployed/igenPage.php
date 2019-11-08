@@ -20,7 +20,7 @@
 <br>
 <section class="jumbotron text-center" style="color:rebeccapurple">
   <div class="container">
-    <h2 class="jumbotron-heading">Upload Image</h2>
+    <h2 class="jumbotron-heading">Idea Generator</h2>
   </div>
 </section>
   <div class="container">
