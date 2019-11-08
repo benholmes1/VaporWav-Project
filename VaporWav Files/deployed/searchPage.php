@@ -71,7 +71,7 @@ else
 }
 $qryBlocked = "SELECT blocked_user FROM blocked WHERE owner ='".$_SESSION["userData"]["id"]."'";
 $isBlocked = $conn->query($qryBlocked);
-$bRows = $isBLocked->num_rows;
+$bRows = $isBlocked->num_rows;
 if ($bRows == 0)
 {
     echo 'br';
