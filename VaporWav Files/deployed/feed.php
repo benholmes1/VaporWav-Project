@@ -100,6 +100,52 @@ if($numRows == 0) {
   }
 ?>
 </div>
+
+<br>
+  <h2>Followed Users Uploads</h2>
+    <br>
+    <div class="gallery" id="gallery">
+<?php
+
+//$followerQuery = $selectImageDetails_Followers_Innerjoin_Organized;
+$followerQuery = "SELECT user, email, keyname, likes FROM images i INNER JOIN users u ON i.id = u.id
+INNER JOIN followers f ON u.id = f.user WHERE follower = '".$_SESSION["userData"]["id"]."'
+AND i.created BETWEEN date_sub(now(), INTERVAL 1 WEEK) AND now() ORDER BY likes desc";
+
+$followerResult = $conn->query($followerQuery);
+$followerRows = $followerResult->num_rows;
+
+if($followerRows >= 6) {
+    $f = 6;
+} else {
+    $f = $followerRows;
+}
+
+if($followerRows == 0) 
+{
+    echo '<p>No Results</p>';
+} 
+else 
+{
+  //Follower results
+  for($i = 0; $i < $f; $i++) 
+  {
+    //Get the images key (filename)
+    $imageF = $followerResult->fetch_assoc();
+    $keyF = $imageF['email'] . '/' . $imageF['keyname'];
+  
+    $s3Client = new S3Access();
+    $f_url = $s3Client->get($region, $bucket, $keyF);
+  
+    //Display each image as a link to the image display page 
+    echo '<div class="mb-3">';
+    echo '<a href="imageDisplay.php?key='.$keyF.'&exp=true"><img class="img-fluid" src="'.$f_url.'"></a>';
+    echo '</div>';
+  }
+}
+?>
+
+</div>
 </div>
 </main>
 </body>

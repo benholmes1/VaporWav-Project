@@ -75,6 +75,11 @@ $selectFriendImages_Innerjoin_SessionData = "SELECT u.email, i.keyname from imag
 $selectImageDetails_Innerjoin_Organized = "SELECT email, keyname, likes FROM images i INNER JOIN users u ON i.id = u.id WHERE private = '0'
 AND i.created BETWEEN date_sub(now(), INTERVAL 1 WEEK) AND now() ORDER BY likes desc";
 
+//feed.php
+$selectImageDetails_Followers_Innerjoin_Organized = "SELECT user, email, keyname, likes FROM images i INNER JOIN users u ON i.id = u.id
+INNER JOIN followers f ON u.id = f.user WHERE follower = '".$_SESSION["userData"]["id"]."'
+AND i.created BETWEEN date_sub(now(), INTERVAL 1 WEEK) AND now() ORDER BY likes desc";
+
 //explore.php
 $selectImageDetails_Explore = "SELECT email, keyname, likes FROM images i INNER JOIN users u ON i.id = u.id WHERE private = '0' ORDER BY likes desc, i.created desc";
 
