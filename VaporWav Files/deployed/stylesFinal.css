@@ -591,6 +591,33 @@ a:active {
   position: relative;
 }
 
+#uploadModal .modal-content {
+  background-color: #663399 !important;
+}
+
+#uploadModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
+}
+
+#newModal .modal-content {
+  background-color: #663399 !important;
+}
+
+#newModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
+}
+
+#newCanvasModal .modal-content {
+  background-color: #663399 !important;
+}
+
+#newCanvasModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
+}
+
 /*-------------------------------------------------------------------------------------*/
 /* Fonts*/
 

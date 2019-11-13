@@ -97,35 +97,39 @@
     <!--image title-->  
     <ul class="nav" style="background-color:mediumpurple">
       <h2 class="navbar-brand"><?php echo $imageinfo['title'] ?></h2>
-      <?php
-        if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
-          ?>
-          <li class="nav-item dropdown ml-auto">
-            <a class="nav-link pull-right" data-toggle="dropdown" id="imgDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:white;vertical-align:middle" class="fa fa-bars"></i></a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="imgDropdown">
-              <?php
-                $keyLen = explode('/', $key);
-                if(count($keyLen) <= 2) {
-                  echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
-                  ?>
-                  <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="addDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To Gallery</a>
-                  <div class="dropdown-menu" aria-labelledby="addDropdown">
-                    <?php
-                    foreach($_SESSION['galleries'] as $gal) { 
-                      echo '<a class="dropdown-item" href="addToGallery.php?gal='.$gal.'&key='.$key.'">'.$gal.'</a>'; 
-                    }
-                    ?>
-                  </div>
-                <?php
-                } else {
-                  echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
-                }
+        <li class="nav-item dropdown ml-auto">
+          <a class="nav-link pull-right" data-toggle="dropdown" id="imgDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:white;vertical-align:middle" class="fa fa-bars"></i></a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="imgDropdown">
+          <?php
+            if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
+              $keyLen = explode('/', $key);
+              if(count($keyLen) <= 2) {
+                echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
                 ?>
-            </div>
-          </li>
-        <?php
-        }
-        ?>
+                <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="addDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To Gallery</a>
+                <div class="dropdown-menu" aria-labelledby="addDropdown">
+                  <?php
+                  foreach($_SESSION['galleries'] as $gal) { 
+                    echo '<a class="dropdown-item" href="addToGallery.php?gal='.$gal.'&key='.$key.'">'.$gal.'</a>'; 
+                  }
+                  ?>
+                </div>
+              <?php
+              } else {
+                echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
+              }
+            }
+          ?>
+          <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
+          <div class="dropdown-menu" aria-labelledby="listDropdown">
+            <?php
+            foreach($_SESSION['lists'] as $list) { 
+              echo '<a class="dropdown-item" href="addToListphp?gal='.$list.'&key='.$key.'">'.$list.'</a>'; 
+            }
+            ?>
+          </div>
+          </div>
+        </li>
     </ul>
         
     <!--image-->

@@ -33,7 +33,7 @@ if(isset($_GET['key'])) {
             New
           </button>
           <form class="canvasSave">
-            <input class="btn" type="submit" data-action="save" value="Save">
+            <input class="btn btn-primary" type="submit" data-action="save" value="Save">
           </form>
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadModal">
             Upload
@@ -68,7 +68,7 @@ if(isset($_GET['key'])) {
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <form class="canvasSubmit">
-          <input class="btn" type="submit" data-action="s3Upload" value="Upload">
+          <input class="btn btn-secondary" type="submit" data-action="s3Upload" value="Upload">
         </form>
       </div>
     </div>
@@ -93,7 +93,7 @@ if(isset($_GET['key'])) {
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <form class="newCanvas">
-          <input class="btn" type="submit" data-action="createCanvas" value="Create">
+          <input class="btn btn-secondary" type="submit" data-action="createCanvas" value="Create">
         </form>
       </div>
     </div>

@@ -70,7 +70,7 @@ try {
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <form class="newCanvas">
-          <input class="btn" type="submit" data-action="createCanvas" value="Create">
+          <input class="btn btn-secondary" type="submit" data-action="createCanvas" value="Create">
         </form>
       </div>
     </div>

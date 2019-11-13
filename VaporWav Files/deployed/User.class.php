@@ -94,4 +94,16 @@ class User {
         return $privateSetting;
     }
 
+    function getLists($userID) {
+        $listQuery = "SELECT list FROM lists WHERE user_id = '".$userID."'";
+        $listRes = $this->db->query($listQuery);
+        $listArray = [];
+        if($listRes->num_rows > 0) {
+            while($row = $listRes->fetch_assoc()) {
+                $listArray[] = $row['list'];
+            }
+        }
+        return $listArray;
+    }
+
 }
