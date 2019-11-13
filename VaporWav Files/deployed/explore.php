@@ -36,12 +36,12 @@
                 // $email = $_SESSION['userData']['email'];
                 // $prefix = $email . "/";
                 // $del = '/';
-                if(isset($_GET['category']))
-                {
-                    $prefix .= $_GET['category'];
-                    $del = '';
-                    echo '<a class="btn mr-2" style="background-color:#663399" href="explore.php">Back to Explore</a>';
-                } 
+                // if(isset($_GET['category']))
+                // {
+                //     $prefix .= $_GET['category'];
+                //     $del = '';
+                //     echo '<a class="btn mr-2" style="background-color:#663399" href="explore.php">Back to Explore</a>';
+                // } 
                 
             ?>
            
@@ -52,6 +52,7 @@
                 <div class="dropdown-menu" aria-labelledby="categoryDropdown">
                 <?php
                     $categories = array("Digital Art","Traditional Art","Photography","Comics","Collage","Drawing","Painting","Landscape","Sculpture","Typography","3D Art","Photomanipulation","Pixel Art","Text Art","Vector","Fan Art");
+                    echo '<a class="dropdown-item" href="explore.php">Return</a>';
                     foreach($categories as $cat) {
                         echo '<a class="dropdown-item" href="explore.php?category='.$cat.'">'.$cat.'</a>';
                     }
