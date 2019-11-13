@@ -144,7 +144,7 @@
       <div class="row">
         <!--image author-->
         <div class="col-6">Created by: <a href="searchPage.php?searchQ=<?php echo $mail; ?>"><?php echo $userinfo['nickname'] ?></a></div>
-
+        
           <!--like button-->
           <div class="col-6 text-right">
             <?php
@@ -182,14 +182,14 @@
             $i = 0;
             while($rowC = $catRow->fetch_assoc()){
               if($i == 0){
-                $categoryString = $categoryString."<i>".$rowC['category_name']."</i> ";
+                $categoryString = $categoryString.'<a href="explore.php?category='.$rowC['category_name'].'"><i>'.$rowC['category_name'].'</i></a>';
+                $i=1;
               }
               else{
-                $categoryString = $categoryString."/"."<i>".$rowC['category_name']."</i> ";
+                $categoryString = $categoryString."<font size='3'>/</font>".'<a href="explore.php?category='.$rowC['category_name'].'"><i>'.$rowC['category_name'].'</i></a>';
               }
-              $i=$i+1;
             }
-            echo $categoryString;
+            echo "<font size='2'>".$categoryString."</font>";
           ?>
         </div>
       </div>
