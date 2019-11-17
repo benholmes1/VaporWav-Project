@@ -118,16 +118,19 @@
               } else {
                 echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
               }
+            } else {
+              ?>
+              <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
+              <div class="dropdown-menu" aria-labelledby="listDropdown">
+                <?php
+                foreach($_SESSION['lists'] as $list) { 
+                  echo '<a class="dropdown-item" href="addToList.php?list='.$list.'&key='.$key.'">'.$list.'</a>'; 
+                }
+                ?>
+              </div>
+              <?php
             }
           ?>
-          <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
-          <div class="dropdown-menu" aria-labelledby="listDropdown">
-            <?php
-            foreach($_SESSION['lists'] as $list) { 
-              echo '<a class="dropdown-item" href="addToListphp?gal='.$list.'&key='.$key.'">'.$list.'</a>'; 
-            }
-            ?>
-          </div>
           </div>
         </li>
     </ul>

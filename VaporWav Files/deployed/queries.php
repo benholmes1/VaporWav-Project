@@ -112,6 +112,9 @@ $insertSelf_Friend = "INSERT INTO friends SET user = '" .$_SESSION["userData"]["
 //addToGallery.php
 $insertKey_ImageGalleries = "INSERT INTO `image_galleries`(`keyname`, `gallery`) VALUES ('".$keyArr[1]."', '".$destKey."')";
 
+//addToList.php
+$insertKey_ImageLists = "INSERT INTO `image_lists`(`keyname`, `list`) VALUES ('".$keyArr[1]."', '".$destKey."')";
+
 //addFriend.php
 $insertUsers_FriendRequests = "INSERT INTO friend_requests SET sender = '" . $_SESSION["userData"]["id"] . "', recipient = '" . $_GET["add"] . "'";
 
