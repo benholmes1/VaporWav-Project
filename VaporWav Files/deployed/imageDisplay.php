@@ -213,9 +213,20 @@
       <div id="commentSection">
         <?php
 
+        
+
           while($comments = $getCommentsRes->fetch_assoc()) {
             $commentDate = date("m/d/y", $comments['created']);
-            $commentOut  = '<p>'.$comments['nickname'].'</p>';
+
+            $userComPosterid ="SELECT id FROM usernames WHERE nickname = '".$comments['nickname']."'";
+            $queryUserComPosterid = $conn->query($userComPosterid);
+            $userComPosteridinfo = $queryUserComPosterid->fetch_assoc();
+
+            $commentPoster = "SELECT email FROM users WHERE id = '".$userComPosteridinfo['id']."'";
+            $queryComPoster = $conn->query($commentPoster);
+            $comPosterinfo= $queryComPoster->fetch_assoc();
+
+            $commentOut = '<a href="searchPage.php?searchQ='.$comPosterinfo['email'].'"><b>'.$comments['nickname'].'</b></a>';
             $commentOut .= '<p style="padding-left:3em">'.$comments['comment'].'</p>';
             $commentOut .= '<hr width:100%>';
             echo $commentOut;
