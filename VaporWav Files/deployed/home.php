@@ -59,15 +59,15 @@ if(isset($_GET['gal']))
           </button>
       </div>
       <div class="modal-body">
-          <form action="create_gallery.php" method="post" id="galForm">
+          <form id="galForm">
               <div class="form-group">
-                  <input style="font-family:Tinos" type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                  <input style="font-family:Tinos" type="text" class="form-control" id="galName" name="name" placeholder="Name" required>
               </div>
           </form>
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <input type="submit" form="galForm" class="btn" />
+          <input type="submit" form="galForm" class="btn" data-action="createGallery" />
       </div>
       </div>
   </div>
@@ -192,6 +192,30 @@ foreach ($iterator as $object) {
    allowOtherCharSets: false,
    allowNumeric: false
    });
+</script>
+
+<script>
+  //Save canvas script
+  $(document).ready(function(){
+    //var lc = LC.init(document.getElementsByClassName('canvasUpload')[0]);
+    $('[data-action=createGallery]').click(function(e) {
+      e.preventDefault();
+
+      var name = document.getElementById("galName).value;
+
+      $.ajax({
+        url: 'galleryHandler.php',
+        type: 'POST',
+        data: {
+          action: "createGallery",
+          galName: name
+        },
+        success: function(result) {
+          echo $result;
+        },
+      });
+    });
+  });
 </script>
 
 </body>
