@@ -119,16 +119,20 @@
                 echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
               }
             } else {
-              ?>
-              <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
-              <div class="dropdown-menu" aria-labelledby="listDropdown">
-                <?php
-                foreach($_SESSION['lists'] as $list) { 
-                  echo '<a class="dropdown-item" href="addToList.php?list='.$list.'&key='.$key.'">'.$list.'</a>'; 
-                }
+              if(isset($_GET['list'])) {
+                echo '<a class="dropdown-item" id="removeList" href="deleteListImage.php?key='.$key.'&list='.$_GET['list'].'">Remove</a>';
+              } else {
                 ?>
-              </div>
-              <?php
+                <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
+                <div class="dropdown-menu" aria-labelledby="listDropdown">
+                  <?php
+                  foreach($_SESSION['lists'] as $list) { 
+                    echo '<a class="dropdown-item" href="addToList.php?list='.$list.'&key='.$key.'&mail='.$mail.'">'.$list.'</a>'; 
+                  }
+                  ?>
+                </div>
+                <?php
+              }
             }
           ?>
           </div>
@@ -280,6 +284,16 @@
       var answer=confirm('Continuing will remove this image from this gallery only.\nDo you want to continue?');
       if(answer){
         alert('Deleted');
+      }
+      else{
+        e.preventDefault();      
+      }
+    });
+
+    $('#removeList').on('click',function(e) {
+      var answer=confirm('Continuing will remove this image from this list only.\nDo you want to continue?');
+      if(answer){
+        alert('Removed');
       }
       else{
         e.preventDefault();      
