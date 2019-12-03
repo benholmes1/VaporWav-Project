@@ -39,7 +39,8 @@ if(isset($_GET['gal']))
 {
   $prefix .= $_GET['gal'];
   $del = '';
-  echo '<a class="btn mr-2" style="background-color:#663399" href="deleteGallery.php?prefix='.$prefix.'&gal='.$_GET['gal'].'">Delete Gallery</a>';
+  $gallery = $_GET['gal'];
+  echo '<button class="btn mr-2" style="background-color:#663399" data-action="deleteGallery">Delete Gallery</a>';
 } else if (isset($_GET['list'])) {
   $prefix .= $_GET['list'];
   $del = '';
@@ -195,13 +196,12 @@ foreach ($iterator as $object) {
 </script>
 
 <script>
-  //Save canvas script
+  //Create a gallery
   $(document).ready(function(){
-    //var lc = LC.init(document.getElementsByClassName('canvasUpload')[0]);
     $('[data-action=createGallery]').click(function(e) {
       e.preventDefault();
 
-      var name = document.getElementById("galName).value;
+      var name = document.getElementById("galName").value;
 
       $.ajax({
         url: 'galleryHandler.php',
@@ -209,6 +209,31 @@ foreach ($iterator as $object) {
         data: {
           action: "createGallery",
           galName: name
+        },
+        success: function(result) {
+          echo $result;
+        },
+      });
+    });
+  });
+</script>
+
+<script>
+  //Delete a gallery
+  $(document).ready(function(){
+    $('[data-action=deleteGallery]').click(function(e) {
+      e.preventDefault();
+
+      var prefix = "<?php echo $prefix ?>";
+      var gal = "<?php echo $gallery ?>";
+
+      $.ajax({
+        url: 'galleryHandler.php',
+        type: 'POST',
+        data: {
+          action: "deleteGallery",
+          prefix: prefix,
+          gal: gal
         },
         success: function(result) {
           echo $result;
