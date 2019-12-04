@@ -143,22 +143,37 @@ $s3 = new Aws\S3\S3Client([
   'region'  => $region,
 ]);
 
-//Get iterator for user's folder in S3 to get all images
-$iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix, 'Delimiter' => $del));
-
-//Iterate over each image to display them
-foreach ($iterator as $object) {
-    //Get the images key (filename), and etag
-    $key = $object['Key'];
-    $id = $object['ETag'];
-    //This command gets the image from S3 as presigned url
+if(isset($_GET['list'])) {
+  $listQuery = "SELECT * FROM `list_items` WHERE `user_id` = '".$_SESSION['userData']['id']."' AND `list` = '".$_GET['list']."'";
+  $listRes = $conn->query($listQuery);
+  while($listRow = $listRes->fetch_assoc()) {
+    $key = $listRow['creator'] . '/' . $listRow['keyname'];
     $s3Client = new S3Access();
     $url = $s3Client->get($region, $bucket, $key);
-    
+      
     //Display each image as a link to the image display page 
     echo '<div class="mb-3">';
-    echo '<a href="imageDisplay.php?key='.$key.'"><img class="img-fluid" src="'.$url.'"></a>';
+    echo '<a href="imageDisplay.php?key='.$key.'&list='.$list.'"><img class="img-fluid" src="'.$url.'"></a>';
     echo '</div>';
+  }
+} else {
+  //Get iterator for user's folder in S3 to get all images
+  $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix, 'Delimiter' => $del));
+
+  //Iterate over each image to display them
+  foreach ($iterator as $object) {
+      //Get the images key (filename), and etag
+      $key = $object['Key'];
+      $id = $object['ETag'];
+      //This command gets the image from S3 as presigned url
+      $s3Client = new S3Access();
+      $url = $s3Client->get($region, $bucket, $key);
+      
+      //Display each image as a link to the image display page 
+      echo '<div class="mb-3">';
+      echo '<a href="imageDisplay.php?key='.$key.'"><img class="img-fluid" src="'.$url.'"></a>';
+      echo '</div>';
+  }
 }
 ?>
 </div>

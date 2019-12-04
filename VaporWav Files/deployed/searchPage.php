@@ -81,6 +81,9 @@ if ($bRows == 0)
     echo '<form action = "blockUser.php" method = "get"><input type ="hidden" name="bID" value='.$friendID['id'].'></input> <button class="btn" type="submit">Block User</button>';
     echo '</form>';
 }
+echo '<br>';
+echo '<form action = "sendMessage.php" method = "get"><input type ="hidden" name="messEmail" value='.$_GET['searchQ'].'></input> <button class="btn" type="submit">Send Message</button>';
+echo '</form>';
 
 //Follower Button
 //FollowerID is the page owner
