@@ -78,6 +78,12 @@ if($function == "upload" && $errorFlag == 0) {
         $uploadFlag = 1;
     }
 
+    if(isset($_POST['categories'])) {
+        $categories = $_POST['categories'];
+    } else {
+        $uploadFlag = 1; 
+    }
+
     if($uploadFlag == 0) {
         $originalKey = $title . '.png';
         $keyCheckClient = new S3Access();
@@ -87,6 +93,7 @@ if($function == "upload" && $errorFlag == 0) {
         $tag = $canvasUploadClient->upload($imageToUpload, $keyname);
         $insertCanvas = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', NULL, '".$keyNoPrefix."', '".$title."', '".$desc."', CURDATE(), '0')";
         $canvasUploadClient->insertImage($title, $desc, $taglist, $insertCanvas, $_SESSION['userData']['id'], $tag);
+        $canvasUploadClient->insertCategories($keyname, $categories);
     } else {
         echo "Upload Failed";
     }

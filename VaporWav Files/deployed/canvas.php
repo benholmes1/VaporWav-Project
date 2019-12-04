@@ -63,6 +63,57 @@ if(isset($_GET['key'])) {
           <textarea class="form-control" placeholder="Description . . ." style="width:100%;height:5em;box-sizing:border-box;resize:none" id="desc" name="desc" form="canvasSubmit"></textarea>
           <br>
           <textarea class="form-control" placeholder="Add Tags separated by commas. . ." style="width:100%;box-sizing:border-box;resize:none" id="taglist" name="taglist" form="canvasSubmit"></textarea>
+          <br>
+          Add Categories
+          <!--Categories-->
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Digital Art">Digital Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Traditional Art">Traditional Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Photography">Photography</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Comics">Comics</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Collage">Collage</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Drawing">Drawing</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Painting">Painting</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Landscape">Landscape</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Sculpture">Sculpture</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Typography">Typography</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="3D Art">3D Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Photomanipulation">Photomanipulation</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Pixel Art">Pixel Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Text Art">Text Art</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Vector">Vector</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="categories[]" form="canvasSubmit" value="Fan Art">Fan Art</label>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -125,6 +176,14 @@ if(isset($_GET['key'])) {
       var desc = document.getElementById("desc").value;
       var taglist = document.getElementById("taglist").value;
 
+      var cats = document.querySelectorAll("canvasSubmit input[name='categories[]']");
+      var catArray = [];
+      alert(cats.length);
+      for(i=0; i < cats.length; i++) {
+        alert(cats[i].value);
+        catsArray.push(cats[i].value);
+      }
+
       $('.canvasSubmit').html('Uploading...')
 
       $.ajax({
@@ -136,7 +195,8 @@ if(isset($_GET['key'])) {
           type: 'base64',
           title: title,
           desc: desc,
-          taglist: taglist
+          taglist: taglist,
+          categories: catsArray
         },
         success: function(result) {
           alert(result);

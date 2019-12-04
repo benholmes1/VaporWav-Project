@@ -88,4 +88,24 @@ class CanvasClass {
     return $result['Body'];
   }
 
+  public function insertCategories($keyname, $categories) {
+    $driver = new mysqli_driver();
+    $driver->report_mode = MYSQLI_REPORT_STRICT;
+
+    try {
+      $catconcat = "('".$keyname."','".$categories[0]."')";
+      $catquery = "INSERT INTO categories (`keyname`, `category_name`) VALUES ".$catconcat;
+      for($i = 1; $i < count($categories); $i++)
+      {
+        $catquery = $catquery.", ('".$keyname."', '".$categories[$i]."')";
+      }
+      $catqueryRes = $this->conn->query($catquery);
+      if(!($catqueryRes)) {
+        echo "Fail";
+      }
+    } catch (mysqli_sql_exception $e) {
+      echo $e->__toString();
+    }
+  }
+
 }
