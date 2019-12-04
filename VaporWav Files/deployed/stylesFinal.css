@@ -373,6 +373,16 @@ a:active {
   color: white !important;
 }
 
+/* cat modal id imageDisplay.php*/
+#catModal .modal-content {
+  background-color: #663399 !important;
+}
+
+#catModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
+}
+
 /* jumbotron home.php*/
 .jumbotron {
   background-color: #663399 !important;
