@@ -105,8 +105,7 @@
               $keyLen = explode('/', $key);
               if(count($keyLen) <= 2) {
                 echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
-                ?>  
-
+                ?>
                 <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="addDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To Gallery</a>
                 <div class="dropdown-menu" aria-labelledby="addDropdown">
                   <?php
@@ -120,20 +119,16 @@
                 echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
               }
             } else {
-              if(isset($_GET['list'])) {
-                echo '<a class="dropdown-item" id="removeList" href="deleteListImage.php?key='.$key.'&list='.$_GET['list'].'">Remove</a>';
-              } else {
-                ?>
-                <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
-                <div class="dropdown-menu" aria-labelledby="listDropdown">
-                  <?php
-                  foreach($_SESSION['lists'] as $list) { 
-                    echo '<a class="dropdown-item" href="addToList.php?list='.$list.'&key='.$key.'&mail='.$mail.'">'.$list.'</a>'; 
-                  }
-                  ?>
-                </div>
+              ?>
+              <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
+              <div class="dropdown-menu" aria-labelledby="listDropdown">
                 <?php
-              }
+                foreach($_SESSION['lists'] as $list) { 
+                  echo '<a class="dropdown-item" href="addToList.php?list='.$list.'&key='.$key.'">'.$list.'</a>'; 
+                }
+                ?>
+              </div>
+              <?php
             }
           ?>
           </div>
@@ -198,87 +193,6 @@
               }
             }
             echo "<font size='2'>".$categoryString."</font>";
-            if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
-              ?>
-              <div class="container">
-              <!-- Trigger the modal with a button -->
-              <a><button type="button" class="btn mr-2" id="galBtn" data-toggle="modal" data-target="#galModal">Edit Categories</button></a>
-
-              <!-- Modal -->
-              <div class="modal fade" id="galModal" tabindex="-1" role="dialog" aria-labelledby="galModalTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="galModalLongTitle">Edit Categories</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span style="color:white" aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <div class="modal-body">
-                      <form action="editCategories.php" method="post" id="catForm">
-                          <div class="form-group">
-                            <input type="hidden" id="key" name="key" value=<?php echo $key;?>>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Digital Art">Digital Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Traditional Art">Traditional Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Photography">Photography</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Comics">Comics</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Collage">Collage</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Drawing">Drawing</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Painting">Painting</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Landscape">Landscape</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Sculpture">Sculpture</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Typography">Typography</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="3D Art">3D Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Photomanipulation">Photomanipulation</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Pixel Art">Pixel Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Text Art">Text Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Vector">Vector</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Fan Art">Fan Art</label>
-                            </div>
-                          </div>
-                      </form>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <input type="submit" form="catForm" class="btn" />
-                  </div>
-                  </div>
-              </div>
-              </div>
-
-              <?php
-            }
           ?>
         </div>
       </div>
@@ -372,16 +286,6 @@
       }
     });
 
-    $('#removeList').on('click',function(e) {
-      var answer=confirm('Continuing will remove this image from this list only.\nDo you want to continue?');
-      if(answer){
-        alert('Removed');
-      }
-      else{
-        e.preventDefault();      
-      }
-    });
-
     /*var acc = document.getElementsByClassName("acc");
     var i;
 
@@ -447,35 +351,6 @@
                 event.preventDefault();
                 $(this).ekkoLightbox();
             });
-    </script>
-
-    <script>
-      // Get the modal
-      var modal = document.getElementById('galModal');
-      // Get the button that opens the modal
-      var btn = document.getElementById("galBtn");
-      // Get the <span> element that closes the modal
-      var span = document.getElementsByClassName("close")[0];
-      // When the user clicks the button, open the modal 
-      btn.onclick = function() {
-          modal.style.display = "block";
-      }
-      // When the user clicks on <span> (x), close the modal
-      span.onclick = function() {
-          modal.style.display = "none";
-      }
-      // When the user clicks anywhere outside of the modal, close it
-      window.onclick = function(event) {
-          if (event.target == modal) {
-              modal.style.display = "none";
-          }
-      }
-      $("#name").alphanum({
-      allowSpace: true,
-      allowNewline: false,
-      allowOtherCharSets: false,
-      allowNumeric: false
-      });
     </script>
 
 </body>
