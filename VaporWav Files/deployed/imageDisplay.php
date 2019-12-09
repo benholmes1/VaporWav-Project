@@ -197,13 +197,11 @@
                 $categoryString = $categoryString."<font size='3'>/</font>".'<a href="explore.php?category='.$rowC['category_name'].'"><i>'.$rowC['category_name'].'</i></a>';
               }
             }
-            echo "<font size='2'>".$categoryString."</font>";
+            //echo "<font size='2'>".$categoryString."</font>";
             if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
+              $categoryString = $categoryString." "."<a data-toggle='modal' href='#galModal'>(Edit)</a>";
+              echo "<font size='2'>".$categoryString."</font>";
               ?>
-              <div class="container">
-              <!-- Trigger the modal with a button -->
-              <a><button type="button" class="btn mr-2" id="galBtn" data-toggle="modal" data-target="#galModal">Edit Categories</button></a>
-
               <!-- Modal -->
               <div class="modal fade" id="galModal" tabindex="-1" role="dialog" aria-labelledby="galModalTitle" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
@@ -218,54 +216,22 @@
                       <form action="editCategories.php" method="post" id="catForm">
                           <div class="form-group">
                             <input type="hidden" id="key" name="key" value=<?php echo $key;?>>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Digital Art">Digital Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Traditional Art">Traditional Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Photography">Photography</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Comics">Comics</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Collage">Collage</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Drawing">Drawing</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Painting">Painting</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Landscape">Landscape</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Sculpture">Sculpture</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Typography">Typography</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="3D Art">3D Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Photomanipulation">Photomanipulation</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Pixel Art">Pixel Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Text Art">Text Art</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Vector">Vector</label>
-                            </div>
-                            <div class="checkbox">
-                              <label><input type="checkbox" name="categories[]" form="catForm" value="Fan Art">Fan Art</label>
-                            </div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Digital Art">Digital Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Traditional Art">Traditional Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Photography">Photography</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Comics">Comics</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Collage">Collage</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Drawing">Drawing</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Painting">Painting</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Landscape">Landscape</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Sculpture">Sculpture</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Typography">Typography</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="3D Art">3D Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Photomanipulation">Photomanipulation</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Pixel Art">Pixel Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Text Art">Text Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Vector">Vector</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Fan Art">Fan Art</label></div>
                           </div>
                       </form>
                   </div>
@@ -278,6 +244,9 @@
               </div>
 
               <?php
+            }
+            else{
+              echo "<font size='2'>".$categoryString."</font>";
             }
           ?>
         </div>
