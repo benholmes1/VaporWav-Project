@@ -51,6 +51,54 @@ class User {
         return $userData;
     }
 
+    //Used with Signup and Login without Google
+    //This function adds user to database if not already in it
+    //Then it populates the user's session data
+    function checkUser2($userData = array()){
+        if(!empty($userData)){
+            // Check whether user data already exists in the database
+            $checkQuery = "SELECT * FROM ".$this->userTbl." WHERE oauth_provider = '".$userData['oauth_provider']."' AND email = '".$userData['email']."'";
+            $checkResult = $this->db->query($checkQuery);
+            if($checkResult->num_rows > 0){
+                // Update user data if already exists
+                $query = "UPDATE ".$this->userTbl." SET first_name = '".$userData['first_name']."', last_name = '".$userData['last_name']."', email = '".$userData['email']."', gender = '".$userData['gender']."', locale = '".$userData['locale']."', picture = '".$userData['picture']."', link = '".$userData['link']."', modified = NOW(), password = '".$userData['password']."' WHERE oauth_provider = '".$userData['oauth_provider']."' AND oauth_uid = '".$userData['oauth_uid']."'";
+                $update = $this->db->query($query);
+            }else{
+                // Insert user data in the database
+                $query = "INSERT INTO ".$this->userTbl." SET oauth_provider = '".$userData['oauth_provider']."', oauth_uid = '".$userData['oauth_uid']."', first_name = '".$userData['first_name']."', last_name = '".$userData['last_name']."', email = '".$userData['email']."', gender = '".$userData['gender']."', locale = '".$userData['locale']."', picture = '".$userData['picture']."', link = '".$userData['link']."', created = NOW(), modified = NOW(), password = '".$userData['password']."', flag = '".$userData['flag']."'";
+                $insert = $this->db->query($query);
+            }
+ 
+            // Get user data from the database
+            $result = $this->db->query($checkQuery);
+            $userData = $result->fetch_assoc();
+        }
+        // Return user data
+        return $userData;
+    }
+
+    //Used with login
+    //Then it populates the user's session data
+    function loginUser($userData = array()){
+        if(!empty($userData)){
+            // Check whether user data already exists in the database
+            $checkQuery = "SELECT * FROM ".$this->userTbl." WHERE oauth_provider = '".$userData['oauth_provider']."' AND email = '".$userData['email']."'";
+            $checkResult = $this->db->query($checkQuery);
+            if($checkResult->num_rows > 0){
+                // Get user data from the database
+                $result = $this->db->query($checkQuery);
+                $userData = $result->fetch_assoc();
+                // Return user data
+                return $userData;
+            }else {
+                unset($userData);
+                echo " Flag: User Class: else break!";
+            }
+        }
+        // Return user data
+        return $userData;
+    }
+
     //This function will set a user's nickname if not already set
     function checkName($userData = array()) {
       $checkQ = "SELECT * FROM usernames WHERE id = '".$userData['id']."'";  
@@ -78,6 +126,7 @@ class User {
         return $galArray;
     }
 
+
     function getPrivacy($userID) {
         $privateSetting = 0;
         $priQuery = "SELECT private FROM users where id = '".$userID."'";
@@ -92,6 +141,18 @@ class User {
             $privateSetting = $private['private'];
         }
         return $privateSetting;
+    }
+
+    function getLists($userID) {
+        $listQuery = "SELECT list FROM lists WHERE user_id = '".$userID."'";
+        $listRes = $this->db->query($listQuery);
+        $listArray = [];
+        if($listRes->num_rows > 0) {
+            while($row = $listRes->fetch_assoc()) {
+                $listArray[] = $row['list'];
+            }
+        }
+        return $listArray;
     }
 
 }

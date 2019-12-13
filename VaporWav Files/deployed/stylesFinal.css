@@ -2,19 +2,91 @@ html, body, header, footer, main, nav, article, section, figure, figcaption, h1,
 body, div, p, img
 { margin: 0; padding: 0; font-size: 100%; vertical-align: baseline; border: 0; }
 
-/*header, footer {
- color: white;
- background-color: rebeccapurple;
- margin: 0em 4em 0.25em 4em;
+/* main */
+main {
+  background: none !important;
 }
-header {
-    background-image: url(images/bgimage2.png);
-    background-position: center center;
-    width:100%;
-    margin-left:0px;
-    margin-bottom: 0;
-    filter: drop-shadow(5px 5px 5px black);
-}*/
+
+/* input stytles for "sign up" and "Login" buttons*/
+input[type=text], select, textarea {
+  width: 100%; 
+  padding: 12px; 
+  border: 1px solid #ccc;
+  border-radius: 4px; 
+  box-sizing: border-box;
+  margin-top: 6px; 
+  margin-bottom: 16px; 
+  resize: vertical 
+}
+
+input[type=submit] {
+  background-color: mediumpurple;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: rgb(87, 32, 87);
+}
+
+ /* Bordered form */
+ form {
+  border: 3px solid #f1f1f1;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: mediumpurple;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Add padding to login form */
+.login {
+  padding: 16px;
+}
+
+/* Contact Page */
+.containerContact{
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+} 
+
+
+/* Style for website footer */
+.footer {
+  font-family: Tinos;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(89, 0, 124);
+  color: white;
+  text-align: center;
+}
 
 .inner {
   text-align: center;
@@ -57,6 +129,26 @@ header {
 .custom-toggler .navbar-toggler {
   border-color: rgb(255,255,255);
 } 
+#dropdown {
+  position: relative;
+  display: inline-block;
+  color:#495057;border-color:#dee2e6 #dee2e6 #fff
+}
+
+#dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+#dropdown:hover #dropdown-content {
+  display: block;
+}
+
 
 footer {
     padding: 3px;
@@ -97,9 +189,6 @@ h3,h2 {
     margin: 0em 0em 0em 0em;
 }
 
-header nav {
-    /*background-color: purple;*/
-}
 header nav li {
     padding: 4px;
     display: inline-block;
@@ -129,28 +218,22 @@ header nav li .dropdown-content a {
 header nav li .dropdown:hover .dropdown-content {
     display: block;
 }
-
-/*nav a {
-    color: white;
-    margin-left: 0.5em;
+/* dropdown */
+.dropdown-menu a:hover {
+  background-color: mediumpurple !important;
+  color: white !important;
 }
-
-a:hover {
-    font-family: Tinos;
-    background-color: #F50057;
-    transition:0.25s;
-}*/
 
 html {
     background-color: rebeccapurple;
-    background-image: url(images/sxxm11g749vx.jpg);
+    background-image: url(images/background.png);
     background-position: center;
     height: 100%;
 }
 
 body {
     background-color: rebeccapurple;
-    background-image: url(images/sxxm11g749vx.jpg);
+    background-image: url(images/background.png);
     background-position: center;
     height: 100%;
 }
@@ -202,14 +285,6 @@ hr {
     margin-bottom: 1em;
 }
 
-main {
-  /*background-color: rebeccapurple !important;
-  background-image: url(images/sxxm11g749vx.jpg) !important;
-  background-position: center !important;
-  height: 100%;*/
-  background: none !important;
-}
-
 #imageSolo {
     padding:100px;
     width: auto;
@@ -242,11 +317,6 @@ main {
     float:right;
 }
 
-
-/*.container{
-  padding: 20px;
-  background: none;
-}*/
 .wrapper{
 	width: 340px;
 	margin: auto;
@@ -266,10 +336,11 @@ main {
     text-align: left;
 }
 
+/* uploadPage */
 .wrapacct{
 	margin: auto;
 	padding: 10px;
-  background-color: #663399;
+    background-color: #663399;
 	box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
 }
 
@@ -291,6 +362,7 @@ main {
   text-align: center;
 }
 
+/* uploadPage*/
 .acctform {
   font-family: Tinos;
   padding: 10px;
@@ -371,101 +443,8 @@ a:active {
   color: #663399;
 }
 
-/*
-#imageSolo .dropbtn {
-  background-color: white;
-  font-family: Tinos;
-  font-size: 1.2em;
-  color: black;
-  border: none;
-  cursor: pointer;
-}
 
-#imageSolo .dropbtn:hover, .dropbtn:focus, .dropbtn:active {
-  background-color: #4B0082;
-  color: white;
-}
-
-#imageSolo .imgDropdown {
-  display: inline-block;
-}
-
-#imageSolo .dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-#imageSolo .dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-#imageSolo .dropdown-content button {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-#imageSolo .dropdown-content .panel {
-  color: black;
-  background-color: white;
-  padding: 12px 16px;
-  display: none;
-  overflow: hidden;
-}
-
-#imageSolo .dropdown-content a:hover {background-color: #ddd}
-
-#imageSolo .show {display:block;}
-
-#imageSolo .same-row {
-    display: inline-block;
-}*/
-
-/*.gal {
-    background-color: mediumpurple;
-    padding: 10px;
-    font-family: Tinos;
-    margin: 0em 0em 0em 0em;
-}
-
-.gal li {
-    text-decoration: none;
-    margin-top: 10px;
-}
-
-.gal ul {
-    list-style-type: none;
-    margin-top: 10px;
-}
-
-.gal a {
-    font-size: 16px;
-    color: white;
-}
-
-.gal button {
-    background-color: #663399;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;
-    font-family: Tinos;
-}
-
-.gal button:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-}*/
-
+/* gal modal id homephp*/
 #galModal .modal-content {
   background-color: #663399 !important;
 }
@@ -475,6 +454,7 @@ a:active {
   color: white !important;
 }
 
+/* jumbotron home.php*/
 .jumbotron {
   background-color: #663399 !important;
 }
@@ -582,6 +562,7 @@ a:active {
   }
 }
 
+/* container home.php/uploadPage */
 .container h2 {
   font-family: Alien Encounters;
   font-size: 150%;
@@ -614,11 +595,6 @@ a:active {
 
 .container-small, .container-large {
   max-width: 100%;
-}
-
-.dropdown-menu a:hover {
-  background-color: mediumpurple !important;
-  color: white !important;
 }
 
 /*----------------------------------------------------------------------------------------*/
@@ -681,6 +657,47 @@ a:active {
   to {top: 0; opacity: 1}
 }
 
+/*-------------------------------------------------------------------------------------*/
+/*Canvas*/
+
+.canvas-container {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+}
+
+.literally {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#uploadModal .modal-content {
+  background-color: #663399 !important;
+}
+
+#uploadModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
+}
+
+#newModal .modal-content {
+  background-color: #663399 !important;
+}
+
+#newModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
+}
+
+#newCanvasModal .modal-content {
+  background-color: #663399 !important;
+}
+
+#newCanvasModal h5 {
+  font-family: Alien Encounters !important;
+  color: white !important;
+}
 
 /*-------------------------------------------------------------------------------------*/
 /* Fonts*/
