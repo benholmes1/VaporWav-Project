@@ -209,5 +209,9 @@ if(isset($_GET['list'])) {
    });
 </script>
 
+<?php
+  include 'footer.php';
+?>
+
 </body>
 </html>
