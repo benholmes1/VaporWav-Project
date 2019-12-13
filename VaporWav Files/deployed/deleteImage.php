@@ -1,6 +1,7 @@
 <?php
   //This is the upload action that uploads an image to S3 and updates database
-  include 'dbconn.php';	 
+  include 'dbconn.php';
+  include 'queries.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
@@ -57,7 +58,7 @@
   $keyname = end($keyname);
   
   if(!isset($_GET['gal'])) {
-    $imgGalQuery = "SELECT * FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
+    $imgGalQuery = $selectAll_ImageGalleries;
     $imgGalRes = $conn->query($imgGalQuery);
     if($imgGalRes->num_rows != 0) {
       while($galRow = $imgGalRes->fetch_assoc()) {
@@ -74,7 +75,7 @@
           die('Error:' . $e->getMessage());
         }
       }
-      $delGalQuery = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyname."'";
+      $delGalQuery = $deleteImageGallery;
       $delGalRes = $conn->query($delGalQuery);
       if($delGalRes) {
         $message = "Success";
@@ -84,7 +85,7 @@
       }
     }
 
-    $delCommQuery = "DELETE FROM `comments` WHERE `image_id` = '".$keyname."'";
+    $delCommQuery = $deleteImageComments;
     $commRes = $conn->query($delCommQuery);
     if($commRes) {
       $message = "Success";
@@ -93,7 +94,7 @@
       $message = "Something went wrong.";
     }
 
-    $delLikeQuery = "DELETE FROM `likes` WHERE `keyname` = '".$keyname."'";
+    $delLikeQuery = $deleteImageLikes;
     $likeRes = $conn->query($delLikeQuery);
     if($likeRes) {
       $message = "Success";
@@ -102,7 +103,22 @@
       $message = "Something went wrong.";
     }
 
-    $delQuery = "DELETE FROM `images` where `keyname` = '".$keyname."'";
+    $delTagQuery = $deleteImageTags;
+    $tagRes = $conn->query($delTagQuery);
+    if($tagRes) {
+      $message = "Success";
+    }
+
+    $delCatQuery = $deleteImageCategories;
+    $catRes = $conn->query($delCatQuery);
+    if($catRes) {
+      $message = "Success";
+    }
+    
+    else{
+      $message = "Something went wrong.";
+
+    $delQuery = $deleteImage;
     $result = $conn->query($delQuery);
     if($result) {
       $message = "Success";
@@ -111,7 +127,7 @@
       $message = "Something went wrong.";
     }
   } else {
-    $delSingleGal = "DELETE FROM `image_galleries` WHERE `keyname` = '".$keyname."' AND gallery = '".$key."'";
+    $delSingleGal = $deleteImage_Gallery;
     $delSingleRes = $conn->query($delSingleGal);
     if($delSingleRes) {
       $message = "Success";

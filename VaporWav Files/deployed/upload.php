@@ -1,6 +1,7 @@
 <?php
   //This is the upload action that uploads an image to S3 and updates database
   include 'dbconn.php';
+  include 'queries.php';
 
   //Check if user is logged in
   if(!($_SESSION['login'])){
@@ -55,14 +56,26 @@
     if($ext_error == false) {
 
       if(isset($_POST["desc"])) {
-	$description = $_POST['desc'];
+	      $description = $_POST['desc'];
         $descriptionTag = 'Description=' . $_POST['desc'];
+      }
+
+      if(isset($_POST["taglist"])){
+        $taglist = $_POST['taglist'];
+        $tagArray = explode(",",$taglist);
+      }
+      //Add category
+      //$catlist = array("Digital Art","Traditional Art","Photography","Comics","Collage","Drawing","Painting","Landscape","Sculpture","Typography","3D Art","Photomanipulation","Pixel Art","Text Art","Vector","Fan Art");
+      //$catIDlist = [];
+      if(!empty($_POST["categories"])){
+        //echo("categories selected");
+        $incatlist = $_POST['categories'];
       }
 
       $pathInS3 = 'https://s3.us-west-1.amazonaws.com/' . $bucketName . '/' . $keyName;
     
       //Select all the keynames from the database
-      $keyQuery = "SELECT keyname from images";
+      $keyQuery = $selectKeyname_Images;
       $keyRes = $conn->query($keyQuery);
 
       if($keyRes->num_rows === 0){
@@ -75,7 +88,7 @@
           $nKey = md5(uniqid(rand(), true));
           while($row = $keyRes->fetch_array(MYSQLI_ASSOC)) {
             if($nKey == $row["keyname"]) {
-	      $checkKey = True;
+	            $checkKey = True;
             } else {
               $checkKey = False;
             }
@@ -94,14 +107,14 @@
         $file = $_FILES["imgFile"]['tmp_name'];
         $result = $s3->putObject(
           array(
-	    'Bucket'=>$bucketName,
-	    'Key' =>  $keyName,
-	    'SourceFile' => $file
+	          'Bucket'=>$bucketName,
+	          'Key' =>  $keyName,
+	          'SourceFile' => $file
           )
         );
 
         $eTag = $result['ETag'];
-	$vID = $result['VersionId'];
+	      $vID = $result['VersionId'];
       } catch (S3Exception $e) {
         die('Error:' . $e->getMessage());
       } catch (Exception $e) {
@@ -111,9 +124,55 @@
       $tag = str_replace('"', '', $eTag);
  
       //Insert image information into the database
+      $query = $insertImages;
       $query = "INSERT INTO `images`(`id`, `etag`, `keyname`, `title`, `caption`, `created`, `likes`) VALUES ('".$_SESSION['userData']['id']."', '".$tag."', '".$keyNoPrefix."', '".$_POST['title']."', '".$description."', CURDATE(), '0')";
       $queryRes = $conn->query($query);
+      //$message = "Success!";
+
+      //Insert Tags into database
+      $tagconcat = "('".$keyNoPrefix."','".$tagArray[0]."')";
+      $tagquery = "INSERT INTO tags (`keyname`,`tag`) VALUES ".$tagconcat;
+      for ($x = 1; $x < count($tagArray); $x++)
+      {
+        if(substr_compare($tagArray[$x], " ", 0, 1) == 0)
+        {//if first character in tag is a whitespace
+          $tagquery = $tagquery.", ('".$keyNoPrefix."', '".substr($tagArray[$x],1)."')";
+        }
+        else
+        {
+          $tagquery = $tagquery.", ('".$keyNoPrefix."', '".$tagArray[$x]."')";
+        }
+      }
+      $tagqueryRes = $conn->query($tagquery);
+
+      //Inserting categories into database
+      $catconcat = "('".$keyNoPrefix."','".$incatlist[0]."')";
+      $catquery = "INSERT INTO categories (`keyname`, `category_name`) VALUES ".$catconcat;
+      for($i = 1; $i < count($incatlist); $i++)
+      {
+        $catquery = $catquery.", ('".$keyNoPrefix."', '".$incatlist[$i]."')";
+      }
+      $catqueryRes = $conn->query($catquery);
+      
       $message = "Success!";
+
+      //Fetch the results of the SQL query and email each of the respective emails
+      $queryF = "SELECT * from friends WHERE user ='" .$_SESSION["userData"]["id"]. "'";
+
+      if ($resultF = $conn->query($queryF)) {
+        while ($rowF = $resultF->fetch_assoc()) {
+            $friendsQuery = "SELECT nickname, email, picture FROM users u INNER join usernames n on u.id = n.id WHERE u.id = '" . $rowF["friend"] . "'";
+            if($friendsRes = $conn->query($friendsQuery)) {
+                $friendsRow = $friendsRes->fetch_assoc();
+                $msg = "Come check it out http://ec2-52-53-194-4.us-west-1.compute.amazonaws.com/searchPage.php?searchQ=".$_SESSION['userData']['email'];
+                wordwrap($msg,70);
+                mail($friendsRow['email'],"Your Friend ".$_SESSION['nickname']." posted something new!",$msg);
+                echo '<h2>Hello</h2>';
+                $qryNotific = "INSERT INTO `notifications`(`userEmail`, `message`) VALUES ('".$friendsRow['email']."', '".$_SESSION['nickname']." uploaded a new image.')";
+                $qryNotificRes = $conn->query($qryNotific);
+            }
+            }
+        }
     }
     else {
       $message = "Please upload an image file.";

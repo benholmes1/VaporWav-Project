@@ -59,6 +59,9 @@ if($gClient->getAccessToken()){
 	$private = $user->getPrivacy($_SESSION['userData']['id']);
 	$_SESSION['private'] = $private;
 
+	$lists = $user->getLists($_SESSION['userData']['id']);
+	$_SESSION['lists'] = $lists;
+
 	$_SESSION['login'] = true;
 	
 	// Render user profile data

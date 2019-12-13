@@ -1,6 +1,7 @@
 <?php
 
   include 'dbconn.php';
+  include 'queries.php';
   //get ids
   if(isset($_POST['key'])) {
     $keyname = $_POST['key'];
@@ -11,7 +12,7 @@
   }
   
   // Check entry within table
-  $queryLikeI = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."' and userid='".$_SESSION['userData']['id']."'";
+  $queryLikeI = $selectLikescount_Likes_Keyname;
   $queryLikeIRes = $conn->query($queryLikeI);
   if($queryLikeIRes) {
     $likesinfoI = $queryLikeIRes->fetch_assoc();
@@ -22,7 +23,7 @@
   }
 
   if($likescountI == '0'){
-    $insertquery = "INSERT INTO `likes`(`userid`, `keyname`) VALUES ('".$_SESSION['userData']['id']."', '".$keyname."')";
+    $insertquery = $insertLikes_SessionData;
     $insertResult = $conn->query($insertquery);
     if($insertResult) {
       $test1 = "Success";
@@ -30,7 +31,7 @@
       $test1 = "Fail";
     }
   } else {
-    $delLikeQuery = "DELETE FROM likes WHERE keyname = '".$keyname."' and userid='".$_SESSION['userData']['id']."'";
+    $delLikeQuery = $deleteLikes;
     $delLikeRes = $conn->query($delLikeQuery);
     if($delLikeRes) {
       $test2 = "Success";
@@ -41,12 +42,12 @@
   
 
   // Count post total likes and unlikes
-  $queryLike = "SELECT COUNT(*) AS likescount FROM likes WHERE keyname = '".$keyname."'";
+  $queryLike = $updateLikes;
   $queryResL = $conn->query($queryLike);
   $likesinfo = $queryResL->fetch_assoc();
   $likescount = $likesinfo['likescount'];
 
-  $insertLikes = "UPDATE images SET likes = '".$likescount."' WHERE keyname = '".$keyname."'";
+  $insertLikes = $updateLikes_Images;
   $insertLikeRes = $conn->query($insertLikes);
   if($insertResult) {
     $test3 = "Success";

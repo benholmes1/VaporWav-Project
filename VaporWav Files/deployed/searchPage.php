@@ -1,5 +1,7 @@
 <?php
 include 'header.php';
+include 'queries.php';
+
 if($_SESSION['login'] != TRUE) {
     header('Location: index.php');
 }
@@ -28,17 +30,23 @@ $bucket_url = "https://s3-{$region}.amazonaws.com/{$bucket}";
 
 $sEmail = $_GET['searchQ'];
 $fEmail = $sEmail . "/";
+$userID = $_SESSION['userData']['id'];
 $del = '/';
 
 $iterator = $s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $fEmail, 'Delimiter' => $del));
 
-$qry1 = "SELECT id FROM users WHERE email = '" .$sEmail."'";
+//$qry1 = $selectId_Users_Email;
+$qry1 = "SELECT id FROM users WHERE email = '".$sEmail."'";
 $friendR = $conn->query($qry1);
 $friendID = $friendR->fetch_assoc();
 
+//$getName = $selectFriendNickname_Usernames_Id;
 $getName = "SELECT nickname FROM usernames WHERE id = '".$friendID['id']."'";
 $getNameRes = $conn->query($getName);
 $getNameRow = $getNameRes->fetch_assoc();
+
+$followerR = $conn->query($qry1);
+$followerID = $followerR->fetch_assoc();
 
 echo '<h2 class="jumbotron-heading">' . $getNameRow['nickname'] . '\'s Gallery</h2>';
 
@@ -46,6 +54,7 @@ echo '<h2 class="jumbotron-heading">' . $getNameRow['nickname'] . '\'s Gallery</
 
 if ($sEmail!="" && $email != $sEmail)
 { 
+  //$checkFriend = $selectFriends_User_UserFriend;
   $checkFriend = "SELECT * FROM friends WHERE user = '".$_SESSION['userData']['id']."' AND friend = '".$friendID['id']."'";
   $isFriend = $conn->query($checkFriend);
   $numRows = $isFriend->num_rows;
@@ -54,7 +63,42 @@ if ($sEmail!="" && $email != $sEmail)
 	if ($numRows == 0)
 	{
         echo '<br>';
-        echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button class="btn" type="submit">Add Friend</button></form>';
+        echo '<form action = "addFriend.php" method ="get"><input type ="hidden" name="add" value='.$friendID['id'].'></input> <button class="btn" type="submit">Add Friend</button>';
+        echo '<input id="fEmail" name="fEmail" type="hidden" value="' . $_GET["searchQ"] . '">';
+        echo '</form>';
+	}
+}
+else
+{
+  header('Location: index.php');
+}
+$qryBlocked = "SELECT blocked_user FROM blocked WHERE owner ='".$_SESSION["userData"]["id"]."'AND blocked_user = '".$friendID['id']."'";
+$isBlocked = $conn->query($qryBlocked);
+$bRows = $isBlocked->num_rows;
+if ($bRows == 0)
+{
+    echo '<br>';
+    echo '<form action = "blockUser.php" method = "get"><input type ="hidden" name="bID" value='.$friendID['id'].'></input> <button class="btn" type="submit">Block User</button>';
+    echo '</form>';
+}
+echo '<br>';
+echo '<form action = "sendMessage.php" method = "get"><input type ="hidden" name="messEmail" value='.$_GET['searchQ'].'></input> <button class="btn" type="submit">Send Message</button>';
+echo '</form>';
+
+//Follower Button
+//FollowerID is the page owner
+if ($sEmail!="" && $email != $sEmail)
+{ 
+  $checkFollower = "SELECT * FROM followers WHERE user = '".$followerID['id']."' AND follower = '".$_SESSION['userData']['id']."'";
+  $isFollower = $conn->query($checkFollower);
+  $numF = $isFollower->num_rows;
+
+	if ($numF == 0)
+	{
+        echo '<br>';
+        echo '<form action = "addFollower.php" method ="get"><input type ="hidden" name="follow" value='.$followerID['id'].'></input> <button class="btn" type="submit">Follow</button>';
+        echo '<input id="fEmail" name="fEmail" type="hidden" value="' . $_GET["searchQ"] . '">';
+        echo '</form>';
 	}
 }
 else
@@ -70,6 +114,22 @@ echo '</section>';
 <div class="gallery" id="gallery">
 
 <?php
+
+$BlockR = $conn->query($qry1);
+$BlockerID = $BlockR->fetch_assoc();
+
+//$checkBlocked = $selectBlocked_Usernames_Id;
+$checkBlocked = "SELECT blocked_user FROM blocked WHERE owner = '".$BlockerID['id']."' AND blocked_user = '".$userID."'";
+$isBlocked = $conn->query($checkBlocked);
+$blockRow =  $isBlocked->num_rows;
+//echo "$BlockerID";
+//$userID == $isBlocked['blocked_user']
+if ($blockRow == 1)
+{ 
+  echo "blocked";
+}
+else
+{
 //$images = array();
 $Cnt = 0;
 
@@ -103,7 +163,7 @@ foreach ($iterator as $object) {
 if($Cnt == 0) {
 	echo '<p>No results found.</p>';
 }
-
+}
 /*foreach ($images as $object) {
   $url = $object->getUrl();
   $message = "wrong answer";

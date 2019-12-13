@@ -2,6 +2,9 @@
 
   //This page displays the image with information
   include_once 'header.php';
+  include 'queries.php';
+  require_once 's3Access.php';
+  require_once 's3Checks.php';
   
   //Check if user is logged in
   if($_SESSION['login'] != TRUE) {
@@ -27,25 +30,19 @@
   date_default_timezone_set("UTC");
   require './vendor/autoload.php';
   include 'config.php';
- 
-  //Get image again from S3
-  $s3 = new Aws\S3\S3Client([
-    'version' => '2006-03-01',
-    'region'  => $region,
-  ]);
 
-  $cmd = $s3->getCommand('GetObject', [
-    'Bucket' => $bucket,
-    'Key'    => $key,
-  ]);//
- 
-  $request = $s3->createPresignedRequest($cmd, "+{$expire}");
-  $signed_url = (string) $request->getUri();   
- 
   $keyname = explode('/', $key);
   $keyname = end($keyname);
  
-  
+  $s3Client = new S3Access();
+  $s3Check = new S3Check();
+  $checkExists = $s3Check->checkObjectExists($keyname, $conn);
+  if($checkExists == 1) {
+    $signed_url = $s3Client->get($region, $bucket, $key);
+  } else {
+    header('Location: home.php');
+    exit();
+  }
   
   //get user nickname
   $mail = current(explode('/',$key));
@@ -66,6 +63,14 @@
   $likesinfo = $queryResL->fetch_assoc();
   $likescount = $likesinfo['likescount'];
 
+  //get image tags
+  $tagQuery = "SELECT tag FROM tags WHERE keyname = '".$keyname."'";
+  $tagRow = $conn->query($tagQuery);
+
+  //get image categories
+  $catQuery = "SELECT category_name FROM categories WHERE keyname = '".$keyname."'";;
+  $catRow = $conn->query($catQuery);
+
   $checkLikeQuery = "SELECT * FROM likes WHERE userid = '".$_SESSION['userData']['id']."' AND keyname = '".$keyname."'";
   $checkLikeRes = $conn->query($checkLikeQuery);
   if($checkLikeRes->num_rows == 0) {
@@ -80,6 +85,8 @@
   $getComments = "SELECT * FROM comments INNER JOIN usernames ON comments.user_id = usernames.id WHERE image_id = '".$keyname."'";
   $getCommentsRes = $conn->query($getComments);
 
+  echo "\nHere 3";
+
 ?>
     
 <main role="main">
@@ -90,35 +97,47 @@
     <!--image title-->  
     <ul class="nav" style="background-color:mediumpurple">
       <h2 class="navbar-brand"><?php echo $imageinfo['title'] ?></h2>
-      <?php
-        if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
-          ?>
-          <li class="nav-item dropdown ml-auto">
-            <a class="nav-link pull-right" data-toggle="dropdown" id="imgDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:white;vertical-align:middle" class="fa fa-bars"></i></a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="imgDropdown">
-              <?php
-                $keyLen = explode('/', $key);
-                if(count($keyLen) <= 2) {
-                  echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
+        <li class="nav-item dropdown ml-auto">
+          <a class="nav-link pull-right" data-toggle="dropdown" id="imgDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i style="color:white;vertical-align:middle" class="fa fa-bars"></i></a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="imgDropdown">
+          <?php
+            if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
+              $keyLen = explode('/', $key);
+              if(count($keyLen) <= 2) {
+                echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
+                ?>  
+
+                <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="addDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To Gallery</a>
+                <div class="dropdown-menu" aria-labelledby="addDropdown">
+                  <?php
+                  foreach($_SESSION['galleries'] as $gal) { 
+                    echo '<a class="dropdown-item" href="addToGallery.php?gal='.$gal.'&key='.$key.'">'.$gal.'</a>'; 
+                  }
                   ?>
-                  <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="addDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To Gallery</a>
-                  <div class="dropdown-menu" aria-labelledby="addDropdown">
-                    <?php
-                    foreach($_SESSION['galleries'] as $gal) { 
-                      echo '<a class="dropdown-item" href="addToGallery.php?gal='.$gal.'&key='.$key.'">'.$gal.'</a>'; 
-                    }
-                    ?>
-                  </div>
-                <?php
-                } else {
-                  echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
-                }
+                </div>
+              <?php
+              } else {
+                echo '<a class="dropdown-item" id="remove" href="deleteImage.php?key='.$key.'&gal='.$gal.'">Remove</a>';
+              }
+            } else {
+              if(isset($_GET['list'])) {
+                echo '<a class="dropdown-item" id="removeList" href="deleteListImage.php?key='.$key.'&list='.$_GET['list'].'">Remove</a>';
+              } else {
                 ?>
-            </div>
-          </li>
-        <?php
-        }
-        ?>
+                <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="listDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To List</a>
+                <div class="dropdown-menu" aria-labelledby="listDropdown">
+                  <?php
+                  foreach($_SESSION['lists'] as $list) { 
+                    echo '<a class="dropdown-item" href="addToList.php?list='.$list.'&key='.$key.'&mail='.$mail.'">'.$list.'</a>'; 
+                  }
+                  ?>
+                </div>
+                <?php
+              }
+            }
+          ?>
+          </div>
+        </li>
     </ul>
         
     <!--image-->
@@ -133,9 +152,20 @@
       <div class="row">
         <!--image author-->
         <div class="col-6">Created by: <a href="searchPage.php?searchQ=<?php echo $mail; ?>"><?php echo $userinfo['nickname'] ?></a></div>
-
+        
           <!--like button-->
           <div class="col-6 text-right">
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a class="twitter-share-button"
+            href="https://twitter.com/intent/tweet?text=Come%20check%20this%20art%20piece%20out%20on%20VaporWav"
+            data-size="large">Tweet</a>
+
+            <a href="" id="fb_share">FB Share</a>
+            <script>
+            window.onload = function() {
+            fb_share.href ='http://www.facebook.com/share.php?u=' + location.href;//encodeURIComponent(location.href); 
+            }  
+            </script>
             <?php
             if($checkLike) {
               echo '<input style="color:#FD01FF" type="button" value="&#xf087" id="unlike_'.$keyname.'" class="like btn fa" />';
@@ -149,21 +179,120 @@
       <div class="row">
         <!--image upload date-->
         <p>Uploaded on: <?php echo $formatDate ?></p>
+       
+        <!--tag section-->
+        
+        <div class="col-6 text-right">Tags:
+          <?php 
+            echo '<select name="Tags">';
+            while($rowT = $tagRow->fetch_assoc()){
+              echo '<option value="'.$rowT['tag'].'">#'.$rowT['tag'].'</option>';
+            }
+            echo '</select>';
+          ?>
+        </div>
       </div>
 
+      <!--category section-->
+      <div class ="row">
+        <div class="col">Categories:
+          <?php
+            $categoryString = "";
+            $i = 0;
+            while($rowC = $catRow->fetch_assoc()){
+              if($i == 0){
+                $categoryString = $categoryString.'<a href="explore.php?category='.$rowC['category_name'].'"><i>'.$rowC['category_name'].'</i></a>';
+                $i=1;
+              }
+              else{
+                $categoryString = $categoryString."<font size='3'>/</font>".'<a href="explore.php?category='.$rowC['category_name'].'"><i>'.$rowC['category_name'].'</i></a>';
+              }
+            }
+            //echo "<font size='2'>".$categoryString."</font>";
+            if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
+              $categoryString = $categoryString." "."<a data-toggle='modal' href='#galModal'>(Edit)</a>";
+              echo "<font size='2'>".$categoryString."</font>";
+              ?>
+              <!-- Modal -->
+              <div class="modal fade" id="galModal" tabindex="-1" role="dialog" aria-labelledby="galModalTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="galModalLongTitle">Edit Categories</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span style="color:white" aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <form action="editCategories.php" method="post" id="catForm">
+                          <div class="form-group">
+                            <input type="hidden" id="key" name="key" value=<?php echo $key;?>>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Digital Art">Digital Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Traditional Art">Traditional Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Photography">Photography</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Comics">Comics</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Collage">Collage</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Drawing">Drawing</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Painting">Painting</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Landscape">Landscape</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Sculpture">Sculpture</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Typography">Typography</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="3D Art">3D Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Photomanipulation">Photomanipulation</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Pixel Art">Pixel Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Text Art">Text Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Vector">Vector</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Fan Art">Fan Art</label></div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <input type="submit" form="catForm" class="btn" />
+                  </div>
+                  </div>
+              </div>
+              </div>
+
+              <?php
+            }
+            else{
+              echo "<font size='2'>".$categoryString."</font>";
+            }
+          ?>
+        </div>
+      </div>
+
+      
       <textarea placeholder="Comment . . ." style="width:100%;box-sizing:border-box;resize:none" id="comment" name="comment" form="commentForm" required></textarea>
       <form action="addcomment.php" id="commentForm" method="post">
         <input class="btn" id="uploadComment" type="submit" value="Publish">
         <input id="key" name="key" type="hidden" value="<?php echo $keyname; ?>">
         <input id="fullKey" name="fullKey" type="hidden" value="<?php echo $key; ?>">
+        <?php $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; 
+        $test123 = explode("/",$_GET['key']);
+        $emailA = $test123[0];?>
+        <input id="authorEmail" name="aEmail" type="hidden" value="<?php echo $emailA; ?>">
+        <input id="imURL" name="fullUrl" type="hidden" value="<?php echo $actual_link; ?>">
       </form>
 
       <div id="commentSection">
         <?php
 
+        
+
           while($comments = $getCommentsRes->fetch_assoc()) {
             $commentDate = date("m/d/y", $comments['created']);
-            $commentOut  = '<p>'.$comments['nickname'].'</p>';
+
+            $userComPosterid ="SELECT id FROM usernames WHERE nickname = '".$comments['nickname']."'";
+            $queryUserComPosterid = $conn->query($userComPosterid);
+            $userComPosteridinfo = $queryUserComPosterid->fetch_assoc();
+
+            $commentPoster = "SELECT email FROM users WHERE id = '".$userComPosteridinfo['id']."'";
+            $queryComPoster = $conn->query($commentPoster);
+            $comPosterinfo= $queryComPoster->fetch_assoc();
+
+            $commentOut = '<a href="searchPage.php?searchQ='.$comPosterinfo['email'].'"><b>'.$comments['nickname'].'</b></a>';
             $commentOut .= '<p style="padding-left:3em">'.$comments['comment'].'</p>';
             $commentOut .= '<hr width:100%>';
             echo $commentOut;
@@ -217,6 +346,16 @@
       var answer=confirm('Continuing will remove this image from this gallery only.\nDo you want to continue?');
       if(answer){
         alert('Deleted');
+      }
+      else{
+        e.preventDefault();      
+      }
+    });
+
+    $('#removeList').on('click',function(e) {
+      var answer=confirm('Continuing will remove this image from this list only.\nDo you want to continue?');
+      if(answer){
+        alert('Removed');
       }
       else{
         e.preventDefault();      
@@ -288,6 +427,35 @@
                 event.preventDefault();
                 $(this).ekkoLightbox();
             });
+    </script>
+
+    <script>
+      // Get the modal
+      var modal = document.getElementById('galModal');
+      // Get the button that opens the modal
+      var btn = document.getElementById("galBtn");
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+      // When the user clicks the button, open the modal 
+      btn.onclick = function() {
+          modal.style.display = "block";
+      }
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+          modal.style.display = "none";
+      }
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      }
+      $("#name").alphanum({
+      allowSpace: true,
+      allowNewline: false,
+      allowOtherCharSets: false,
+      allowNumeric: false
+      });
     </script>
 
 </body>
