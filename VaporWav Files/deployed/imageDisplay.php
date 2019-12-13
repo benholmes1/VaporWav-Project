@@ -105,7 +105,8 @@
               $keyLen = explode('/', $key);
               if(count($keyLen) <= 2) {
                 echo '<a class="dropdown-item" id="delete" href="deleteImage.php?key='.$key.'">Delete</a>';
-                ?>
+                ?>  
+
                 <a style="color:black" class="nav-link dropdown-toggle" data-toggle="dropdown" id="addDropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Add To Gallery</a>
                 <div class="dropdown-menu" aria-labelledby="addDropdown">
                   <?php
@@ -154,6 +155,17 @@
         
           <!--like button-->
           <div class="col-6 text-right">
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a class="twitter-share-button"
+            href="https://twitter.com/intent/tweet?text=Come%20check%20this%20art%20piece%20out%20on%20VaporWav"
+            data-size="large">Tweet</a>
+
+            <a href="" id="fb_share">FB Share</a>
+            <script>
+            window.onload = function() {
+            fb_share.href ='http://www.facebook.com/share.php?u=' + location.href;//encodeURIComponent(location.href); 
+            }  
+            </script>
             <?php
             if($checkLike) {
               echo '<input style="color:#FD01FF" type="button" value="&#xf087" id="unlike_'.$keyname.'" class="like btn fa" />';
@@ -196,7 +208,57 @@
                 $categoryString = $categoryString."<font size='3'>/</font>".'<a href="explore.php?category='.$rowC['category_name'].'"><i>'.$rowC['category_name'].'</i></a>';
               }
             }
-            echo "<font size='2'>".$categoryString."</font>";
+            //echo "<font size='2'>".$categoryString."</font>";
+            if($_SESSION['userData']['id'] === $imageinfo['id'] && !(isset($_GET['exp']))) {
+              $categoryString = $categoryString." "."<a data-toggle='modal' href='#galModal'>(Edit)</a>";
+              echo "<font size='2'>".$categoryString."</font>";
+              ?>
+              <!-- Modal -->
+              <div class="modal fade" id="galModal" tabindex="-1" role="dialog" aria-labelledby="galModalTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="galModalLongTitle">Edit Categories</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span style="color:white" aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <form action="editCategories.php" method="post" id="catForm">
+                          <div class="form-group">
+                            <input type="hidden" id="key" name="key" value=<?php echo $key;?>>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Digital Art">Digital Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Traditional Art">Traditional Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Photography">Photography</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Comics">Comics</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Collage">Collage</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Drawing">Drawing</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Painting">Painting</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Landscape">Landscape</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Sculpture">Sculpture</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Typography">Typography</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="3D Art">3D Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Photomanipulation">Photomanipulation</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Pixel Art">Pixel Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Text Art">Text Art</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Vector">Vector</label></div>
+                            <div class="checkbox"><label><input type="checkbox" name="categories[]" form="catForm" value="Fan Art">Fan Art</label></div>
+                          </div>
+                      </form>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <input type="submit" form="catForm" class="btn" />
+                  </div>
+                  </div>
+              </div>
+              </div>
+
+              <?php
+            }
+            else{
+              echo "<font size='2'>".$categoryString."</font>";
+            }
           ?>
         </div>
       </div>
@@ -365,6 +427,35 @@
                 event.preventDefault();
                 $(this).ekkoLightbox();
             });
+    </script>
+
+    <script>
+      // Get the modal
+      var modal = document.getElementById('galModal');
+      // Get the button that opens the modal
+      var btn = document.getElementById("galBtn");
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+      // When the user clicks the button, open the modal 
+      btn.onclick = function() {
+          modal.style.display = "block";
+      }
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+          modal.style.display = "none";
+      }
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      }
+      $("#name").alphanum({
+      allowSpace: true,
+      allowNewline: false,
+      allowOtherCharSets: false,
+      allowNumeric: false
+      });
     </script>
 
 </body>
